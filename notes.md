@@ -1,0 +1,1 @@
+This file to be used for notes for midterm and final
