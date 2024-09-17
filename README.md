@@ -30,3 +30,5 @@ A scheduling app that helps you plan out your availability and your assignments.
     * edit events
     * update events
     * brodcast schedule updates to other users
+ ![Screenshot (109)](https://github.com/user-attachments/assets/9e91dabf-7850-4d82-8069-57982c5afe08)
+
