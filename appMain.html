@@ -24,13 +24,22 @@
           <input type="text" id="text" name="varText" placeholder="Start Time (Optional) " required pattern="[Aa].*" />
           <input type="text" id="text" name="varText" placeholder="End Time (Optional)" required pattern="[Aa].*" />
           <br>
-          <input type="text" id="text" name="varText" placeholder="Hours Required" required pattern="[Aa].*" />
+          <input type="text" id="text" name="varText" placeholder="Hours to Completion" required pattern="[Aa].*" />
           <br>
+          Type:
           <select id="select" name="varSelect">
             <option selected>Project</option>
             <option> Exam</option>
             <option>Quiz</option>
             <option>HW</option>
+          </select>
+          Add To:
+          <select id="select" name="varSelect">
+            <option selected>Personal</option>
+            <option> Exam and Quizes</option>
+            <option>Events</option>
+            <option>Team Events</option>
+            <option>Bob's Availability Schedule</option>
           </select>
         </div>
         <br>
@@ -38,6 +47,15 @@
       </section>
       <section>
         <h3> Share</h3>
+        Calendar:
+        <select id="select" name="varSelect">
+          <option selected>Personal</option>
+          <option> Exam and Quizes</option>
+          <option>Events</option>
+          <option>Team Events</option>
+          <option>Bob's Availability Schedule</option>
+        </select>
+        <br>
         <input type="text" id="text" name="varText" placeholder="email address" required pattern="[Aa].*" />
         <button type="submit">Share</button>
       </section>
@@ -45,15 +63,20 @@
         <h3> Calendar</h3>
         <div>
           <fieldset>
-            <legend>My Calendars</legend>
+            <legend>Private Calendars</legend>
             <label for="checkbox1">Personal</label>
             <input type="checkbox" id="checkbox1" name="varCheckbox" value="checkbox1" checked />
             <label for="checkbox2">Exams and Quizes</label>
             <input type="checkbox" id="checkbox2" name="varCheckbox" value="checkbox2" />
-            <label for="checkbox3">Bob's Cal [Shared] </label>
-            <input type="checkbox" id="checkbox3" name="varCheckbox" value="checkbox3" />
             <label for="checkbox4">Events</label>
             <input type="checkbox" id="checkbox4" name="varCheckbox" value="checkbox4" />
+          </fieldset>
+          <fieldset>
+            <legend>Shared Calendars</legend>
+            <label for="checkbox1">Team Events</label>
+            <input type="checkbox" id="checkbox1" name="varCheckbox" value="checkbox1" checked />
+            <label for="checkbox3">Bob's Availability Schedule</label>
+            <input type="checkbox" id="checkbox3" name="varCheckbox" value="checkbox3" />
           </fieldset>
         </div>
         <div>
@@ -71,6 +94,7 @@
   <footer>
     <section>
       <br>
+      Current User: User Name 
       <a href="index.html"> <button>Logout</button> </a>
     </section>
     <section>
@@ -79,7 +103,7 @@
       <br>
       <a href="about.html">About this project</a>
       <br>
-      AndrewRodabough
+      Andrew Rodabough
     </section>
   </footer>
 </body>
