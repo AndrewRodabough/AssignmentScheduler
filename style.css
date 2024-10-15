@@ -1,6 +1,5 @@
-html, body {
+body {
     margin: 0;
-    padding: 0;
     height: 100%;
 }
   
@@ -12,23 +11,20 @@ body {
 
 header {
     background-color: #333;
+    padding: 10px;
 }
+
 
 main {
     flex: 1;
+    padding: 20px;
 }
 
 footer {
     background-color: #333;
     color: #fff;
-    padding: 20px;
+    padding: 10px;
     text-align: center;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-nav {
-    padding: 10;
 }
 
 nav a {
