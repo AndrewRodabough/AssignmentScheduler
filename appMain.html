@@ -8,19 +8,40 @@
   <header>
     <h1>Assignment Scheduler</h1>
     <nav>
+      <div>
         <a href="index.html">Login Page</a>
-        <a href="appMain.html">Main Page</a>
         <a href="about.html">About Page</a>
+      </div>
+      <div>
+        Current User: User Name 
+        <a href="index.html"> <button>Logout</button> </a>
+      </div>
     </nav>
     <section>
-      <br>
-      Current User: User Name 
-      <a href="index.html"> <button>Logout</button> </a>
+
     </section>
   </header>
   
     <main>
-      <section>
+
+      <section class="box">
+        <h3> Share</h3>
+        Calendar:
+        <select id="select" name="varSelect">
+          <option selected>Personal</option>
+          <option> Exam and Quizes</option>
+          <option>Events</option>
+          <option>Team Events</option>
+          <option>Bob's Availability Schedule</option>
+        </select>
+        <br>
+        <input type="text" id="text" name="varText" placeholder="email address" required pattern="[Aa].*" />
+        <button type="submit">Share</button>
+      </section>
+      
+      <br>
+      
+      <section class="box">
         <h3> New Event</h3>
         <div>
           <input type="text" id="text" name="varText" placeholder="Start Date (Optional)" required pattern="[Aa].*" />
@@ -50,20 +71,7 @@
         <br>
         <button type="submit">Create Event</button>
       </section>
-      <section>
-        <h3> Share</h3>
-        Calendar:
-        <select id="select" name="varSelect">
-          <option selected>Personal</option>
-          <option> Exam and Quizes</option>
-          <option>Events</option>
-          <option>Team Events</option>
-          <option>Bob's Availability Schedule</option>
-        </select>
-        <br>
-        <input type="text" id="text" name="varText" placeholder="email address" required pattern="[Aa].*" />
-        <button type="submit">Share</button>
-      </section>
+      
       <section>
         <h3> Calendar</h3>
         <div>

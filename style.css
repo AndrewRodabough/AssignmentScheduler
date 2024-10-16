@@ -1,38 +1,54 @@
+:root {
+    --primary-color: #1c1c1c;
+    --text-color: #fff;
+    --nav: #202020
+  }
+  
+
+
 body {
+    color: var(--text-color);
     margin: 0;
     height: 100%;
-}
-  
-body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
+
 header {
-    background-color: #333;
+    color: var(--text-color);
+    background-color: var(--nav);
     padding: 10px;
+}
+
+
+header, nav a {
+    padding-right: 10px;
 }
 
 
 main {
     flex: 1;
     padding: 20px;
+    background-color: var(--primary-color);
 }
 
-footer {
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
-    text-align: center;
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
+
 
 nav a {
-    color: #fff;
+    color: var(--text-color);
+    text-decoration: none;
 }
 
+
 nav a:hover {
-    color: #ddd
+    color: #4378a4
 }
 
 
@@ -40,13 +56,39 @@ footer p {
     margin: 0;
 }
 
-header, footer a {
-    color: #fff;
+
+footer {
+    background-color: var(--nav);
+    color: var(--text-color);
+    padding: 10px;
+    text-align: center;
 }
 
-
+footer a {
+    color: var(--text-color);
+    text-decoration: none;
+}
 
 footer a:hover{
-    color: #ddd;
+    color: #333;
 }
 
+
+.box {
+    color: var(--text-color);
+    background-color: #364653;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.loginBox {
+    text-align: center;
+}
+
+.loginBox input {
+    width: 192px;
+}
+
+.loginBox button {
+    width: 200px;
+}
