@@ -1,12 +1,19 @@
 :root {
-    --background: #1c1c1c;
+    --background: #202224;
     --text-color: #ddd;
     --nav: #202020;
-    --linkHover: #4378a4;
-    --primary: #2c3843;
+    --linkHover: #fe8584;
+    --linkHover2: #4378a4;
+    --primary: #22313f;
     --secondary: #6687a5;
     --tertiary: #a2b4c7;
     --font: 'Nunito', sans-serif;
+
+    --buttonGradienta: #fe3458;
+    --buttonGradientb: #fe8584;
+    --buttonGradientc: #ff4756;
+    --buttonGradientd: #ffa397;
+
 }
   
 
@@ -53,12 +60,6 @@ nav {
 
 nav a {
     text-decoration: none;
-    color: var(--text-color);
-    transition: color 0.2s ease;
-}
-
-nav a:hover {
-    color: var(--linkHover);
 }
 
 nav button {
@@ -79,17 +80,6 @@ footer {
     font-size: 11pt;
 }
 
-footer a {
-    color: var(--text-color);
-}
-
-footer a:hover{
-    color: var(--linkHover)
-
-}
-
-
-
 
 .box {
     background-color: var(--primary);
@@ -108,37 +98,53 @@ footer a:hover{
 
 .loginBox button {
     width: 200px;
-    background-color: var(--secondary);
-    transition: background-color 0.3s ease;
     cursor: pointer;
     border: none;
     border-radius: 20px;
     padding: 10px 20px;
 }
 
-.loginBox button:hover {
-    background-color: var(--tertiary);
-}
-
 
 button {
+  
     color: var(--text-color);
+
     width: fit-content;
-    background-color: var(--secondary);
-    transition: background-color 0.3s ease;
+    transition: background-image 0.3s ease;
     cursor: pointer;
     border: none;
     border-radius: 20px;
     padding: 3px 10px;
+    background-size: 200% auto;
+    background-image: linear-gradient(to right, var(--buttonGradienta),  var(--buttonGradientb), var(--buttonGradientb));
+    color: white;
+    transition: background-position 0.4s ease;
 }
 
 button:hover {
-    background-color: var(--tertiary);
+    background-image: linear-gradient(to right, var(--buttonGradientc), var(--buttonGradientd), var(--buttonGradientd));
+    background-position: right center;
 }
 
 .title {
     width: fit-content;
-    padding: 200px;
+    padding-top: 30%;
+    padding-bottom: 30%;
+
     font-size: 50pt; 
     font-weight: 800;
+    color: transparent;
+    background-image: linear-gradient(to right, var(--buttonGradienta), var(--buttonGradientb));
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+
+a {
+    color: var(--text-color);
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--linkHover);
 }
