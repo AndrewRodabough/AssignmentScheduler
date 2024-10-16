@@ -1,11 +1,11 @@
 :root {
     --background: #1c1c1c;
-    --text-color: #fff;
+    --text-color: #ddd;
     --nav: #202020;
     --linkHover: #4378a4;
     --primary: #2c3843;
     --secondary: #6687a5;
-    --tertiary: #aabdd1;
+    --tertiary: #a2b4c7;
     --font: 'Nunito', sans-serif;
 }
   
@@ -118,4 +118,27 @@ footer a:hover{
 
 .loginBox button:hover {
     background-color: var(--tertiary);
+}
+
+
+button {
+    color: var(--text-color);
+    width: fit-content;
+    background-color: var(--secondary);
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border: none;
+    border-radius: 20px;
+    padding: 3px 10px;
+}
+
+button:hover {
+    background-color: var(--tertiary);
+}
+
+.title {
+    width: fit-content;
+    padding: 200px;
+    font-size: 50pt; 
+    font-weight: 800;
 }
