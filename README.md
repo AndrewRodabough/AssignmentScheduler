@@ -68,3 +68,33 @@ A scheduling app that helps you plan out your availability and your assignments.
 - websocket data
     - live calendar update on shared calendars / ical feel
 
+# CSS Deliverable
+
+- Header, footer, and main content body
+   - Login / Register boxes
+   - Nav bar on Top
+   - Footer info on bottom
+   - Some items are centered to the page
+- Navigation elements
+   - nav bar
+      - respond to resizing.
+      - Change color on hover.
+      - No underline on links
+   - Login buttons
+      - Rounded
+      - Gradient
+      - React to hover. 
+- Responsive to window resizing
+   - Home Page Centered Title (will be finished later when more functionality added to program) resizes title
+   - nav bar resizes
+   - header on top and footer on bottom and width of screen
+- Application text content
+   - Font,
+      - size
+      - color
+      - Font
+   - some text adjust to widow resize
+   - text on about page
+- Application images
+   - Some stying on placeholder images for now in main page
+   - When i get closer to finishing the application the placeholer images will be removed and javascript will replace the calender ui. However images will be placed on the home page as a showcase of the application and potentially on the about page. Also image if i mage a logo and will replace text in the top left corner of screen.
