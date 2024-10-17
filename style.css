@@ -4,7 +4,7 @@
     --nav: #202020;
     --linkHover: #fe8584;
     --linkHover2: #4378a4;
-    --primary: #22313f;
+    --primary: #21293b;
     --secondary: #6687a5;
     --tertiary: #a2b4c7;
     --font: 'Nunito', sans-serif;
@@ -128,10 +128,9 @@ button:hover {
 
 .title {
     width: fit-content;
-    padding-top: 30%;
-    padding-bottom: 30%;
-
-    font-size: 50pt; 
+    padding-top: 300px;
+    padding-bottom: 300px;
+    font-size: 7vw;
     font-weight: 800;
     color: transparent;
     background-image: linear-gradient(to right, var(--buttonGradienta), var(--buttonGradientb));
