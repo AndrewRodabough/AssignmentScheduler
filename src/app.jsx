@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { BrowserRouter, NavLink, Route, Routes, Navigate, Link } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route, Routes, Navigate, Link, Outlet } from 'react-router-dom';
 import Login from './login/login';
 import Register from './register/register';
 import Home from './home/home';
@@ -15,7 +15,7 @@ function App() {
 
     return (
         <BrowserRouter>
-            <div>
+            <div className="page-container">
                 <Routes>
 
                     <Route element={<LoggedOutHeader/>}>
@@ -37,8 +37,6 @@ function App() {
                     <div>
                         <a href="https://github.com/AndrewRodabough/startup.git"> Github </a>
                         <br />
-                        <a href="about.html">About</a>
-                        <br />
                         Author: Andrew Rodabough
                     </div>
                 </footer>
@@ -51,26 +49,44 @@ function LoggedInHeader() {
     return (
         <>
             <header>
-
+                <nav>
+                    <div>
+                        <h2>Assignment Scheduler</h2>
+                    </div>
+                    <div>
+                        Current User: "User Name" 
+                        <a href="index.html"> <button>Logout</button> </a>
+                    </div>
+                </nav>
             </header>
+            
+            <main>
+                <Outlet />
+            </main>
         </>
     )
 }
 function LoggedOutHeader() {
     return (
-        <header>
-            <nav>
-                <div>
-                    <NavLink to="/home"> <h2 >Assignment Scheduler</h2> </NavLink>
-                </div>
-                <div>
-                    <NavLink href="/home">Home</NavLink>
-                    <NavLink href="/login">Login</NavLink>
-                    <NavLink href="/register">Create Account</NavLink>
-                    <NavLink href="/about">About Page</NavLink>
-                </div>
-            </nav>
-        </header>
+        <>
+            <header>
+                <nav>
+                    <div>
+                        <NavLink to="/home"> <h2 >Assignment Scheduler</h2> </NavLink>
+                    </div>
+                    <div>
+                        <NavLink to="/home">Home</NavLink>
+                        <NavLink to="/login">Login</NavLink>
+                        <NavLink to="/register">Create Account</NavLink>
+                        <NavLink to="/about">About Page</NavLink>
+                    </div>
+                </nav>
+            </header>
+
+            <main>
+                <Outlet />
+            </main>
+        </>
     )
 }
 
