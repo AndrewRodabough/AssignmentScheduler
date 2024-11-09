@@ -7,7 +7,7 @@ function Login() {
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <section className="box loginBox">
                 
-                <h3> Login</h3>
+                <h3> Login / Register</h3>
                 
                 <div>
                     <input type="text" id="logintext" name="varText" placeholder="Username" required pattern="[Aa].*" />
@@ -17,6 +17,7 @@ function Login() {
                 
                 <br/>
                 <NavLink to="/main"> <button type="submit">Login</button> </NavLink>
+                <NavLink to="/main"> <button type="submit">Register</button> </NavLink>
 
             </section>
         </div>

@@ -13,9 +13,26 @@ import './app.css';
 
 function App() {
 
+    
+
     return (
         <BrowserRouter>
             <div className="page-container">
+
+                <header>
+                    <nav>
+                        <div>
+                            <NavLink to="/home"> <h2 >Assignment Scheduler</h2> </NavLink>
+                        </div>
+                        <div>
+                            <NavLink to="/home">Home</NavLink>
+                            <NavLink to="/login">Login</NavLink>
+                            <NavLink to="/register">Create Account</NavLink>
+                            <NavLink to="/about">About Page</NavLink>
+                        </div>
+                    </nav>
+                </header>
+
                 <Routes>
 
                     <Route element={<LoggedOutHeader/>}>
@@ -29,7 +46,6 @@ function App() {
                     <Route element={<LoggedInHeader/>}>
                         <Route path="/main" element={<Main />}/>
                     </Route>
-                    
 
                 </Routes>
 
@@ -51,9 +67,6 @@ function LoggedInHeader() {
             <header>
                 <nav>
                     <div>
-                        <h2>Assignment Scheduler</h2>
-                    </div>
-                    <div>
                         Current User: "User Name" 
                         <NavLink to="/home"> <button>Logout</button> </NavLink>
                     </div>
@@ -66,30 +79,6 @@ function LoggedInHeader() {
         </>
     )
 }
-function LoggedOutHeader() {
-    return (
-        <>
-            <header>
-                <nav>
-                    <div>
-                        <NavLink to="/home"> <h2 >Assignment Scheduler</h2> </NavLink>
-                    </div>
-                    <div>
-                        <NavLink to="/home">Home</NavLink>
-                        <NavLink to="/login">Login</NavLink>
-                        <NavLink to="/register">Create Account</NavLink>
-                        <NavLink to="/about">About Page</NavLink>
-                    </div>
-                </nav>
-            </header>
-
-            <main>
-                <Outlet />
-            </main>
-        </>
-    )
-}
-
 
 function NotFound() {
     return <main className='container-fluid bg-secondary text-center'>404: Address unknown.</main>;
