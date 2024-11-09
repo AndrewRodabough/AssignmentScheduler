@@ -1,13 +1,15 @@
 import React from 'react';
-/*
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
-import { Login } from './login/login';
-import { Play } from './play/play';
-import { Scores } from './scores/scores';
-import { About } from './about/about';
-import { AuthState } from './login/authState';
-import 'bootstrap/dist/css/bootstrap.min.css';
-*/
+import { useState } from 'react';
+import { BrowserRouter, NavLink, Route, Routes, Navigate } from 'react-router-dom';
+
+import Login from './login/login';
+import Register from './register/register';
+import Home from './home/home';
+import About from './about/about';
+import Main from './main/main';
+
+//import { AuthState } from './login/authState';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
 function App() {
@@ -20,39 +22,16 @@ function App() {
                 </header>
 
                 <Routes>
-                    <Route path="/home" />
-                    <Route path="/about" />
+                    <Route path="/" element={<Home/>} />
+                    <Route path="/about" element={<About/>}/>
                     
-                    <Route path="/login" />
-                    <Route path="/register" />
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/register" element={<Register/>}/>
                     
-                    <Route path="/main" />
+                    <Route path="/main" element={<Main />}/>
                     
                     <Route path='*' element={<NotFound />} />
 
-
-                    <Route
-                        path='/'
-                        element={
-                            <Login
-                                userName={userName}
-                                authState={authState}
-                                onAuthChange={(userName, authState) => {
-                                    setAuthState(authState);
-                                    setUserName(userName);
-                                }}
-                            />
-                        }
-                        exact
-                    />
-
-                    {
-                        /*
-                        <Route path='/play' element={<Play userName={userName} />} />
-                        <Route path='/scores' element={<Scores />} />
-                        <Route path='/about' element={<About />} />
-                        */
-                    }
                 </Routes>
 
                 <footer>
@@ -62,7 +41,6 @@ function App() {
                         Author: Andrew Rodabough
                     </div>
                 </footer>
-
             </div>
         </BrowserRouter>
     )
