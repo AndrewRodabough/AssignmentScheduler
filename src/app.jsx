@@ -1,87 +1,92 @@
-import React from 'react';
-import { useState } from 'react';
-import { BrowserRouter, NavLink, Route, Routes, Navigate, Link, Outlet } from 'react-router-dom';
+import React, { useState, createContext, useContext } from 'react';
+import { BrowserRouter, NavLink, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './login/login';
-import Register from './register/register';
 import Home from './home/home';
 import About from './about/about';
 import Main from './main/main';
-
-//import { AuthState } from './login/authState';
-//import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
+// Create auth context
+export const AuthContext = createContext(null);
+
 function App() {
+    const [user, setUser] = useState(null);
 
-    
+    const handleLogin = (userData) => {
+        setUser(userData);
+    };
+
+    const handleLogout = () => {
+        setUser(null);
+    };
 
     return (
-        <BrowserRouter>
-            <div className="page-container">
+        <AuthContext.Provider value={{ user, handleLogin, handleLogout }}>
+            <BrowserRouter>
+                <div className="page-container">
+                    
+                    {user ? (
+                        <header>
+                            <nav>
+                                <div>
+                                    <NavLink to="/home"><h2>Assignment Scheduler</h2></NavLink>
+                                </div>
+                                <div>
+                                    <NavLink to="/main">Main</NavLink>
+                                    <NavLink to="/about">About Page</NavLink>
+                                    <span>Current User: {user.username}</span>
+                                    <button onClick={handleLogout}>Logout</button>
+                                </div>
+                            </nav>
+                        </header>
+                    ) : (
+                        <header>
+                            <nav>
+                                <div>
+                                    <NavLink to="/home"><h2>Assignment Scheduler</h2></NavLink>
+                                </div>
+                                <div>
+                                    <NavLink to="/home">Home</NavLink>
+                                    <NavLink to="/login">Login</NavLink>
+                                    <NavLink to="/about">About Page</NavLink>
+                                </div>
+                            </nav>
+                        </header>
+                    )}
 
-                <header>
-                    <nav>
-                        <div>
-                            <NavLink to="/home"> <h2 >Assignment Scheduler</h2> </NavLink>
-                        </div>
-                        <div>
-                            <NavLink to="/home">Home</NavLink>
-                            <NavLink to="/login">Login</NavLink>
-                            <NavLink to="/register">Create Account</NavLink>
-                            <NavLink to="/about">About Page</NavLink>
-                        </div>
-                    </nav>
-                </header>
-
-                <Routes>
-
-                    <Route element={<LoggedOutHeader/>}>
-                        <Route path="/home" element={<Home/>} />
-                        <Route path="/about" element={<About/>}/>
-                        <Route path="/login" element={<Login/>}/>
-                        <Route path="/register" element={<Register/>}/>
+                    <Routes>
+                        <Route path="/home" element={<Home />} />
+                        <Route path="/about" element={<About />} />
+                        <Route 
+                            path="/login" 
+                            element={
+                                !user ? <Login /> : <Navigate to="/main" replace />
+                            }
+                        />
+                        <Route 
+                            path="/main" 
+                            element={
+                                user ? <Main /> : <Navigate to="/login" replace />
+                            }
+                        />
                         <Route path='*' element={<NotFound />} />
-                    </Route>
+                    </Routes>
 
-                    <Route element={<LoggedInHeader/>}>
-                        <Route path="/main" element={<Main />}/>
-                    </Route>
-
-                </Routes>
-
-                <footer>
-                    <div>
-                        <a href="https://github.com/AndrewRodabough/startup.git"> Github </a>
-                        <br />
-                        Author: Andrew Rodabough
-                    </div>
-                </footer>
-            </div>
-        </BrowserRouter>
-    )
-}
-
-function LoggedInHeader() {
-    return (
-        <>
-            <header>
-                <nav>
-                    <div>
-                        Current User: "User Name" 
-                        <NavLink to="/home"> <button>Logout</button> </NavLink>
-                    </div>
-                </nav>
-            </header>
-            
-            <main>
-                <Outlet />
-            </main>
-        </>
-    )
+                    <footer>
+                        <div>
+                            <a href="https://github.com/AndrewRodabough/startup.git">Github</a>
+                            <br />
+                            Author: Andrew Rodabough
+                        </div>
+                    </footer>
+                </div>
+            </BrowserRouter>
+        </AuthContext.Provider>
+    );
 }
 
 function NotFound() {
     return <main className='container-fluid bg-secondary text-center'>404: Address unknown.</main>;
-  }
-  
-  export default App;
+}
+
+export default App;
