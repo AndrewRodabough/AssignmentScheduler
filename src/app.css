@@ -1,3 +1,5 @@
+
+
 :root {
     --background: #202224;
     --text-color: #ddd;
@@ -35,13 +37,19 @@ body {
 header {
     background-color: var(--nav);
     padding: 10px;
-    font-family: var(--font);
 }
 
-header, nav a {
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header, nav a{
     padding-right: 10px;
     display: inline-block;
     margin: 0;
+    text-decoration: none;
 }
 
 
@@ -52,15 +60,7 @@ main {
 }
 
 
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 
-nav a {
-    text-decoration: none;
-}
 
 nav button {
     width: 80px;
