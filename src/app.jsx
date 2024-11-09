@@ -55,7 +55,7 @@ function LoggedInHeader() {
                     </div>
                     <div>
                         Current User: "User Name" 
-                        <a href="index.html"> <button>Logout</button> </a>
+                        <NavLink to="/home"> <button>Logout</button> </NavLink>
                     </div>
                 </nav>
             </header>
