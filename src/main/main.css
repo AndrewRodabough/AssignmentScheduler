@@ -30,7 +30,7 @@
   }
   
   .day-of-month {
-    color: #666;
+    color: var(text-color);
   }
   
   .column-content {
