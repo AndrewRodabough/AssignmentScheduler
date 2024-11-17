@@ -1,0 +1,40 @@
+@import "../app.css";
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 5px;
+    width: 100%;
+  }
+  
+  .calendar-column {
+    
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--primary);
+    border-radius: 10px;
+  }
+  
+  .column-header {
+    background-color: var(--secondary);
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px 10px 0px 0px;
+  }
+  
+  .day-of-week {
+    font-weight: bold;
+  }
+  
+  .day-of-month {
+    color: #666;
+  }
+  
+  .column-content {
+    flex-grow: 1;
+    padding: 10px;
+  }
+  

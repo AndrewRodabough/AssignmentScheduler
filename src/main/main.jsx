@@ -1,6 +1,37 @@
 import React from 'react';
 import '../app.css';
-import { NavLink } from 'react-router-dom';
+import './main.css';
+import { useMemo } from 'react';
+import { format, eachDayOfInterval, parseISO } from 'date-fns';
+
+const CalendarGrid = ({ startDate, endDate }) => {
+    const dateColumns = useMemo(() => {
+      const start = parseISO(startDate);
+      const end = parseISO(endDate);
+      
+      return eachDayOfInterval({ start, end }).map(date => ({
+        fullDate: format(date, 'yyyy-MM-dd'),
+        dayOfWeek: format(date, 'EEE'),
+        dayOfMonth: format(date, 'dd')
+      }));
+    }, [startDate, endDate]);
+  
+    return (
+      <div className="calendar-grid">
+        {dateColumns.map(({ fullDate, dayOfWeek, dayOfMonth }) => (
+          <div key={fullDate} className="calendar-column">
+            <div className="column-header">
+              <span className="day-of-week">{dayOfWeek}</span>
+              <span className="day-of-month">{dayOfMonth}</span>
+            </div>
+            <div className="column-content">
+              {/* Add your events or scheduling content here */}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
 
 function Main() {
     return (
@@ -132,21 +163,9 @@ function Main() {
                 </fieldset>
             </div>
             <div>
-                <p>
-                    Calendar View Here <br/>
-                    -database data <br/>
-                    -websocket data <br/>
-                    -api data <br/>
-                </p>
-                <img 
-                    style={{
-                        borderRadius: "20px",
-                        objectFit: "cover",
-                        height: "600px",
-                        width: "800px"
-                    }} 
-                    src="https://github.com/AndrewRodabough/startup/blob/main/Screenshot%20(109).png?raw=true"
-                    alt="Calendar View"
+                <CalendarGrid 
+                    startDate="2024-06-05" 
+                    endDate="2024-06-12" 
                 />
             </div>
         </section>

@@ -5,7 +5,7 @@
     --linkHover: #fe8584;
     --linkHover2: #4378a4;
     --primary: #21293b;
-    --secondary: #6687a5;
+    --secondary: #3b4457;
     --tertiary: #a2b4c7;
     --font: 'Nunito', sans-serif;
 
@@ -25,6 +25,7 @@
 
 html, body {
     height: 100%;
+    margin: 0;
     font-family: var(--font);
     color: var(--text-color);
     background-color: var(--background);
@@ -63,9 +64,7 @@ header, nav a{
 
 
 main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    flex: 1 0 auto;
     padding: 20px;
     background-color: var(--background);
 }
