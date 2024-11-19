@@ -98,3 +98,15 @@ A scheduling app that helps you plan out your availability and your assignments.
 - Application images
    - Some stying on placeholder images for now in main page
    - When i get closer to finishing the application the placeholer images will be removed and javascript will replace the calender ui. However images will be placed on the home page as a showcase of the application and potentially on the about page. Also image if i mage a logo and will replace text in the top left corner of screen.
+ 
+# React Deliverable
+
+- Conversion to Vite
+- React component functionality
+   - Login / Current logged in user implemented
+   - Basic Visualization of Calendar
+- Router
+   - app.jsx uses <BrowserRouter> to route page. Headr and Footer are reused between routes not duplicated
+- Hooks
+   - User name and logged in status saved in useState in login.jsx / app.jsx
+   - Calendar in main.jsx uses useState hooks for dates
