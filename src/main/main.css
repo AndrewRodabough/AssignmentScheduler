@@ -38,3 +38,11 @@
     padding: 10px;
   }
   
+  .calendar-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    
+    min-width: 300px; /* Prevents boxes from getting too small */
+}

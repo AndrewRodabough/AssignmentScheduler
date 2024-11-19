@@ -141,7 +141,7 @@ function Main() {
             <button type="button">Create Event</button>
         </section>
 
-        <section className='box gridbox'>
+        <section className='box calendar-controls'>
 
             <section>
                 <h3>Calendar</h3>
