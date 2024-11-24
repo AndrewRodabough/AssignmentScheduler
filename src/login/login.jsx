@@ -1,4 +1,3 @@
-// login.jsx
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../app'; // Adjust path as needed
@@ -22,12 +21,13 @@ function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Here you would typically verify credentials with an API
+        // TODO verify credentials
         handleLogin(credentials); // Update the global auth state
         navigate('/main');
     };
 
     return (
+        
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <section className="box loginBox">
                 <h3>Login / Register</h3>
