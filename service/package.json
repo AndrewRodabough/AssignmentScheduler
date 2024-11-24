@@ -1,0 +1,13 @@
+{
+    "name": "assignment-scheduler-service",
+    "version": "0.1.0",
+    "type": "module",
+    "scripts": {
+      "start": "node index.js"
+    },
+    "dependencies": {
+      "express": "^4.18.2",
+      "uuid": "^10.0.0"
+    }
+  }
+  

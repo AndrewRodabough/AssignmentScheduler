@@ -1,14 +1,13 @@
 {
-  "name": "demovite",
+  "name": "assignment-scheduler",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "start": "node service/index.js"
+    "preview": "vite preview"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
