@@ -1,25 +1,34 @@
 import express from 'express';
-const app = express();
 
-import { router as createUser } from './routes/Authentication/createUser.js';
-import { router as login } from './routes/Authentication/login.js';
-import { router as logout } from './routes/Authentication/logout.js';
+import createUser from './routes/Authentication/createUser.js';
+import login from './routes/Authentication/login.js';
+import logout from './routes/Authentication/logout.js';
 
-import { router as createCalendar } from './routes/Calendar/createCalendar.js';
-import { router as deleteCalendar } from './routes/Calendar/deleteCalendar.js';
-import { router as getAllCalendars } from './routes/Calendar/getAllCalendars.js';
-import { router as updateCalendar } from './routes/Calendar/updateCalendar.js';
+import createCalendar from './routes/Calendar/createCalendar.js';
+import deleteCalendar from './routes/Calendar/deleteCalendar.js';
+import getAllCalendars from './routes/Calendar/getAllCalendars.js';
+import updateCalendar from './routes/Calendar/updateCalendar.js';
 
-import { router as createEvent } from './routes/Calendar/createEvent.js';
-import { router as deleteEvent } from './routes/Calendar/deleteEvent.js';
-import { router as getAllEvents } from './routes/Calendar/getAllEvents.js';
-import { router as updateEvent } from './routes/Calendar/updateEvent.js';
+import createEvent from './routes/Event/createEvent.js';
+import deleteEvent from './routes/Event/deleteEvent.js';
+import getAllEvents from './routes/Event/getAllEvents.js';
+import updateEvent from './routes/Event/updateEvent.js';
 
 // Users, Events, and Calendars are stored in memory
-let users = {};
-let calendars = {};
-let events = {};
-let authTokens = {};
+const dataStore = {
+    calendars: {},
+    events: {},
+    users: {},
+    tokens: {}
+}
+
+const app = express();
+app.use(express.json());
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Something broke!' });
+});
 
 // Allow selecting port from cmd line
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -36,9 +45,9 @@ app.use(`/api`, apiRouter);
 // Authentication Endpoints //
 //////////////////////////////
 
-apiRouter.use('/auth/create', createUser(users));
-apiRouter.use('/auth/login', login);
-apiRouter.use('/auth/logout', logout);
+apiRouter.use('/auth/create', createUser(dataStore));
+apiRouter.use('/auth/login', login(dataStore));
+apiRouter.use('/auth/logout', logout(dataStore));
   
 
 //////////////////////////////////
@@ -47,17 +56,17 @@ apiRouter.use('/auth/logout', logout);
 
 //// Event ////
 
-apiRouter.use('/event/create', createEvent);
-apiRouter.use('/event/delete', deleteEvent);
-apiRouter.use('/event/get', getAllEvents);
-apiRouter.use('/event/update', updateEvent);
+apiRouter.use('/event/create', createEvent(dataStore));
+apiRouter.use('/event/delete', deleteEvent(dataStore));
+apiRouter.use('/event/get', getAllEvents(dataStore));
+apiRouter.use('/event/update', updateEvent(dataStore));
 
 //// Calendars ////
 
-apiRouter.use('/calendar/create', createCalendar);
-apiRouter.use('/calendar/delete', deleteCalendar);
-apiRouter.use('/calendar/get', getAllCalendars);
-apiRouter.use('/calendar/update', updateCalendar);
+apiRouter.use('/calendar/create', createCalendar(dataStore));
+apiRouter.use('/calendar/delete', deleteCalendar(dataStore));
+apiRouter.use('/calendar/get', getAllCalendars(dataStore));
+apiRouter.use('/calendar/update', updateCalendar(dataStore));
 
 
 //////////////////
