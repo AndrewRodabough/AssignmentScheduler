@@ -19,6 +19,7 @@ import { router as updateEvent } from './routes/Calendar/updateEvent.js';
 let users = {};
 let calendars = {};
 let events = {};
+let authTokens = {};
 
 // Allow selecting port from cmd line
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -35,7 +36,7 @@ app.use(`/api`, apiRouter);
 // Authentication Endpoints //
 //////////////////////////////
 
-apiRouter.use('/auth/create', createUser);
+apiRouter.use('/auth/create', createUser(users));
 apiRouter.use('/auth/login', login);
 apiRouter.use('/auth/logout', logout);
   
