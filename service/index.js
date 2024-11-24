@@ -1,75 +1,62 @@
 import express from 'express';
 const app = express();
 
+import { router as createUser } from './routes/Authentication/createUser.js';
+import { router as login } from './routes/Authentication/login.js';
+import { router as logout } from './routes/Authentication/logout.js';
+
+import { router as createCalendar } from './routes/Calendar/createCalendar.js';
+import { router as deleteCalendar } from './routes/Calendar/deleteCalendar.js';
+import { router as getAllCalendars } from './routes/Calendar/getAllCalendars.js';
+import { router as updateCalendar } from './routes/Calendar/updateCalendar.js';
+
+import { router as createEvent } from './routes/Calendar/createEvent.js';
+import { router as deleteEvent } from './routes/Calendar/deleteEvent.js';
+import { router as getAllEvents } from './routes/Calendar/getAllEvents.js';
+import { router as updateEvent } from './routes/Calendar/updateEvent.js';
+
+// Users, Events, and Calendars are stored in memory
+let users = {};
+let calendars = {};
+let events = {};
+
 // Allow selecting port from cmd line
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 // Serve static files from public dir
 app.use(express.static('public'));
 
+// Router for service endpoints
+var apiRouter = express.Router();
+app.use(`/api`, apiRouter);
+
 
 //////////////////////////////
 // Authentication Endpoints //
 //////////////////////////////
 
-// Create new user account
-apiRouter.post('/auth/create', (req, res) => {
-    // similar to simon, create user with email/password
-});
-  
-// User login
-apiRouter.post('/auth/login', (req, res) => {
-    // Validate credentials, return token
-});
-  
-// User logout
-apiRouter.delete('/auth/logout', (req, res) => {
-    // Invalidate user session
-});
+apiRouter.use('/auth/create', createUser);
+apiRouter.use('/auth/login', login);
+apiRouter.use('/auth/logout', logout);
   
 
 //////////////////////////////////
 // Calendar Managment Endpoints //
 //////////////////////////////////
 
-//// Events ////
+//// Event ////
 
-// Get all events for a user
-apiRouter.get('/events', (req, res) => {
-    // Retrieve events for authenticated user
-});
-  
-// Create a new event
-apiRouter.post('/events', (req, res) => {
-    // Add new event to user's calendar
-});
-  
-// Delete an event
-apiRouter.delete('/events', (req, res) => {
-    // Remove event from user's calendar
-});
-
-// Update an existing event
-apiRouter.put('/events', (req, res) => {
-    // Modify specific event details
-});
+apiRouter.use('/event/create', createEvent);
+apiRouter.use('/event/delete', deleteEvent);
+apiRouter.use('/event/get', getAllEvents);
+apiRouter.use('/event/update', updateEvent);
 
 //// Calendars ////
 
-// Create Calendar
-apiRouter.post('/calendars', (req, res) => {
-    // Modify specific event details
-});
-
-// Delete Calendar
-apiRouter.delete('/calendars', (req, res) => {
-    // Modify specific event details
-});
-
-// Update Calendar Visibility
-apiRouter.put('/calendars', (req, res) => {
-    // Modify specific event details
-});
+apiRouter.use('/calendar/create', createCalendar);
+apiRouter.use('/calendar/delete', deleteCalendar);
+apiRouter.use('/calendar/get', getAllCalendars);
+apiRouter.use('/calendar/update', updateCalendar);
 
 
 //////////////////
@@ -90,7 +77,6 @@ app.listen(port, () => {
 // /api/events/range (get events within date range)
 // /api/profile (user profile management)
 // /api/preferences (calendar display preferences)
-
 
 
 //////////////////////
