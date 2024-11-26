@@ -37,5 +37,8 @@ export class UserController {
         try {
             
         }
+        catch (error) {
+
+        }
     }
 }

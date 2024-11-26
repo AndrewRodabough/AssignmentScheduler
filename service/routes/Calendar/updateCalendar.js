@@ -1,10 +1,14 @@
 import express from 'express';
+import { tokenValidation } from '../middleware/jsonValidation.js';
+import { CalendarController } from '../../controllers/calendarController.js';
 
 const router = express.Router();
 
 export default function(dataStore) {
+
+    const calendarController = new CalendarController(dataStore);
   
-    router.put('/', (req, res) => {
+    router.put('/', tokenValidation, async (req, res) => {
 
         // check for req errors
         const errors = validationResults(req);
@@ -13,7 +17,12 @@ export default function(dataStore) {
         
         }
 
-        // Modify specific event details
+        // update a users calendar info
+        try {
+            await calendarController.update(req, res);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     });
     
     return router;
