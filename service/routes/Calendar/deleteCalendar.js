@@ -1,9 +1,20 @@
 import express from 'express';
+
 const router = express.Router();
 
-// Delete Calendar
-router.delete('/', (req, res) => {
-    // Modify specific event details
-});
+export default function(dataStore) {
 
-export { router };
+    router.delete('/', (req, res) => {
+
+        // check for req errors
+        const errors = validationResults(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        
+        }
+    
+        // Modify specific event details
+    });
+
+    return router;
+};

@@ -32,4 +32,10 @@ export class UserController {
             throw error;
         }
     }
+
+    async deleteUser(req, res) {
+        try {
+            
+        }
+    }
 }

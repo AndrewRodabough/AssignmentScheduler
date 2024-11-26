@@ -1,9 +1,20 @@
 import express from 'express';
+
 const router = express.Router();
 
-// Update Calendar Visibility
-router.put('/', (req, res) => {
-    // Modify specific event details
-});
+export default function(dataStore) {
+  
+    router.put('/', (req, res) => {
 
-export { router };
+        // check for req errors
+        const errors = validationResults(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        
+        }
+
+        // Modify specific event details
+    });
+    
+    return router;
+};

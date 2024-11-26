@@ -1,9 +1,20 @@
 import express from 'express';
+
 const router = express.Router();
 
-// Create Calendar
-router.post('/', (req, res) => {
-    // Modify specific event details
-});
-
-export { router };
+export default function(dataStore) {
+  
+    router.post('/', (req, res) => {
+    
+        // check for req errors
+        const errors = validationResults(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        
+        }
+    
+        // Modify specific event details
+    });
+  
+    return router;
+};
