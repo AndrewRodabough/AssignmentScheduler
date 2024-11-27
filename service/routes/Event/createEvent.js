@@ -20,6 +20,11 @@ export default function(dataStore) {
         try {
             await eventController.create(req, res);
         } catch (error) {
+            
+            if (error.message === 'Event Name Already Exists') {
+            
+            }
+
             res.status(500).json({ error: error.message });
         }
     });

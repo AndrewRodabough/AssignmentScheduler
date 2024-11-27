@@ -20,6 +20,14 @@ export default function(dataStore) {
         try {
             await eventController.update(req, res);
         } catch (error) {
+
+            if (error.message === 'Event Does Not Exists') {
+            
+            }
+            if (error.message === 'Not Authorized to Update') {
+            
+            }
+
             res.status(500).json({ error: error.message });
         }
     });

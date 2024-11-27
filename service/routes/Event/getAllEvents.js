@@ -20,6 +20,7 @@ export default function(dataStore) {
         try {
             await eventController.getAll(req, res);
         } catch (error) {
+            
             res.status(500).json({ error: error.message });
         }
     });

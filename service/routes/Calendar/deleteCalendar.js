@@ -18,8 +18,19 @@ export default function(dataStore) {
     
         // delete a users calendar
         try {
-            await calendarController.delete(req, res);
+            const token = req.headers.authorization?.split(' ')[1];
+            const { calendarName } = req.body;
+            const result = await calendarController.delete(token, calendarName);
+            res.status(200).json(result)
         } catch (error) {
+
+            if (error.message === 'Calendar Does Not Exists') {
+            
+            }
+            if (error.message === 'Not Authorized to Delete') {
+            
+            }
+
             res.status(500).json({ error: error.message });
         }
     });
