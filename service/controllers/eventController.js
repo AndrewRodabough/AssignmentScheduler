@@ -1,4 +1,4 @@
-import { eventService } from '../services/eventService.js';
+import { EventService } from '../services/eventService.js';
 
 export class EventController {
     

@@ -1,6 +1,6 @@
 import React, { useState, createContext, useContext } from 'react';
-import createUser from './Requests/Authentication/createUser.js'
-import login from './Requests/Authentication/login.js'
+import { createUser }  from './Requests/Authentication/createUser.js'
+import { login } from './Requests/Authentication/login.js'
 import { BrowserRouter, NavLink, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './login/login';
 import Home from './home/home';
@@ -17,27 +17,23 @@ function App() {
     const handleLogin = async (userData) => {
         
         try {
-            const result = login(userData.username, userData.password);
+            const result = await login(userData.username, userData.password);
+            setUser(userData);
         }
         catch (error) {
-            // DID NOT WORK
-            return
+            throw Error("Login Failed")
         }
-        
-        setUser(userData);
     };
 
     const handleRegister = async (userData) =>  {
 
         try {
-            const result = createUser(userData.username, userData.password);
+            const result = await createUser(userData.username, userData.password);
+            await handleLogin(userData);
         }
         catch (error) {
-            console.log(error)
-            return
+            throw Error("Register Failed")
         }
-
-        handleLogin(userData);
     }
 
     const handleLogout = () => {
@@ -45,7 +41,7 @@ function App() {
     };
 
     return (
-        <AuthContext.Provider value={{ user, handleLogin, handleLogout }}>
+        <AuthContext.Provider value={{ user, handleLogin, handleRegister, handleLogout }}>
             <BrowserRouter>
             <div>
                 

@@ -1,7 +1,7 @@
-import { body, validationResult } from 'express-validator';
+import { body, header, validationResult } from 'express-validator';
 
 // Validation middleware
-const userValidation = [
+export const userValidation = [
   body('username')
     .exists({ checkFalsy: true })
     .withMessage('Username is required')
@@ -17,7 +17,7 @@ const userValidation = [
     .withMessage('Password must be at least 3 characters long')
 ];
 
-const tokenValidation = [
+export const tokenValidation = [
   header('token')
     .exists({ checkFalsy: true })
     .withMessage('token is required')

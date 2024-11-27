@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../app'; // Adjust path as needed
+import { AuthContext } from '../app';
 
-function Login() {
-    const { handleLogin, handleRegister } = useContext(AuthContext);
+function login() {
+    const { handleLogin } = useContext(AuthContext);
+    const { handleRegister } = useContext(AuthContext);
+    const [actionType, setActionType] = useState(null);  // Add this line
     const navigate = useNavigate();
     
     const [credentials, setCredentials] = useState({
@@ -19,19 +21,28 @@ function Login() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const buttonClicked = e.submitter.name;
+        console.log("Button Clicked")
+        console.log(actionType)
 
-        if (buttonClicked === 'login') {
-            handleLogin(credentials); // Send Request and update Auth
+        try {
+            if (actionType === 'login') {
+                console.log("Login Clicked")
+                await handleLogin(credentials); // Send Request and update Auth
+            }
+            else if (actionType === 'register') {
+                console.log("Register Clicked")
+                await handleRegister(credentials);
+            }
+
+            navigate('/main');
         }
-        else if (buttonClicked === 'register') {
-            handleRegister(credentials);
+        catch(error) {
+            console.log("Failed Login/Register")
+            return
         }
-        // TODO verify credentials
-        navigate('/main');
     };
 
     return (
@@ -59,12 +70,12 @@ function Login() {
                         required 
                     />
                     <br/>
-                    <button type="submit" name="login">Login</button>
-                    <button type="submit"name="register">Register</button>
+                    <button type="submit" name="login" onClick={() => setActionType('login')}>Login</button>
+                    <button type="submit" name="register" onClick={() => setActionType('register')}>Register</button>
                 </form>
             </section>
         </div>
     );
 }
 
-export default Login;
+export default login;

@@ -1,4 +1,4 @@
-import { userService } from '../services/userService.js';
+import { UserService } from '../services/userService.js';
 import { v4 as uuidv4 } from 'uuid';
 
 export class UserController {
