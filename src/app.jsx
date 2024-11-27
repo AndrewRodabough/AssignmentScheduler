@@ -12,9 +12,36 @@ export const AuthContext = createContext(null);
 function App() {
     const [user, setUser] = useState(null);
 
-    const handleLogin = (userData) => {
+    const handleLogin = async (userData) => {
+        
+        try {
+            // JSON REQUEST
+            const response = await fetch('localhost:4000/auth/login', 
+                {
+                    // ADD HERE
+                }
+            )
+        }
+        catch (error) {
+            // DID NOT WORK
+            return
+        }
+        
         setUser(userData);
     };
+
+    const handleRegister = async (userData) =>  {
+
+        try {
+
+        }
+        catch (error) {
+            //DID NOT WORK
+            return
+        }
+
+        handleLogin(userData);
+    }
 
     const handleLogout = () => {
         setUser(null);

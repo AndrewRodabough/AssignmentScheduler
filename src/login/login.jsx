@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../app'; // Adjust path as needed
 
 function Login() {
-    const { handleLogin } = useContext(AuthContext);
+    const { handleLogin, handleRegister } = useContext(AuthContext);
     const navigate = useNavigate();
     
     const [credentials, setCredentials] = useState({
@@ -21,8 +21,16 @@ function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        const buttonClicked = e.submitter.name;
+
+        if (buttonClicked === 'login') {
+            handleLogin(credentials); // Send Request and update Auth
+        }
+        else if (buttonClicked === 'register') {
+            handleRegister(credentials);
+        }
         // TODO verify credentials
-        handleLogin(credentials); // Update the global auth state
         navigate('/main');
     };
 
@@ -51,7 +59,8 @@ function Login() {
                         required 
                     />
                     <br/>
-                    <button type="submit">Login</button>
+                    <button type="submit" name="login">Login</button>
+                    <button type="submit"name="register">Register</button>
                 </form>
             </section>
         </div>

@@ -6,9 +6,9 @@ export class UserController {
         this.userService = new UserService(dataStore);
     }
 
-    async createUser(req, res) {
+    async createUser(token, username, password) {
+
         try {
-            const { username, password } = req.body;
 
             // Call service to create user
             const user = await this.userService.createUser({
