@@ -74,9 +74,12 @@ apiRouter.use('/calendar/update', updateCalendar(dataStore));
 //////////////////
 
 // Return the application's default page if the path is unknown
+/*
 app.use((_req, res) => {
+
     res.sendFile('index.html', { root: 'public' });
 });
+*/
 
 // Start server
 app.listen(port, () => {
