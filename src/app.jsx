@@ -1,4 +1,6 @@
 import React, { useState, createContext, useContext } from 'react';
+import createUser from './Requests/Authentication/createUser.js'
+import login from './Requests/Authentication/login.js'
 import { BrowserRouter, NavLink, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './login/login';
 import Home from './home/home';
@@ -15,12 +17,7 @@ function App() {
     const handleLogin = async (userData) => {
         
         try {
-            // JSON REQUEST
-            const response = await fetch('localhost:4000/auth/login', 
-                {
-                    // ADD HERE
-                }
-            )
+            const result = login(userData.username, userData.password);
         }
         catch (error) {
             // DID NOT WORK
@@ -33,10 +30,10 @@ function App() {
     const handleRegister = async (userData) =>  {
 
         try {
-
+            const result = createUser(userData.username, userData.password);
         }
         catch (error) {
-            //DID NOT WORK
+            console.log(error)
             return
         }
 

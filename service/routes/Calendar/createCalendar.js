@@ -1,5 +1,5 @@
 import express from 'express';
-import { tokenValidation } from '../middleware/jsonValidation.js';
+import { tokenValidation } from '../../middleware/jsonValidation.js';
 import { CalendarController } from '../../controllers/calendarController.js';
 
 const router = express.Router();
