@@ -14,14 +14,22 @@ export default function(dataStore) {
         const errors = validationResults(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
-        
         }
 
         // create user
         try {
-            await userController.createUser(req, res);
+            
+            const { username, password } = req.body;
+            const result = await userController.createUser(username, password);
+            
+            return res.status(200).json(result);
+
         } catch (error) {
-            res.status(500).json({ error: error.message });
+
+            if (error.message === 'Username Taken') {
+                return res.status(401).json({ error: error.message });
+            }
+            return res.status(500).json({ error: error.message });
         }
     });
 

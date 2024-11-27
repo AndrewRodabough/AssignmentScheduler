@@ -34,11 +34,6 @@ export class UserController {
     }
 
     async deleteUser(req, res) {
-        try {
-            
-        }
-        catch (error) {
 
-        }
     }
 }

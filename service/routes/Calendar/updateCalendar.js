@@ -14,7 +14,6 @@ export default function(dataStore) {
         const errors = validationResults(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
-        
         }
 
         // update a users calendar info
