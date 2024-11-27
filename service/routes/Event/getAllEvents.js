@@ -18,10 +18,16 @@ export default function(dataStore) {
         
         // Retrieve events for authenticated user
         try {
-            await eventController.getAll(req, res);
-        } catch (error) {
+
+            const token = req.headers.authorization?.split(' ')[1];
+            const { calendarId } = req.body;
+            const result = await eventController.getAll(token, calendarId);
             
-            res.status(500).json({ error: error.message });
+            return res.status(200).json(result);
+
+        } catch (error) {
+
+            return res.status(500).json({ error: error.message });
         }
     });
 

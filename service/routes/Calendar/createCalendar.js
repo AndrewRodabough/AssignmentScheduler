@@ -22,7 +22,8 @@ export default function(dataStore) {
             const token = req.headers.authorization?.split(' ')[1];
             const { calendar } = req.body;
             const result = await calendarController.create(token, calendar);
-            res.status(200).json(result)
+            
+            return res.status(200).json(result)
             
         } catch (error) {
 
@@ -30,7 +31,7 @@ export default function(dataStore) {
             
             }
 
-            res.status(500).json({ error: error.message });
+            return res.status(500).json({ error: error.message });
         }
     });
   

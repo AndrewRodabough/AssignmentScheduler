@@ -18,7 +18,7 @@ export default function(dataStore) {
 
         // create user
         try {
-            
+
             const { username, password } = req.body;
             const result = await userController.createUser(username, password);
             
@@ -29,6 +29,7 @@ export default function(dataStore) {
             if (error.message === 'Username Taken') {
                 return res.status(401).json({ error: error.message });
             }
+            
             return res.status(500).json({ error: error.message });
         }
     });

@@ -21,7 +21,7 @@ export default function(dataStore) {
 
             const { username, password } = req.body;
             const result = await userController.login(username, password);
-            
+
             return res.status(200).json(result);
 
         } catch (error) {
@@ -29,6 +29,7 @@ export default function(dataStore) {
             if (error.message === 'Invalid Username' || error.message === 'Invalid Password') {
                 return res.status(401).json({ error: error.message });
             }
+            
             return res.status(500).json({ error: error.message });
         }
     });

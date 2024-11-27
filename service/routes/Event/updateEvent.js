@@ -18,7 +18,13 @@ export default function(dataStore) {
         
         // Modify specific event details
         try {
-            await eventController.update(req, res);
+
+            const token = req.headers.authorization?.split(' ')[1];
+            const { event } = req.body;
+            const result = await eventController.update(token, event);
+
+            return res.status(200).json(result)
+
         } catch (error) {
 
             if (error.message === 'Event Does Not Exists') {
@@ -28,7 +34,7 @@ export default function(dataStore) {
             
             }
 
-            res.status(500).json({ error: error.message });
+            return res.status(500).json({ error: error.message });
         }
     });
 

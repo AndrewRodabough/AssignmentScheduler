@@ -18,7 +18,13 @@ export default function(dataStore) {
         
         // Remove event from user's calendar
         try {
-            await eventController.delete(req, res);
+
+            const token = req.headers.authorization?.split(' ')[1];
+            const { eventId } = req.body;
+            const result = await eventController.delete(token, eventId);
+
+            return req.status(200).json(result);
+
         } catch (error) {
 
             if (error.message === 'Event Does Not Exists') {
@@ -28,7 +34,7 @@ export default function(dataStore) {
             
             }
 
-            res.status(500).json({ error: error.message });
+            return res.status(500).json({ error: error.message });
         }
     });
 
