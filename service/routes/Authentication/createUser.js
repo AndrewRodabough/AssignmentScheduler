@@ -23,9 +23,13 @@ export default function(dataStore) {
             const { username, password } = req.body;
             const result = await userController.createUser(username, password);
             
-            return res.status(200).json(result);
+            console.log("Successful User Creation")
+
+            return res.status(200).json({message: "Success"});
 
         } catch (error) {
+
+            console.log(error)
 
             if (error.message === 'Username Taken') {
                 return res.status(401).json({ error: error.message });

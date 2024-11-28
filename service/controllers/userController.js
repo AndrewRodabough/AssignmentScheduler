@@ -1,39 +1,45 @@
 import { UserService } from '../services/userService.js';
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuid} from 'uuid';
+import bcrypt from 'bcrypt';
 
 export class UserController {
     constructor(dataStore) {
         this.userService = new UserService(dataStore);
+        this.JWT_SECRET = process.env.JWT_SECRET;
     }
 
-    async createUser(token, username, password) {
+    async createUser(username, password) {
 
-        try {
+        // Password hashing
+        const saltRounds = 6;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-            // Call service to create user
-            const user = await this.userService.createUser({
-                username,
-                password,
-                created: new Date(),
-                token: uuidv4()
-            });
+        // Store user with hashed password
+        await this.userService.createUser(username, hashedPassword);
+    }
 
-            // Return success response
-            res.status(201).json({
-                message: 'User created successfully',
-                token: user.token
-            });
-
-        } catch (error) {
-            if (error.message === 'User already exists') {
-                return res.status(409).json({ error: error.message });
-            }
-            // Pass other errors up to route error handler
-            throw error;
+    async login (username, password) {
+        
+        // Retrieve user
+        const user = await this.userService.getUser(username);
+        if (!user) {
+            throw new Error("User not found");
         }
+
+        // Compare passwords using bcrypt
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            throw new Error("Invalid credentials");
+        }
+
+        const token = uuid();
+        await this.userService.storeToken(token, username);
+
+        return token;
     }
 
-    async deleteUser(req, res) {
+    async logout(token) {
 
+        await this.userService.deleteToken(token);
     }
 }

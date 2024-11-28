@@ -21,7 +21,7 @@ function App() {
             setUser(userData);
         }
         catch (error) {
-            throw Error("Login Failed")
+            throw error
         }
     };
 
@@ -32,7 +32,7 @@ function App() {
             await handleLogin(userData);
         }
         catch (error) {
-            throw Error("Register Failed")
+            throw error
         }
     }
 
