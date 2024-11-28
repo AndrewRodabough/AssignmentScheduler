@@ -35,7 +35,7 @@ export class UserController {
         const token = uuid();
         await this.userService.storeToken(token, username);
 
-        return token;
+        return { token:token };
     }
 
     async logout(token) {

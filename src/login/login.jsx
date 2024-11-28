@@ -1,10 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../app';
+import { useAuth } from '../AuthContext.jsx';
 
 function login() {
-    const { handleLogin } = useContext(AuthContext);
-    const { handleRegister } = useContext(AuthContext);
+    const { handleLogin, handleRegister } = useAuth();
     const [actionType, setActionType] = useState(null);  // Add this line
     const navigate = useNavigate();
     

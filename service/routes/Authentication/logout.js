@@ -9,7 +9,7 @@ export default function(dataStore) {
 
     const userController = new UserController(dataStore);
 
-    router.delete('/', tokenValidation, async (req, res) => {
+    router.delete('/', async (req, res) => {
         
         // check for req errors
         const errors = validationResult(req);
@@ -20,10 +20,12 @@ export default function(dataStore) {
         // Invalidate user session
         try {
 
-            const token = req.headers.authorization?.split(' ')[1];
-            const result = await userController.logout(token);
+            const token = req.headers.authorization;
 
-            return res.status(200).json(result);
+            console.log(token);
+            const result = await userController.logout(token);
+            console.log("did it")
+            return res.status(200).json({message: "success"});
 
         } catch (error) {
 

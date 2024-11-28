@@ -5,14 +5,17 @@ export const logout = (token) => {
         fetch(endpoint, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': token,
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             }
         })
         .then(response => {
+
+            console.log(response)
+
             if (!response.ok) {
-                throw new Error('Login failed');
+                throw new Error('Logout failed');
             }
             return response.json();
         })
