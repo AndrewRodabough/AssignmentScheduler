@@ -8,9 +8,10 @@ const CalendarGrid = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [dateColumns, setDateColumns] = useState([]);
+    const today = new Date();
+    const currentDate = format(today, 'yyyy-MM-dd');
 
     useEffect(() => {
-        const today = new Date();
         const sOfWeek = startOfWeek(today, { weekStartsOn: 0 });
         const eOfWeek = endOfWeek(today, { weekStartsOn: 0 });
         
@@ -24,19 +25,15 @@ const CalendarGrid = () => {
         }
     }, [startDate, endDate]);
 
-  
     const handleGenerateCalendar = () => {
-      // Validate dates
       if (!startDate || !endDate) {
         alert('Please enter both start and end dates');
         return;
       }
   
-      // Parse and generate date columns
       const start = parseISO(startDate);
       const end = parseISO(endDate);
   
-      // Check if end date is after start date
       if (end < start) {
         alert('End date must be after start date');
         return;
@@ -77,7 +74,10 @@ const CalendarGrid = () => {
         {dateColumns.length > 0 && (
           <div className="calendar-grid">
             {dateColumns.map(({ fullDate, dayOfWeek, dayOfMonth }) => (
-              <div key={fullDate} className="calendar-column">
+              <div 
+                key={fullDate} 
+                className={`calendar-column ${fullDate === currentDate ? 'current-day' : ''}`}
+              >
                 <div className="column-header">
                   <span className="day-of-week">{dayOfWeek}</span>
                   <span className="day-of-month">{dayOfMonth}</span>
@@ -92,6 +92,7 @@ const CalendarGrid = () => {
       </div>
     );
 };
+
 
 function Main() {
   
