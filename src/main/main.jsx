@@ -95,11 +95,10 @@ function Main() {
         
             try {    
                 await handleCreateCalendar(calendarNameInput.value);
+                await handleGetAllCalendar();
                 calendarNameInput.value = '';
-                alert('Calendar created successfully!');
             }
             catch(error) {
-                alert('Failed to create calendar: ' + error.message);
                 return
             }
         }
@@ -112,10 +111,8 @@ function Main() {
 
         try {    
             const result = await handleGetAllCalendar();
-            alert('Calendar get successfully!');
         }
         catch(error) {
-            alert('Failed to get calendar: ' + error.message);
             return
         }
     }
