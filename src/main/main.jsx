@@ -1,13 +1,29 @@
 import React from 'react';
 import './main.css';
 import { useEffect, useState } from 'react';
-import { format, eachDayOfInterval, parseISO } from 'date-fns';
+import { format, eachDayOfInterval, parseISO, startOfWeek, endOfWeek } from 'date-fns';
 import { useAuth } from '../AuthContext.jsx';
 
 const CalendarGrid = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [dateColumns, setDateColumns] = useState([]);
+
+    useEffect(() => {
+        const today = new Date();
+        const sOfWeek = startOfWeek(today, { weekStartsOn: 0 });
+        const eOfWeek = endOfWeek(today, { weekStartsOn: 0 });
+        
+        setStartDate(format(sOfWeek, 'yyyy-MM-dd'));
+        setEndDate(format(eOfWeek, 'yyyy-MM-dd'));
+    }, []);
+
+    useEffect(() => {
+        if (startDate && endDate) {
+          handleGenerateCalendar();
+        }
+    }, [startDate, endDate]);
+
   
     const handleGenerateCalendar = () => {
       // Validate dates
@@ -56,9 +72,6 @@ const CalendarGrid = () => {
               onChange={(e) => setEndDate(e.target.value)}
             />
           </div>
-          <button onClick={handleGenerateCalendar}>
-            Generate Calendar
-          </button>
         </div>
   
         {dateColumns.length > 0 && (
