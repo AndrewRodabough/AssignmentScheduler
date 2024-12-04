@@ -83,7 +83,9 @@ const CalendarGrid = () => {
                   <span className="day-of-month">{dayOfMonth}</span>
                 </div>
                 <div className="column-content">
-                  {/* Placeholder for events or scheduling content */}
+                    <text>
+                        PlaceHolder Text
+                    </text>
                 </div>
               </div>
             ))}
@@ -153,18 +155,18 @@ function Main() {
                     placeholder="Start Date (Optional)" 
                 />
                 <input 
+                    type="time" 
+                    id="startTime" 
+                    name="startTime" 
+                    placeholder="Start Time (Optional)" 
+                />
+                <br/>
+                <input 
                     type="date" 
                     id="endDate" 
                     name="endDate" 
                     placeholder="End Date" 
                     required 
-                />
-                <br/>
-                <input 
-                    type="time" 
-                    id="startTime" 
-                    name="startTime" 
-                    placeholder="Start Time (Optional)" 
                 />
                 <input 
                     type="time" 
@@ -173,23 +175,9 @@ function Main() {
                     placeholder="End Time (Optional)" 
                 />
                 <br/>
-                <input 
-                    type="number" 
-                    id="hoursToCompletion" 
-                    name="hoursToCompletion" 
-                    placeholder="Hours to Completion" 
-                    required 
-                />
-                <br/>
-                <label htmlFor="eventType">Type:</label>
-                <select id="eventType" name="eventType">
-                    <option value="project">Project</option>
-                    <option value="exam">Exam</option>
-                    <option value="quiz">Quiz</option>
-                    <option value="hw">HW</option>
-                </select>
                 
                 <label htmlFor="addTo">Add To:</label>
+                <br/>
                 <select id="addTo" name="addTo">
                     <option value="personal">Personal</option>
                     <option value="exams">Exam and Quizes</option>
