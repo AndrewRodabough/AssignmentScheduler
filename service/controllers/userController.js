@@ -5,7 +5,6 @@ import bcrypt from 'bcrypt';
 export class UserController {
     constructor(dataStore) {
         this.userService = new UserService(dataStore);
-        this.JWT_SECRET = process.env.JWT_SECRET;
     }
 
     async createUser(username, password) {

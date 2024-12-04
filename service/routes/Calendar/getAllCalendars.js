@@ -20,7 +20,7 @@ export default function(dataStore) {
         // get all calendars of a user
         try {
 
-            const token = req.headers.authorization?.split(' ')[1];
+            const token = req.headers.authorization;
             const result = await calendarController.getAll(token);
             
             return res.status(200).json(result)

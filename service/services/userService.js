@@ -29,18 +29,21 @@ export class UserService {
         console.log("token", token, "username", username)
     }
 
-    async deleteToken(token) {
+    async getUserFromToken(token) {
+        if (!token) { throw new Error('Token required'); }
+        if (!this.dataStore.tokens[token]) { throw new Error('Token does not Exist'); }
 
-        console.log(token)
-        console.log(this.dataStore.tokens)
+        console.log(this.dataStore.tokens[token].username)
+        return this.dataStore.tokens[token].username
+
+    }
+
+    async deleteToken(token) {
         if (!token) { throw new Error('Token is required'); }
         if (!this.dataStore.tokens[token]) { throw new Error('Token does not Exist'); }
      
-        console.log("work after checks")
-     
         delete this.dataStore.tokens[token];
 
-        console.log("work after delete")
     }
 
 }

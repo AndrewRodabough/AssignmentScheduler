@@ -1,13 +1,33 @@
 import { CalendarService } from '../services/calendarService.js';
+import { UserService } from '../services/userService.js';
+import { Calendar } from '../../src/models/calendar.js';
 
 export class CalendarController {
     
-    async create(req, res) {
-
+    constructor(dataStore) {
+        this.userService = new UserService(dataStore);
+        this.calendarService = new CalendarService(dataStore);
     }
 
-    async delete(req, res) {
+    async create(token, Calendar) {
 
+        // get user name from token
+        const username = await this.userService.getUserFromToken(token)
+        if (!username) {
+            throw new Error("User not Found");
+        }
+
+        console.log(username)
+
+        if (!(username === Calendar.username)) {
+            throw new Error("User does not match calendar")
+        }
+        
+        await this.calendarService.create(Calendar)
+    }
+
+    async delete(token, CalendarName) {
+        
     }
 
     async update(req, res) {
@@ -18,8 +38,17 @@ export class CalendarController {
 
     }
 
-    async getAll(req, res) {
+    async getAll(token) {
+        // get user name from token
+        const username = await this.userService.getUserFromToken(token)
+        if (!username) {
+            throw new Error("User not Found");
+        }
 
+        console.log(username)
+
+        // get calendars from username
+        return await this.calendarService.getAll(username)
     }
 
 }

@@ -21,10 +21,7 @@ export default function(dataStore) {
         try {
 
             const token = req.headers.authorization;
-
-            console.log(token);
             const result = await userController.logout(token);
-            console.log("did it")
             return res.status(200).json({message: "success"});
 
         } catch (error) {

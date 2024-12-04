@@ -20,7 +20,7 @@ export default function(dataStore) {
         // create a calendar for a user
         try {
 
-            const token = req.headers.authorization?.split(' ')[1];
+            const token = req.headers.authorization;
             const { calendar } = req.body;
             const result = await calendarController.create(token, calendar);
             
