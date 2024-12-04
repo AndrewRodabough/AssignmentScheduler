@@ -1,23 +1,17 @@
-export const createEvent = (token, event) => {
+export const clear = () => {
     return new Promise((resolve, reject) => {
-        const endpoint = 'http://localhost:4000/api/event/create';
-
-        console.log(token);
+        const endpoint = 'http://localhost:4000/api/clear';
 
         fetch(endpoint, {
-            method: 'POST',
+            method: 'DELETE',
             headers: {
-                'Authorization': token,
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                event: event
-            })
+            }
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Event Creation failed');
+                throw new Error('Clear failed');
             }
             return null
         })

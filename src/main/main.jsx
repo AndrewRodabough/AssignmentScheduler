@@ -83,9 +83,9 @@ const CalendarGrid = () => {
                   <span className="day-of-month">{dayOfMonth}</span>
                 </div>
                 <div className="column-content">
-                    <text>
+                    <p>
                         PlaceHolder Text
-                    </text>
+                    </p>
                 </div>
               </div>
             ))}
@@ -98,7 +98,7 @@ const CalendarGrid = () => {
 
 function Main() {
   
-    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, calendars } = useAuth();
+    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, calendars } = useAuth();
     useEffect(() => { handleGetAllCalendar(); }, []);
 
     const handleSubmitCreateCalendar = async (e) => {
@@ -122,8 +122,6 @@ function Main() {
     const handleSubmitShareCalendar = async (e) => {
         e.preventDefault();
 
-        console.log("in handle");
-
         const shareUsername = document.querySelector('input[name="shareUsername"]');
         const shareCalendar = document.querySelector('select[name="shareCalendar"]');
 
@@ -133,9 +131,7 @@ function Main() {
         
             try {    
                 await handleShareCalendar(shareUsername.value, shareCalendar.value);
-                console.log("shared");
                 await handleGetAllCalendar();
-                console.log("got");
             }
             catch(error) {
                 console.log(error);
@@ -143,49 +139,86 @@ function Main() {
         }
     }
 
+    const handleSubmitCreateEvent = async (e) => {
+        e.preventDefault();
+
+        const title = document.querySelector('input[name="createEventTitle"]');
+        
+        const startDate = document.querySelector('input[name="createEventStartDate"]');
+        const endDate = document.querySelector('input[name="createEventEndDate"]');
+        
+        const startTime = document.querySelector('input[name="createEventStartTime"]');
+        const endTime = document.querySelector('input[name="createEventEndTime"]');
+        
+        const calendar = document.querySelector('select[name="createEventCalendar"]');
+
+        if ((title && title.value) &&
+        (startDate && startDate.value) &&
+        (endDate && endDate.value) &&
+        (startTime) &&
+        (endTime) &&
+        (calendar && calendar.value)) {
+    
+            try {
+                await handleCreateEvent(shareUsername.value, shareCalendar.value);
+            }
+            catch (error) {
+                console.log(error);
+            }
+
+        }
+    }
+
     return (
     <>      
         <section className="box">
             <h3>New Event</h3>
-            <div>
+            <form onClick={handleSubmitCreateEvent}>
+                <p>Title</p>
+                <input
+                    type="text" 
+                    id="createEventTitle" 
+                    name="createEventTitle" 
+                />
+                <p>Start Date / End Date</p>
                 <input 
                     type="date" 
-                    id="startDate" 
-                    name="startDate" 
-                    placeholder="Start Date (Optional)" 
+                    id="createEventStartDate" 
+                    name="createEventStartDate" 
+                    required
                 />
                 <input 
                     type="time" 
-                    id="startTime" 
-                    name="startTime" 
-                    placeholder="Start Time (Optional)" 
+                    id="createEventStartTime"
+                    name="createEventStartTime"
                 />
                 <br/>
                 <input 
                     type="date" 
-                    id="endDate" 
-                    name="endDate" 
-                    placeholder="End Date" 
+                    id="createEventEndDate" 
+                    name="createEventEndDate" 
                     required 
                 />
                 <input 
                     type="time" 
-                    id="endTime" 
-                    name="endTime" 
-                    placeholder="End Time (Optional)" 
+                    id="createEventEndTime" 
+                    name="createEventEndTime" 
                 />
                 <br/>
                 
-                <label htmlFor="addTo">Add To:</label>
+                <label htmlFor="createEventCalendar">Add To:</label>
                 <br/>
-                <select id="addTo" name="addTo">
-                    <option value="personal">Personal</option>
-                    <option value="exams">Exam and Quizes</option>
-                    <option value="events">Events</option>
-                    <option value="team">Team Events</option>
-                    <option value="bob">Bob's Availability Schedule</option>
+                <select id="createEventCalendar" name="createEventCalendar">
+                    {calendars.map(calendar => (
+                        <option 
+                            key={calendar.name} 
+                            value={calendar.name}
+                        >
+                            {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                        </option>
+                    ))}
                 </select>
-            </div>
+            </form>
             <br/>
             <button type="button">Create Event</button>
         </section>

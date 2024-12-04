@@ -6,6 +6,8 @@ import { logout } from './Requests/Authentication/logout';
 import { createCalendar } from './Requests/Calendar/createCalendar.js';
 import { getAllCalendar } from './Requests/Calendar/getAllCalendars.js';
 import { shareCalendar } from './Requests/Calendar/shareCalendar.js';
+import { clear } from './Requests/clear.js';
+import { createEvent } from './Requests/Event/createEvent.js';
 
 const AuthContext = createContext(null);
 
@@ -51,10 +53,21 @@ export function AuthProvider({ children }) {
             throw new Error('User must be logged in to share calendar');
         }
 
-
-        console.log("before");
         await shareCalendar(user.token, sharedUsername, sharedCalendar);
-        console.log("after");
+    }
+
+    const handleCreateEvent = async (event) => {
+        if (!user || !user.token) {
+            throw new Error('User must be logged in to create Event');
+        }
+
+        await createEvent(event);
+    }
+
+    const handleClear = async () => {
+        console.log("clearing");
+        await clear();
+        console.log("cleared");
     }
 
     return (
@@ -66,7 +79,9 @@ export function AuthProvider({ children }) {
             handleLogout,
             handleCreateCalendar,
             handleGetAllCalendar,
-            handleShareCalendar
+            handleShareCalendar,
+            handleClear,
+            handleCreateEvent
             }}>
             {children}
         </AuthContext.Provider>

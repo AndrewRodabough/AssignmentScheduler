@@ -15,6 +15,8 @@ import deleteEvent from './routes/Event/deleteEvent.js';
 import getAllEvents from './routes/Event/getAllEvents.js';
 import updateEvent from './routes/Event/updateEvent.js';
 
+import clearAll from './routes/clearAll.js'
+
 // Users, Events, and Calendars are stored in memory
 const dataStore = {
     calendars: [],
@@ -69,6 +71,14 @@ apiRouter.use('/calendar/delete', deleteCalendar(dataStore));
 apiRouter.use('/calendar/getAll', getAllCalendars(dataStore));
 apiRouter.use('/calendar/update', updateCalendar(dataStore));
 apiRouter.use('/calendar/share', shareCalendar(dataStore));
+
+
+///////////////////
+// Dev Endpoints //
+///////////////////
+
+apiRouter.use('/clear', clearAll(dataStore));
+
 
 
 //////////////////

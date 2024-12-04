@@ -5,12 +5,11 @@ import Home from './home/home';
 import About from './about/about';
 import Main from './main/main';
 import './app.css';
-
 import { AuthProvider } from './AuthContext.jsx';
 import { useAuth } from './AuthContext.jsx';
 
 function App() {
-    const { user, handleLogout } = useAuth();
+    const { user, handleLogout, handleClear } = useAuth();
 
     return (
         <BrowserRouter>
@@ -71,6 +70,9 @@ function App() {
                     <a href="https://github.com/AndrewRodabough/startup.git">Github</a>
                     <br />
                     Author: Andrew Rodabough
+                </div>
+                <div>
+                    <button onClick={handleClear}>CLEAR DB</button>
                 </div>
             </footer>
             </div>

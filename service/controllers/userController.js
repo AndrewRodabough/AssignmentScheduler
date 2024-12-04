@@ -41,4 +41,6 @@ export class UserController {
 
         await this.userService.deleteToken(token);
     }
+
+
 }

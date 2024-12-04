@@ -20,9 +20,8 @@ export default function(dataStore) {
         // Retrieve events for authenticated user
         try {
 
-            const token = req.headers.authorization?.split(' ')[1];
-            const { calendarId } = req.body;
-            const result = await eventController.getAll(token, calendarId);
+            const token = req.headers.authorization;
+            const result = await eventController.getAll(token);
             
             return res.status(200).json(result);
 
