@@ -1,5 +1,5 @@
 export class Event {
-    constructor(id, title, startDate, startTime, endDate, endTime, calendarId) {
+    constructor(id, title, startDate, startTime, endDate, endTime, calendarName) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;

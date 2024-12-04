@@ -20,7 +20,7 @@ import clearAll from './routes/clearAll.js'
 // Users, Events, and Calendars are stored in memory
 const dataStore = {
     calendars: [],
-    events: {},
+    events: [],
     users: {},
     tokens: {}
 }

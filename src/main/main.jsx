@@ -3,6 +3,8 @@ import './main.css';
 import { useEffect, useState } from 'react';
 import { format, eachDayOfInterval, parseISO, startOfWeek, endOfWeek } from 'date-fns';
 import { useAuth } from '../AuthContext.jsx';
+import { Event } from '../models/event.js';
+import { v4 as uuid } from 'uuid';
 
 const CalendarGrid = () => {
     const [startDate, setStartDate] = useState('');
@@ -159,8 +161,11 @@ function Main() {
         (endTime) &&
         (calendar && calendar.value)) {
     
+            const event = new Event(uuid(), title.value , startDate.value, startTime.value, endDate.value, endTime.value, calendar.value);
+
             try {
-                await handleCreateEvent(shareUsername.value, shareCalendar.value);
+                console.log("send to auth context");
+                await handleCreateEvent(event);
             }
             catch (error) {
                 console.log(error);
@@ -173,7 +178,7 @@ function Main() {
     <>      
         <section className="box">
             <h3>New Event</h3>
-            <form onClick={handleSubmitCreateEvent}>
+            <form onSubmit={handleSubmitCreateEvent}>
                 <p>Title</p>
                 <input
                     type="text" 
@@ -218,9 +223,10 @@ function Main() {
                         </option>
                     ))}
                 </select>
+                <br/>
+                <button type="submit">Create Event</button>
             </form>
-            <br/>
-            <button type="button">Create Event</button>
+            
         </section>
 
         <section className='box calendar-controls'>

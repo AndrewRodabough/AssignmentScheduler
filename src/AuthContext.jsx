@@ -57,11 +57,13 @@ export function AuthProvider({ children }) {
     }
 
     const handleCreateEvent = async (event) => {
+        console.log("in authcontex to auth context");
         if (!user || !user.token) {
             throw new Error('User must be logged in to create Event');
         }
 
-        await createEvent(event);
+        console.log("sending post");
+        await createEvent(user.token, event);
     }
 
     const handleClear = async () => {

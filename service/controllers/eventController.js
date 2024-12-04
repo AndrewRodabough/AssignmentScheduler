@@ -11,22 +11,33 @@ export class EventController {
     }
 
     async create(token, event) {
+
+        console.log("create controller called");
+        console.log(token, event);
+
         // get user name from token
         const username = await this.userService.getUserFromToken(token);
+        console.log("username", username);
         if (!username) {
             throw new Error("User not Found");
         }
+
+        console.log("user found");
         
         // get calendar from token
         const calendar = await this.calendarService.get(event.calendarName);
         if (!calendar) {
             throw new Error("Calendar not Found");
         }
+
+        console.log("calendar found");
         
         // check user and calendar user match
         if (!(calendar.username === username)) {
             throw new Error("Unathorized to create event for calendar");
         }
+
+        console.log("calendar / user match");
 
         await this.eventService.create(event);
     }
@@ -43,7 +54,7 @@ export class EventController {
 
     }
 
-    async getAll(username) {
+    async getAll(token) {
         // get username from token
         const username = await this.userService.getUserFromToken(token);
         if (!username) {

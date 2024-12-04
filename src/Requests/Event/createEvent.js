@@ -2,7 +2,7 @@ export const createEvent = (token, event) => {
     return new Promise((resolve, reject) => {
         const endpoint = 'http://localhost:4000/api/event/create';
 
-        console.log(token);
+        console.log(token, event);
 
         fetch(endpoint, {
             method: 'POST',
