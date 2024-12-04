@@ -1,6 +1,6 @@
 import React from 'react';
 import './main.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { format, eachDayOfInterval, parseISO } from 'date-fns';
 import { useAuth } from '../AuthContext.jsx';
 
@@ -83,6 +83,7 @@ const CalendarGrid = () => {
 function Main() {
   
     const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, calendars } = useAuth();
+    useEffect(() => { handleGetAllCalendar(); }, []);
 
     const handleSubmitCreateCalendar = async (e) => {
         e.preventDefault();

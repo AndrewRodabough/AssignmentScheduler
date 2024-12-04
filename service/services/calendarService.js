@@ -5,7 +5,8 @@ export class CalendarService {
 
     async getAll(username) {
         return this.dataStore.calendars.filter(calendar => 
-            calendar.username === username
+            calendar.username === username || 
+            calendar.sharedUsers.includes(username)
         );
     }
 
