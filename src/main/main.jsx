@@ -78,11 +78,11 @@ const CalendarGrid = () => {
         )}
       </div>
     );
-  };
+};
 
 function Main() {
   
-    const { handleCreateCalendar, handleGetAllCalendar } = useAuth();
+    const { handleCreateCalendar, handleGetAllCalendar, calendars } = useAuth();
 
     const handleSubmitCreateCalendar = async (e) => {
         e.preventDefault();
@@ -188,14 +188,18 @@ function Main() {
                 <div>
                     <fieldset>
                         <legend>Private Calendars</legend>
-                        <label htmlFor="personal">Personal</label>
-                        <input type="checkbox" id="personal" name="personal" defaultChecked />
-                        
-                        <label htmlFor="exams">Exams and Quizes</label>
-                        <input type="checkbox" id="exams" name="exams" />
-                        
-                        <label htmlFor="events">Events</label>
-                        <input type="checkbox" id="events" name="events" />
+                        {calendars.map(calendar => (
+                            <>
+                                <label htmlFor={calendar.name}>
+                                    {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                                </label>
+                                <input 
+                                    type="checkbox" 
+                                    id={calendar.name} 
+                                    name={calendar.name} 
+                                />
+                            </>
+                        ))}
                     </fieldset>
                     
                     <fieldset>

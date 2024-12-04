@@ -5,11 +5,13 @@ import { createUser } from './Requests/Authentication/createUser';
 import { logout } from './Requests/Authentication/logout';
 import { createCalendar } from './Requests/Calendar/createCalendar.js';
 import { getAllCalendar } from './Requests/Calendar/getAllCalendars.js';
+import { Calendar } from './models/calendar.js';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
+    const [calendars, setCalendars] = useState([]);
 
     const handleLogin = async (userData) => {
         try {
@@ -61,23 +63,22 @@ export function AuthProvider({ children }) {
             }
 
             const result = await getAllCalendar(user.token);
-            return result;
+            setCalendars(result);
         }
         catch (error) {
             throw error;
-        }
-
-        
+        }        
     }
 
     return (
         <AuthContext.Provider value={{
             user,
+            calendars,
             handleLogin,
             handleRegister,
             handleLogout,
             handleCreateCalendar,
-            handleGetAllCalendar
+            handleGetAllCalendar,
             }}>
             {children}
         </AuthContext.Provider>

@@ -17,7 +17,8 @@ export const getAllCalendar = (token) => {
             return response.json();
         })
         .then(data => {
-            resolve();
+            console.log(data);
+            resolve(data);
         })
         .catch(error => {
             reject(error);
