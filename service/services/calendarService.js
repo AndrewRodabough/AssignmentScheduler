@@ -4,18 +4,13 @@ export class CalendarService {
     }
 
     async getAll(username) {
-        const calendars = []
-        for (const calendar in this.dataStore.calendars) {
-            if (calendar.username === username) {
-                calendars.push(calendar)
-            }
-        }
-        return calendars
+        return this.dataStore.calendars.filter(calendar => 
+            calendar.username === username
+        );
     }
 
     async create(calendar) {
+        console.log(calendar);
         this.dataStore.calendars.push(calendar);
     }
-
-    
 }

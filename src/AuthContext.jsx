@@ -4,6 +4,7 @@ import { login} from './Requests/Authentication/login';
 import { createUser } from './Requests/Authentication/createUser';
 import { logout } from './Requests/Authentication/logout';
 import { createCalendar } from './Requests/Calendar/createCalendar.js';
+import { getAllCalendar } from './Requests/Calendar/getAllCalendars.js';
 
 const AuthContext = createContext(null);
 
@@ -41,18 +42,32 @@ export function AuthProvider({ children }) {
     const handleCreateCalendar = async (calendarName) => {
         try {
 
-
-            console.log("in auth context create calendar")
             if (!user || !user.token) {
                 throw new Error('User must be logged in to create a calendar');
             }
 
-            console.log("is logged in")
-            const result = await createCalendar(user.token, calendarName)
+            const result = await createCalendar(user.token, calendarName);
         }
         catch (error) {
             throw error;
         }
+    }
+
+    const handleGetAllCalendar = async () => {
+        try {
+
+            if (!user || !user.token) {
+                throw new Error('User must be logged in to get calendar');
+            }
+
+            const result = await getAllCalendar(user.token);
+            return result;
+        }
+        catch (error) {
+            throw error;
+        }
+
+        
     }
 
     return (
@@ -61,7 +76,8 @@ export function AuthProvider({ children }) {
             handleLogin,
             handleRegister,
             handleLogout,
-            handleCreateCalendar
+            handleCreateCalendar,
+            handleGetAllCalendar
             }}>
             {children}
         </AuthContext.Provider>

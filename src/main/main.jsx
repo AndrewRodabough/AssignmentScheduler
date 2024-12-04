@@ -82,9 +82,9 @@ const CalendarGrid = () => {
 
 function Main() {
   
-    const { handleCreateCalendar } = useAuth();
+    const { handleCreateCalendar, handleGetAllCalendar } = useAuth();
 
-    const handleSubmitNewCalendar = async (e) => {
+    const handleSubmitCreateCalendar = async (e) => {
         e.preventDefault();
 
         console.log("Button Clicked");
@@ -102,10 +102,23 @@ function Main() {
                 alert('Failed to create calendar: ' + error.message);
                 return
             }
-        
         }
-        
     };
+
+    const handleSubmitGetAllCalendar = async (e) => {
+        e.preventDefault();
+
+        console.log("Button Clicked");
+
+        try {    
+            const result = await handleGetAllCalendar();
+            alert('Calendar get successfully!');
+        }
+        catch(error) {
+            alert('Failed to get calendar: ' + error.message);
+            return
+        }
+    }
 
     return (
     <>      
@@ -224,7 +237,7 @@ function Main() {
 
             <section>
                 <h3>New Calendar</h3>
-                <form onSubmit={handleSubmitNewCalendar}>
+                <form onSubmit={handleSubmitCreateCalendar}>
                   <input 
                       type="text" 
                       name="newCalendarName" 
@@ -241,6 +254,13 @@ function Main() {
             <div>
                 <CalendarGrid />
             </div>
+        </section>
+
+        <section>
+            <h3>TestGetAllCalendarButton</h3>
+            <form onSubmit={handleSubmitGetAllCalendar}>
+                <button type="submit" name="getAllCalendar">GetAllCalendar</button>
+            </form>
         </section>
     </>
     );

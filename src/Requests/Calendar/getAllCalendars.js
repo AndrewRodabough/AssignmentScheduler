@@ -1,4 +1,4 @@
-export const createUser = (token) => {
+export const getAllCalendar = (token) => {
     return new Promise((resolve, reject) => {
         const endpoint = 'http://localhost:4000/api/calendar/getAll';
 
@@ -12,7 +12,7 @@ export const createUser = (token) => {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Calendar Creation failed');
+                throw new Error('Calendar get failed');
             }
             return response.json();
         })
