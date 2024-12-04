@@ -9,7 +9,7 @@ export default function(dataStore) {
 
     const userController = new UserController(dataStore);
 
-    router.delete('/', async (req, res) => {
+    router.delete('/', tokenValidation, async (req, res) => {
         
         // check for req errors
         const errors = validationResult(req);

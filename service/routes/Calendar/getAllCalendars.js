@@ -23,7 +23,7 @@ export default function(dataStore) {
             const token = req.headers.authorization;
             const result = await calendarController.getAll(token);
             
-            return res.status(200).json(result)
+            return res.status(200).json(result);
 
         } catch (error) {
 

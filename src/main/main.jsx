@@ -2,6 +2,7 @@ import React from 'react';
 import './main.css';
 import { useState } from 'react';
 import { format, eachDayOfInterval, parseISO } from 'date-fns';
+import { useAuth } from '../AuthContext.jsx';
 
 const CalendarGrid = () => {
     const [startDate, setStartDate] = useState('');
@@ -80,6 +81,32 @@ const CalendarGrid = () => {
   };
 
 function Main() {
+  
+    const { handleCreateCalendar } = useAuth();
+
+    const handleSubmitNewCalendar = async (e) => {
+        e.preventDefault();
+
+        console.log("Button Clicked");
+
+        const calendarNameInput = document.querySelector('input[name="newCalendarName"]');
+
+        if (calendarNameInput && calendarNameInput.value) {
+        
+            try {    
+                await handleCreateCalendar(calendarNameInput.value);
+                calendarNameInput.value = '';
+                alert('Calendar created successfully!');
+            }
+            catch(error) {
+                alert('Failed to create calendar: ' + error.message);
+                return
+            }
+        
+        }
+        
+    };
+
     return (
     <>      
         <section className="box">
@@ -197,14 +224,17 @@ function Main() {
 
             <section>
                 <h3>New Calendar</h3>
-                <input 
-                    type="text" 
-                    id="newCalendarName" 
-                    name="newCalendarName" 
-                    placeholder="Calendar Name" 
-                    required 
-                />  
-                <button type="button">Create Calendar</button>
+                <form onSubmit={handleSubmitNewCalendar}>
+                  <input 
+                      type="text" 
+                      name="newCalendarName" 
+                      placeholder="Calendar Name"
+                      required 
+                  />  
+                  <button type="submit" name="CreateCalendar">Create Calendar</button>
+                </form>
+            
+                
             </section>
         </section>
         <section>

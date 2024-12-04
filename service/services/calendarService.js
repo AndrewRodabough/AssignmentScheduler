@@ -14,9 +14,7 @@ export class CalendarService {
     }
 
     async create(calendar) {
-        dataStore.calendars.push(calendar)
-
-        console.log(this.dataStore.calendars)
+        this.dataStore.calendars.push(calendar);
     }
 
     

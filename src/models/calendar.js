@@ -1,8 +1,7 @@
 export class Calendar {
-    constructor(id, name, userId) {
-        this.id = id;
+    constructor(name, username) {
         this.name = name;
-        this.userId = userId;
+        this.username = username;
         this.shared = false;
         this.sharedUsers = [];
     }

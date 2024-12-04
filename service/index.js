@@ -16,7 +16,7 @@ import updateEvent from './routes/Event/updateEvent.js';
 
 // Users, Events, and Calendars are stored in memory
 const dataStore = {
-    calendars: {},
+    calendars: [],
     events: {},
     users: {},
     tokens: {}
@@ -65,7 +65,7 @@ apiRouter.use('/event/update', updateEvent(dataStore));
 
 apiRouter.use('/calendar/create', createCalendar(dataStore));
 apiRouter.use('/calendar/delete', deleteCalendar(dataStore));
-apiRouter.use('/calendar/get', getAllCalendars(dataStore));
+apiRouter.use('/calendar/getAll', getAllCalendars(dataStore));
 apiRouter.use('/calendar/update', updateCalendar(dataStore));
 
 

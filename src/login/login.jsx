@@ -4,7 +4,7 @@ import { useAuth } from '../AuthContext.jsx';
 
 function login() {
     const { handleLogin, handleRegister } = useAuth();
-    const [actionType, setActionType] = useState(null);  // Add this line
+    const [actionType, setActionType] = useState(null);
     const navigate = useNavigate();
     
     const [credentials, setCredentials] = useState({

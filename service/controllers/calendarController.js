@@ -9,21 +9,16 @@ export class CalendarController {
         this.calendarService = new CalendarService(dataStore);
     }
 
-    async create(token, Calendar) {
-
+    async create(token, calendarName) {
         // get user name from token
-        const username = await this.userService.getUserFromToken(token)
+        const username = await this.userService.getUserFromToken(token);
         if (!username) {
             throw new Error("User not Found");
         }
-
-        console.log(username)
-
-        if (!(username === Calendar.username)) {
-            throw new Error("User does not match calendar")
-        }
         
-        await this.calendarService.create(Calendar)
+        const calendar = new Calendar(calendarName, username);
+        
+        await this.calendarService.create(calendar);
     }
 
     async delete(token, CalendarName) {
