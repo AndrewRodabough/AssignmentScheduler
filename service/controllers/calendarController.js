@@ -40,10 +40,30 @@ export class CalendarController {
             throw new Error("User not Found");
         }
 
-        console.log(username)
-
         // get calendars from username
         return await this.calendarService.getAll(username)
     }
 
+    async share(token, shareUser, shareCalendar) {
+        // get user name from token
+        const username = await this.userService.getUserFromToken(token)
+        if (!username) {
+            throw new Error("User not Found");
+        }
+
+        const calendar = await this.calendarService.get(shareCalendar);
+
+        if (!(calendar.username === username)) {
+            throw new Error("not authorized to change share status")
+        }
+
+        if (calendar.sharedUsers.findIndex(item => item === shareUser) !== -1) {
+            throw new Error("Already shared to user");
+        }
+
+        calendar.shared = true;
+        calendar.sharedUsers.push(shareUser);
+
+        await this.calendarService.update(calendar);
+    }
 }

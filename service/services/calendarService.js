@@ -9,8 +9,26 @@ export class CalendarService {
         );
     }
 
+    async get(calendarName) {
+        return this.dataStore.calendars.find(item => item.name === calendarName)
+    }
+
     async create(calendar) {
         console.log(calendar);
         this.dataStore.calendars.push(calendar);
+    }
+
+    async update(newCalendar) {
+
+        console.log("in update");
+        
+        const index = this.dataStore.calendars.findIndex(calendar => calendar.name === newCalendar.name);
+
+        console.log("survived find");
+        
+        if (index === -1) {
+            throw new Error("cal not found");
+        }
+        this.dataStore.calendars[index] = newCalendar;
     }
 }

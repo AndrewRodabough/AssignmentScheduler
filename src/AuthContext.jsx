@@ -5,7 +5,7 @@ import { createUser } from './Requests/Authentication/createUser';
 import { logout } from './Requests/Authentication/logout';
 import { createCalendar } from './Requests/Calendar/createCalendar.js';
 import { getAllCalendar } from './Requests/Calendar/getAllCalendars.js';
-import { Calendar } from './models/calendar.js';
+import { shareCalendar } from './Requests/Calendar/shareCalendar.js';
 
 const AuthContext = createContext(null);
 
@@ -14,60 +14,47 @@ export function AuthProvider({ children }) {
     const [calendars, setCalendars] = useState([]);
 
     const handleLogin = async (userData) => {
-        try {
-            const result = await login(userData.username, userData.password);
-            userData.token = result;
-            setUser(userData);
-        } catch (error) {
-            throw error;
-        }
+        const result = await login(userData.username, userData.password);
+        userData.token = result;
+        setUser(userData);
     };
 
     const handleRegister = async (userData) => {
-        try {
-            const result = await createUser(userData.username, userData.password);
-            await handleLogin(userData);
-        } catch (error) {
-            throw error;
-        }
+        await createUser(userData.username, userData.password);
+        await handleLogin(userData);
     };
 
     const handleLogout = async () => {
-        try {
-            const result = await logout(user.token);
-            setUser(null);
-        } catch (error) {
-            throw error;
-        }
+        await logout(user.token);
+        setUser(null);
     };
 
     const handleCreateCalendar = async (calendarName) => {
-        try {
-
-            if (!user || !user.token) {
-                throw new Error('User must be logged in to create a calendar');
-            }
-
-            const result = await createCalendar(user.token, calendarName);
+        if (!user || !user.token) {
+            throw new Error('User must be logged in to create a calendar');
         }
-        catch (error) {
-            throw error;
-        }
+
+        await createCalendar(user.token, calendarName);
     }
 
     const handleGetAllCalendar = async () => {
-        try {
-
-            if (!user || !user.token) {
-                throw new Error('User must be logged in to get calendar');
-            }
-
-            const result = await getAllCalendar(user.token);
-            setCalendars(result);
+        if (!user || !user.token) {
+            throw new Error('User must be logged in to get calendar');
         }
-        catch (error) {
-            throw error;
-        }        
+
+        const result = await getAllCalendar(user.token);
+        setCalendars(result);
+    }
+
+    const handleShareCalendar = async (sharedUsername, sharedCalendar) => {
+        if (!user || !user.token) {
+            throw new Error('User must be logged in to share calendar');
+        }
+
+
+        console.log("before");
+        await shareCalendar(user.token, sharedUsername, sharedCalendar);
+        console.log("after");
     }
 
     return (
@@ -79,6 +66,7 @@ export function AuthProvider({ children }) {
             handleLogout,
             handleCreateCalendar,
             handleGetAllCalendar,
+            handleShareCalendar
             }}>
             {children}
         </AuthContext.Provider>

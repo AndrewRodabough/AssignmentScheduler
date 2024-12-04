@@ -1,23 +1,24 @@
-export const createCalendar = (token, calendarName) => {
+export const shareCalendar = (token, shareUser, shareCalendar) => {
     return new Promise((resolve, reject) => {
-        const endpoint = 'http://localhost:4000/api/calendar/create';
+        const endpoint = 'http://localhost:4000/api/calendar/share';
 
         console.log(token);
 
         fetch(endpoint, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Authorization': token,
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
-                calendarName: calendarName
+                shareUser: shareUser,
+                shareCalendar: shareCalendar
             })
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Calendar Creation failed');
+                throw new Error('Calendar Share Fail');
             }
             return null
         })

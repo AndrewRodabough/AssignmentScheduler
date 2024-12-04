@@ -17,7 +17,7 @@ export const createUser = (username, password) => {
             if (!response.ok) {
                 throw new Error('User Creation failed');
             }
-            return response.json();
+            return null
         })
         .then(data => {
             resolve();

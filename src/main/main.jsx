@@ -82,38 +82,47 @@ const CalendarGrid = () => {
 
 function Main() {
   
-    const { handleCreateCalendar, handleGetAllCalendar, calendars } = useAuth();
+    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, calendars } = useAuth();
 
     const handleSubmitCreateCalendar = async (e) => {
         e.preventDefault();
 
-        console.log("Button Clicked");
+        const calendarName = document.querySelector('input[name="newCalendarName"]');
 
-        const calendarNameInput = document.querySelector('input[name="newCalendarName"]');
-
-        if (calendarNameInput && calendarNameInput.value) {
+        if (calendarName && calendarName.value) {
         
             try {    
-                await handleCreateCalendar(calendarNameInput.value);
+                await handleCreateCalendar(calendarName.value);
                 await handleGetAllCalendar();
-                calendarNameInput.value = '';
+                calendarName.value = '';
             }
             catch(error) {
-                return
+                console.log(error);
             }
         }
     };
 
-    const handleSubmitGetAllCalendar = async (e) => {
+    const handleSubmitShareCalendar = async (e) => {
         e.preventDefault();
 
-        console.log("Button Clicked");
+        console.log("in handle");
 
-        try {    
-            const result = await handleGetAllCalendar();
-        }
-        catch(error) {
-            return
+        const shareUsername = document.querySelector('input[name="shareUsername"]');
+        const shareCalendar = document.querySelector('select[name="shareCalendar"]');
+
+        console.log(shareUsername.value, shareCalendar.value);
+        
+        if ((shareUsername && shareUsername.value) && (shareCalendar && shareCalendar.value)) {
+        
+            try {    
+                await handleShareCalendar(shareUsername.value, shareCalendar.value);
+                console.log("shared");
+                await handleGetAllCalendar();
+                console.log("got");
+            }
+            catch(error) {
+                console.log(error);
+            }
         }
     }
 
@@ -179,13 +188,12 @@ function Main() {
         </section>
 
         <section className='box calendar-controls'>
-
             <section>
                 <h3>Calendar</h3>
                 <div>
                     <fieldset>
                         <legend>Private Calendars</legend>
-                        {calendars.map(calendar => (
+                        {calendars.filter(calendar => !calendar.shared).map(calendar => (
                             <>
                                 <label htmlFor={calendar.name}>
                                     {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
@@ -201,39 +209,47 @@ function Main() {
                     
                     <fieldset>
                         <legend>Shared Calendars</legend>
-                        <label htmlFor="teamEvents">Team Events</label>
-                        <input type="checkbox" id="teamEvents" name="teamEvents" defaultChecked />
-                        
-                        <label htmlFor="bobSchedule">Bob's Availability Schedule</label>
-                        <input type="checkbox" id="bobSchedule" name="bobSchedule" />
-                        
-                        <label htmlFor="birthday">birthday[ical]</label>
-                        <input type="checkbox" id="birthday" name="birthday" />
+                        {calendars.filter(calendar => calendar.shared).map(calendar => (
+                            <>
+                                <label htmlFor={calendar.name}>
+                                    {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                                </label>
+                                <input 
+                                    type="checkbox" 
+                                    id={calendar.name} 
+                                    name={calendar.name} 
+                                />
+                            </>
+                        ))}
                     </fieldset>
                 </div>
             </section>
+
             <section>
                 <h3>Share</h3>
-                <label htmlFor="shareCalendar">Calendar:</label>
-                <select id="shareCalendar" name="shareCalendar">
-                    <option value="personal">Personal</option>
-                    <option value="exams">Exam and Quizes</option>
-                    <option value="events">Events</option>
-                    <option value="team">Team Events</option>
-                    <option value="bob">Bob's Availability Schedule</option>
-                </select>
-                
-                <br/>
-                
-                <input 
-                    type="text" 
-                    id="shareUsername" 
-                    name="shareUsername" 
-                    placeholder="username" 
-                    required 
-                />
-                
-                <button type="button">Share</button>
+                <form onSubmit={handleSubmitShareCalendar}>
+                    <label htmlFor="shareCalendar">Calendar:</label>
+                    <select id="shareCalendar" name="shareCalendar">
+                        {calendars.map(calendar => (
+                            <option 
+                                key={calendar.name} 
+                                value={calendar.name}
+                            >
+                                {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                            </option>
+                        ))}
+                    </select>
+                    
+                    <input 
+                        type="text" 
+                        id="shareUsername" 
+                        name="shareUsername" 
+                        placeholder="username" 
+                        required 
+                    />
+                    
+                    <button type="submit">Share</button>
+                </form>
             </section>
 
             <section>
@@ -247,21 +263,13 @@ function Main() {
                   />  
                   <button type="submit" name="CreateCalendar">Create Calendar</button>
                 </form>
-            
-                
             </section>
         </section>
+
         <section>
             <div>
                 <CalendarGrid />
             </div>
-        </section>
-
-        <section>
-            <h3>TestGetAllCalendarButton</h3>
-            <form onSubmit={handleSubmitGetAllCalendar}>
-                <button type="submit" name="getAllCalendar">GetAllCalendar</button>
-            </form>
         </section>
     </>
     );

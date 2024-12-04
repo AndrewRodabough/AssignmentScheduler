@@ -8,6 +8,7 @@ import createCalendar from './routes/Calendar/createCalendar.js';
 import deleteCalendar from './routes/Calendar/deleteCalendar.js';
 import getAllCalendars from './routes/Calendar/getAllCalendars.js';
 import updateCalendar from './routes/Calendar/updateCalendar.js';
+import shareCalendar from './routes/Calendar/shareCalendar.js';
 
 import createEvent from './routes/Event/createEvent.js';
 import deleteEvent from './routes/Event/deleteEvent.js';
@@ -67,6 +68,7 @@ apiRouter.use('/calendar/create', createCalendar(dataStore));
 apiRouter.use('/calendar/delete', deleteCalendar(dataStore));
 apiRouter.use('/calendar/getAll', getAllCalendars(dataStore));
 apiRouter.use('/calendar/update', updateCalendar(dataStore));
+apiRouter.use('/calendar/share', shareCalendar(dataStore));
 
 
 //////////////////

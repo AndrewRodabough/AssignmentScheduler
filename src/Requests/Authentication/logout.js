@@ -17,7 +17,7 @@ export const logout = (token) => {
             if (!response.ok) {
                 throw new Error('Logout failed');
             }
-            return response.json();
+            return null
         })
         .then(data => {
             resolve();
