@@ -110,3 +110,31 @@ A scheduling app that helps you plan out your availability and your assignments.
 - Hooks
    - User name and logged in status saved in useState in login.jsx / app.jsx
    - Calendar in main.jsx uses useState hooks for dates
+
+# Service Deliverable
+
+- HTTP Service using Node.js and Express
+- Front end using Express
+- 3rd party api (temp quote api in the about page. ical api later)
+- backend provides service points
+    - Routes
+    - Controllers
+    - Services
+    - service/index.js
+
+- interactivity
+    - user login, logout, and creation
+    - calendar creation, sharing, retrivial, itegration in ui
+    - event creation, retrival, integration in ui
+    - calendar displays events
+    - (dev) clear db button for easy testing on server
+
+- locations of deliverable
+    - Endpoints
+        - service/index.js (set url location per endpoint)
+        - service/routes (decouple json from code)
+        - service/controllers (run the logic of endpoint)
+        - service/services (decouple database access / structure)
+        - service/middleware (wip)
+    - Endpoint Calls
+        - src/Requests (functions to call endpoints)
