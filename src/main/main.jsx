@@ -7,6 +7,7 @@ import { Event } from '../models/event.js';
 import { v4 as uuid } from 'uuid';
 
 const CalendarGrid = () => {
+    const { events } = useAuth();
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [dateColumns, setDateColumns] = useState([]);
@@ -66,24 +67,33 @@ const CalendarGrid = () => {
         </div>
   
         {dateColumns.length > 0 && (
-          <div className="calendar-grid">
-            {dateColumns.map(({ fullDate, dayOfWeek, dayOfMonth }) => (
-              <div 
-                key={fullDate} 
-                className={`calendar-column ${fullDate === currentDate ? 'current-day' : ''}`}
-              >
-                <div className="column-header">
-                  <span className="day-of-week">{dayOfWeek}</span>
-                  <span className="day-of-month">{dayOfMonth}</span>
+            <div className="calendar-grid">
+                    {dateColumns.map(({ fullDate, dayOfWeek, dayOfMonth }) => {
+                        // Find events matching the current date
+                        const eventsForDay = events.filter(event => event.startDate === fullDate);
+
+                        return (
+                            <div key={fullDate} className={`calendar-column ${fullDate === currentDate ? 'current-day' : ''}`}>
+                                <div className="column-header">
+                                    <span className="day-of-week">{dayOfWeek}</span>
+                                    <span className="day-of-month">{dayOfMonth}</span>
+                                </div>
+                                <div className="column-content">
+                                    {eventsForDay.length > 0 ? (
+                                        eventsForDay.map(event => (
+                                            // Display event title with time
+                                            <p key={event.id}>
+                                                {event.title} ({event.startTime} - {event.endTime})
+                                            </p>
+                                        ))
+                                    ) : (
+                                        <p>No Events</p> // Placeholder if no events exist for the day
+                                    )}
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
-                <div className="column-content">
-                    <p>
-                        PlaceHolder Text
-                    </p>
-                </div>
-              </div>
-            ))}
-          </div>
         )}
       </div>
     );
@@ -93,19 +103,7 @@ const CalendarGrid = () => {
 function Main() {
   
     const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, calendars, handleGetAllEvent } = useAuth();
-    useEffect(() => { handleGetAllCalendar(); }, []);
-
-    const handleSubmitGetAllEvent = async (e) => {
-        e.preventDefault();
-
-        try {    
-            await handleGetAllEvent();
-        }
-        catch(error) {
-            console.log(error);
-        }
-    }
-    
+    useEffect(() => { handleGetAllCalendar(); handleGetAllEvent(); }, []);    
     
     const handleSubmitCreateCalendar = async (e) => {
         e.preventDefault();
@@ -170,6 +168,7 @@ function Main() {
             try {
                 console.log("send to auth context");
                 await handleCreateEvent(event);
+                await handleGetAllEvent();
             }
             catch (error) {
                 console.log(error);
@@ -310,14 +309,7 @@ function Main() {
                   <button type="submit" name="CreateCalendar">Create Calendar</button>
                 </form>
             </section>
-        </section>
-
-        <section>
-            <form onSubmit={handleSubmitGetAllEvent}>
-                <button type="submit">Get Events</button>
-            </form>
-        </section>
-        
+        </section>        
         
         <section>
             <div>

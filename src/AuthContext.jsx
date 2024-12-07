@@ -89,6 +89,7 @@ export function AuthProvider({ children }) {
         <AuthContext.Provider value={{
             user,
             calendars,
+            events,
             handleLogin,
             handleRegister,
             handleLogout,
