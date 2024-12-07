@@ -5,44 +5,44 @@
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 5px;
     width: 100%;
-  }
+}
   
-  .calendar-column {
+.calendar-column {
     
     min-height: 300px;
     display: flex;
     flex-direction: column;
     background-color: var(--primary);
     border-radius: 10px;
-  }
+}
   
-  .current-day {
+.current-day {
     background-color: #2f3b54;
-  }
+}
 
-  .column-header {
+.column-header {
     background-color: var(--secondary);
     padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-radius: 10px 10px 0px 0px;
-  }
+}
   
-  .day-of-week {
+.day-of-week {
     font-weight: bold;
-  }
+}
   
-  .day-of-month {
+.day-of-month {
     color: var(text-color);
-  }
+}
   
-  .column-content {
+.column-content {
     flex-grow: 1;
     padding: 10px;
-  }
+}
   
-  .calendar-controls {
+.calendar-controls {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;

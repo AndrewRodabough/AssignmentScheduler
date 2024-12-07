@@ -13,8 +13,6 @@ function App() {
 
     return (
         <BrowserRouter>
-        <div>
-            
             <div className="page-container">
                 
                 {user ? (
@@ -45,36 +43,36 @@ function App() {
                         </nav>
                     </header>
                 )}
+                <main>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/about" element={<About />} />
+                        <Route 
+                            path="/login" 
+                            element={
+                                !user ? <Login /> : <Navigate to="/main" replace />
+                            }
+                            />
+                        <Route 
+                            path="/main" 
+                            element={
+                                user ? <Main /> : <Navigate to="/login" replace />
+                            }
+                            />
+                        <Route path='*' element={<NotFound />} />
+                    </Routes>
+                </main>
 
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/about" element={<About />} />
-                    <Route 
-                        path="/login" 
-                        element={
-                            !user ? <Login /> : <Navigate to="/main" replace />
-                        }
-                        />
-                    <Route 
-                        path="/main" 
-                        element={
-                            user ? <Main /> : <Navigate to="/login" replace />
-                        }
-                        />
-                    <Route path='*' element={<NotFound />} />
-                </Routes>
-            </div>
-
-            <footer>
-                <div>
-                    <a href="https://github.com/AndrewRodabough/startup.git">Github</a>
-                    <br />
-                    Author: Andrew Rodabough
-                </div>
-                <div>
-                    <button onClick={handleClear}>CLEAR DB</button>
-                </div>
-            </footer>
+                <footer>
+                    <div>
+                        <a href="https://github.com/AndrewRodabough/startup.git">Github</a>
+                        <br />
+                        Author: Andrew Rodabough
+                    </div>
+                    <div>
+                        <button onClick={handleClear}>CLEAR DB</button>
+                    </div>
+                </footer>
             </div>
         </BrowserRouter>
     );

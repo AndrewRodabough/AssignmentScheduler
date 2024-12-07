@@ -53,23 +53,15 @@ const CalendarGrid = () => {
     return (
       <div className="calendar-container">
         <div className="date-input-section">
-          <div className="input-group">
-            <label htmlFor="start-date">Start Date:</label>
-            <input
-              type="date"
-              id="start-date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-          </div>
-          <div className="input-group">
-            <label htmlFor="end-date">End Date:</label>
-            <input
-              type="date"
-              id="end-date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
+          <div className='box'>
+                <div>
+
+                <label htmlFor="start-date"></label>
+                <input type="date" id="start-date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                : 
+                <label htmlFor="end-date"></label> 
+                <input type="date" id="end-date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                </div>
           </div>
         </div>
   
