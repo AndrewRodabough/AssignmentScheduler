@@ -92,9 +92,21 @@ const CalendarGrid = () => {
 
 function Main() {
   
-    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, calendars } = useAuth();
+    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, calendars, handleGetAllEvent } = useAuth();
     useEffect(() => { handleGetAllCalendar(); }, []);
 
+    const handleSubmitGetAllEvent = async (e) => {
+        e.preventDefault();
+
+        try {    
+            await handleGetAllEvent();
+        }
+        catch(error) {
+            console.log(error);
+        }
+    }
+    
+    
     const handleSubmitCreateCalendar = async (e) => {
         e.preventDefault();
 
@@ -301,10 +313,19 @@ function Main() {
         </section>
 
         <section>
+            <form onSubmit={handleSubmitGetAllEvent}>
+                <button type="submit">Get Events</button>
+            </form>
+        </section>
+        
+        
+        <section>
             <div>
                 <CalendarGrid />
             </div>
         </section>
+
+
     </>
     );
 }

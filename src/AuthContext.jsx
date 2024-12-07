@@ -8,12 +8,14 @@ import { getAllCalendar } from './Requests/Calendar/getAllCalendars.js';
 import { shareCalendar } from './Requests/Calendar/shareCalendar.js';
 import { clear } from './Requests/clear.js';
 import { createEvent } from './Requests/Event/createEvent.js';
+import { getAllEvent } from './Requests/Event/getAllEvents.js';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [calendars, setCalendars] = useState([]);
+    const [events, setEvents] = useState([]);
 
     const handleLogin = async (userData) => {
         const result = await login(userData.username, userData.password);
@@ -66,6 +68,17 @@ export function AuthProvider({ children }) {
         await createEvent(user.token, event);
     }
 
+    const handleGetAllEvent = async (event) => {
+        console.log("in authcontex to get events");
+        if (!user || !user.token) {
+            throw new Error('User must be logged in to get Events');
+        }
+
+        console.log("sending get");
+        const result = await getAllEvent(user.token);
+        setEvents(result);
+    }
+
     const handleClear = async () => {
         console.log("clearing");
         await clear();
@@ -83,7 +96,8 @@ export function AuthProvider({ children }) {
             handleGetAllCalendar,
             handleShareCalendar,
             handleClear,
-            handleCreateEvent
+            handleCreateEvent,
+            handleGetAllEvent
             }}>
             {children}
         </AuthContext.Provider>

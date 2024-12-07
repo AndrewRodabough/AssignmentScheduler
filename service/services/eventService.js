@@ -4,7 +4,11 @@ export class EventService {
     }
 
     async getAll(calendars) {
-        return filteredEvents = this.dataStore.events.filter(event => calendars.some(calendar => event.calendarName === calendar.name));
+        console.log("in service")
+        const filteredEvents = this.dataStore.events.filter(event =>
+            calendars.some(calendar => event.calendarName === calendar.name)
+        );
+        return filteredEvents;
     }
 
     async get(eventId) {

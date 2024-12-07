@@ -22,7 +22,8 @@ export default function(dataStore) {
 
             const token = req.headers.authorization;
             const result = await eventController.getAll(token);
-            
+            console.log("back in route")
+            console.log(result)
             return res.status(200).json(result);
 
         } catch (error) {

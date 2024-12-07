@@ -20,12 +20,8 @@ export class CalendarService {
     }
 
     async update(newCalendar) {
-
-        console.log("in update");
         
         const index = this.dataStore.calendars.findIndex(calendar => calendar.name === newCalendar.name);
-
-        console.log("survived find");
         
         if (index === -1) {
             throw new Error("cal not found");

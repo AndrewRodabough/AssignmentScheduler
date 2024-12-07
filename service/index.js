@@ -61,7 +61,7 @@ apiRouter.use('/auth/logout', logout(dataStore));
 
 apiRouter.use('/event/create', createEvent(dataStore));
 apiRouter.use('/event/delete', deleteEvent(dataStore));
-apiRouter.use('/event/get', getAllEvents(dataStore));
+apiRouter.use('/event/getAll', getAllEvents(dataStore));
 apiRouter.use('/event/update', updateEvent(dataStore));
 
 //// Calendars ////

@@ -55,14 +55,18 @@ export class EventController {
     }
 
     async getAll(token) {
+
+        console.log("in get all")
         // get username from token
         const username = await this.userService.getUserFromToken(token);
         if (!username) {
             throw new Error("User not Found");
         }
+        console.log("valid username")
 
         //get all calendars from username
         const calendars = await this.calendarService.getAll(username);
+        console.log("got cal")
         if (!calendars) {
             return []
         }

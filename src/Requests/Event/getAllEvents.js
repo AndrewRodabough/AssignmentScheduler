@@ -1,4 +1,4 @@
-export const getAllCalendar = (token) => {
+export const getAllEvent = (token) => {
     return new Promise((resolve, reject) => {
         const endpoint = 'http://localhost:4000/api/event/getAll';
 
