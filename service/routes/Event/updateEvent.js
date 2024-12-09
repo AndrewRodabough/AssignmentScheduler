@@ -24,7 +24,7 @@ export default function(dataStore) {
             const { event } = req.body;
             const result = await eventController.update(token, event);
 
-            return res.status(200).json(result)
+            return res.status(200).json({ message: "success" })
 
         } catch (error) {
 

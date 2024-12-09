@@ -24,7 +24,7 @@ export default function(dataStore) {
             const { calendar } = req.body;
             const result = await calendarController.update(token, calendar);
 
-            res.status(200).json(result)
+            res.status(200).json({ message: "success" })
         } catch (error) {
 
             if (error.message === 'Calendar Does Not Exists') {

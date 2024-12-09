@@ -14,7 +14,7 @@ export default function(dataStore) {
             console.log("clearing");
             await devController.clear();
             console.log("cleared");
-            return res.status(200).json("success");
+            return res.status(200).json({ message: "success" });
 
         } catch (error) {
             return res.status(500).json({ error: error.message });

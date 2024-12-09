@@ -24,7 +24,7 @@ export default function(dataStore) {
             const { eventId } = req.body;
             const result = await eventController.delete(token, eventId);
 
-            return req.status(200).json(result);
+            return req.status(200).json({ message: "success" });
 
         } catch (error) {
 

@@ -24,7 +24,7 @@ export default function(dataStore) {
             const { calendarId } = req.body;
             const result = await calendarController.delete(token, calendarId);
             
-            return res.status(200).json(result)
+            return res.status(200).json({ message: "success" })
 
         } catch (error) {
 

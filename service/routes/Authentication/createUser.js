@@ -25,7 +25,7 @@ export default function(dataStore) {
             
             console.log("Successful User Creation")
 
-            return res.status(200).json({message: "Success"});
+            return res.status(200).json({ message: "Success" });
 
         } catch (error) {
 

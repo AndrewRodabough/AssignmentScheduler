@@ -26,7 +26,7 @@ export default function(dataStore) {
             const { calendarName } = req.body;
             const result = await calendarController.create(token, calendarName);
 
-            return res.status(200).json({message: "success"})
+            return res.status(200).json({ message: "success" })
             
         } catch (error) {
 

@@ -24,7 +24,7 @@ export default function(dataStore) {
             const { shareUser, shareCalendar } = req.body;
             const result = await calendarController.share(token, shareUser, shareCalendar);
 
-            res.status(200).json(result)
+            res.status(200).json({ message: "success" })
         } catch (error) {
             return res.status(500).json({ error: error.message });
         }
