@@ -1,6 +1,6 @@
 export const clear = () => {
     return new Promise((resolve, reject) => {
-        const endpoint = 'http://localhost:4000/api/clear';
+        const endpoint = './api/clear';
 
         fetch(endpoint, {
             method: 'DELETE',

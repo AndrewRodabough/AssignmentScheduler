@@ -1,6 +1,6 @@
 export const login = (username, password) => {
     return new Promise((resolve, reject) => {
-        const endpoint = 'http://localhost:4000/api/auth/login';
+        const endpoint = './api/auth/login';
 
         fetch(endpoint, {
             method: 'POST',

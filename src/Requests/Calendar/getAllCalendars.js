@@ -1,6 +1,6 @@
 export const getAllCalendar = (token) => {
     return new Promise((resolve, reject) => {
-        const endpoint = 'http://localhost:4000/api/calendar/getAll';
+        const endpoint = './api/calendar/getAll';
 
         fetch(endpoint, {
             method: 'GET',

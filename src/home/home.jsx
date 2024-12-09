@@ -9,7 +9,7 @@ function Home() {
                     AssignmentScheduler
                 </section>
                 <section>
-                    <img src="../../public/construction.png" style={{ width: '100vw', height: 'auto', display: 'block', margin: 0, padding: 0 }} />
+                    <img src="/construction.png" style={{ width: '100vw', height: 'auto', display: 'block', margin: 0, padding: 0 }} />
                 </section>
             </div>
         </>

@@ -35,6 +35,7 @@ app.use((err, req, res, next) => {
 
 // Allow selecting port from cmd line
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
+//const port = 4000;
 
 // Serve static files from public dir
 app.use(express.static('public'));

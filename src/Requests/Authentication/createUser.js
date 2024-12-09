@@ -1,6 +1,6 @@
 export const createUser = (username, password) => {
     return new Promise((resolve, reject) => {
-        const endpoint = 'http://localhost:4000/api/auth/create';
+        const endpoint = '/api/auth/create';
 
         fetch(endpoint, {
             method: 'POST',

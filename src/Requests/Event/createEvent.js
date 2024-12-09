@@ -1,6 +1,6 @@
 export const createEvent = (token, event) => {
     return new Promise((resolve, reject) => {
-        const endpoint = 'http://localhost:4000/api/event/create';
+        const endpoint = './api/event/create';
 
         console.log(token, event);
 

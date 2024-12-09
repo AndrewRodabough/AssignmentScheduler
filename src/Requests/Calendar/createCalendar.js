@@ -1,6 +1,6 @@
 export const createCalendar = (token, calendarName) => {
     return new Promise((resolve, reject) => {
-        const endpoint = 'http://localhost:4000/api/calendar/create';
+        const endpoint = './api/calendar/create';
 
         console.log(token);
 

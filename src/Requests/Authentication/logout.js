@@ -1,6 +1,6 @@
 export const logout = (token) => {
     return new Promise((resolve, reject) => {
-        const endpoint = 'http://localhost:4000/api/auth/logout';
+        const endpoint = './api/auth/logout';
 
         fetch(endpoint, {
             method: 'DELETE',

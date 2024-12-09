@@ -1,6 +1,6 @@
 export const getAllEvent = (token) => {
     return new Promise((resolve, reject) => {
-        const endpoint = 'http://localhost:4000/api/event/getAll';
+        const endpoint = './api/event/getAll';
 
         fetch(endpoint, {
             method: 'GET',

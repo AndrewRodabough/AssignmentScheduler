@@ -1,6 +1,6 @@
 export const shareCalendar = (token, shareUser, shareCalendar) => {
     return new Promise((resolve, reject) => {
-        const endpoint = 'http://localhost:4000/api/calendar/share';
+        const endpoint = './api/calendar/share';
 
         console.log(token);
 
