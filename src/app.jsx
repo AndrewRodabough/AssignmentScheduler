@@ -61,7 +61,7 @@ function App() {
                             />
                         <Route path='*' element={<NotFound />} />
                     </Routes>
-                </main>
+                </main >
 
                 <footer>
                     <div>

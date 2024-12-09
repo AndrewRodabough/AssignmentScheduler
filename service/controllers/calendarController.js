@@ -1,6 +1,6 @@
 import { CalendarService } from '../services/calendarService.js';
 import { UserService } from '../services/userService.js';
-import { Calendar } from '../../src/models/calendar.js';
+import { Calendar } from '../models/calendar.js';
 
 export class CalendarController {
     

@@ -48,3 +48,91 @@ function deleteToken(token) {
 function getUserByToken(token) {
   return tokenCol.findOne({ token }).username;
 }
+
+
+function getCalendar() {
+
+}
+
+function setCalendar() {
+
+}
+
+function getAllCalendar() {
+  
+}
+
+// Calendar Functions
+async function createCalendar(name, username) {
+    const calendar = {
+      name,
+      username,
+      shared: false,
+      sharedUsers: [],
+    };
+    await calendarCol.insertOne(calendar);
+  
+    return calendar;
+  }
+  
+  function getCalendarsByUsername(username) {
+    return calendarCol.find({ username }).toArray();
+  }
+  
+  async function shareCalendar(calendarName, sharedUser) {
+    return calendarCol.updateOne(
+      { name: calendarName },
+      { $set: { shared: true }, $push: { sharedUsers: sharedUser } }
+    );
+  }
+  
+  // **Event Functions**
+  async function createEvent(event) {
+    const newEvent = {
+      id: event.id,
+      title: event.title,
+      startDate: event.startDate,
+      endDate: event.endDate,
+      startTime: event.startTime,
+      endTime: event.endTime,
+      calendarName: event.calendarName,
+    };
+    await eventCol.insertOne(newEvent);
+  
+    return newEvent;
+  }
+  
+  function getEventsByCalendar(calendarName) {
+    return eventCol.find({ calendarName }).toArray();
+  }
+  
+  async function deleteEvent(eventId) {
+    return eventCol.deleteOne({ id: eventId });
+  }
+  
+  // **Token Functions**
+  async function addToken(token, email) {
+    const tokenEntry = { token, email };
+    await tokenCol.insertOne(tokenEntry);
+  
+    return tokenEntry;
+  }
+  
+  function getToken(token) {
+    return tokenCol.findOne({ token });
+  }
+  
+  module.exports = {
+    createUser,
+    getUser,
+    getUserByToken,
+    createCalendar,
+    getCalendarsByUsername,
+    shareCalendar,
+    createEvent,
+    getEventsByCalendar,
+    deleteEvent,
+    addToken,
+    getToken,
+  };
+  
