@@ -20,6 +20,7 @@ export default function(dataStore) {
         // Validate credentials, return token
         try {
 
+            console.log("\n\nR: login");
             const { username, password } = req.body;
             const result = await userController.login(username, password);
 

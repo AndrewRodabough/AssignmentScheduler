@@ -20,6 +20,7 @@ export default function(dataStore) {
         // Remove event from user's calendar
         try {
 
+            console.log("\n\nR: deleteEvent");
             const token = req.headers.authorization?.split(' ')[1];
             const { eventId } = req.body;
             const result = await eventController.delete(token, eventId);

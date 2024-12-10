@@ -20,6 +20,7 @@ export default function(dataStore) {
         // Retrieve events for authenticated user
         try {
 
+            console.log("\n\nR: getAllEvents");
             const token = req.headers.authorization;
             const result = await eventController.getAll(token);
             console.log("back in route")

@@ -20,6 +20,7 @@ export default function(dataStore) {
         // Modify specific event details
         try {
 
+            console.log("\n\nR: updateEvent");
             const token = req.headers.authorization?.split(' ')[1];
             const { event } = req.body;
             const result = await eventController.update(token, event);

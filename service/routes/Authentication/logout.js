@@ -20,6 +20,7 @@ export default function(dataStore) {
         // Invalidate user session
         try {
 
+            console.log("\n\nR: logout");
             const token = req.headers.authorization;
             const result = await userController.logout(token);
             return res.status(200).json({ message: "success" });

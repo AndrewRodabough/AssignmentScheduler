@@ -20,6 +20,7 @@ export default function(dataStore) {
         // update a users calendar info
         try {
 
+            console.log("\n\nR: shareCalendar");
             const token = req.headers.authorization;
             const { shareUser, shareCalendar } = req.body;
             const result = await calendarController.share(token, shareUser, shareCalendar);

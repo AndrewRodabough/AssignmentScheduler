@@ -20,6 +20,7 @@ export default function(dataStore) {
         // update a users calendar info
         try {
 
+            console.log("\n\nR: updateCalendar");
             const token = req.headers.authorization;
             const { calendar } = req.body;
             const result = await calendarController.update(token, calendar);

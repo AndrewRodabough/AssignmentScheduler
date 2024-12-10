@@ -17,11 +17,10 @@ export default function(dataStore) {
             return res.status(400).json({ errors: errors.array() });
         }
     
-        console.log("valid cal request recieved");
-
         // create a calendar for a user
         try {
 
+            console.log("\n\nR: createCalendar");
             const token = req.headers.authorization;
             const { calendarName } = req.body;
             const result = await calendarController.create(token, calendarName);

@@ -4,6 +4,9 @@ export class DevController {
     }
 
     async clear() {
+
+        console.log("DC: Clear");
+
         this.dataStore.clear()
     }
 }

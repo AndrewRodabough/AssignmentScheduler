@@ -20,6 +20,7 @@ export default function(dataStore) {
         // delete a users calendar
         try {
 
+            console.log("\n\nR: deleteCalendar");
             const token = req.headers.authorization;
             const { calendarId } = req.body;
             const result = await calendarController.delete(token, calendarId);

@@ -4,18 +4,24 @@ export class CalendarService {
     }
 
     async getAll(username) {
-        return await this.dataStore.getAllCalendar(username);
+
+        console.log("CS: getAll()");
+        const cals = await this.dataStore.getAllCalendar(username);
+        return cals
     }
 
     async get(calendarName) {
+        console.log("CS: get()");
         return await this.dataStore.getCalendar(calendarName);
     }
 
     async create(calendar) {
+        console.log("CS: getcreate()");
         await this.dataStore.setCalendar(calendar);
     }
 
     async update(newCalendar) {
+        console.log("CS: update()");
         await this.dataStore.updateCalendar(newCalendar);
     }
 }

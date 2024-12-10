@@ -12,60 +12,52 @@ export class EventController {
 
     async create(token, event) {
 
-        console.log("create controller called");
-        console.log(token, event);
+        console.log("EC: Create");
 
         // get user name from token
-        const username = await this.userService.getUserFromToken(token);
-        console.log("username", username);
-        if (!username) {
+        const user = await this.userService.getUserFromToken(token);
+        if (!user) {
             throw new Error("User not Found");
         }
-
-        console.log("user found");
         
         // get calendar from token
         const calendar = await this.calendarService.get(event.calendarName);
         if (!calendar) {
             throw new Error("Calendar not Found");
         }
-
-        console.log("calendar found");
         
         // check user and calendar user match
-        if (!(calendar.username === username)) {
+        if (!(calendar.username === user.username)) {
             throw new Error("Unathorized to create event for calendar");
         }
-
-        console.log("calendar / user match");
 
         await this.eventService.create(event);
     }
 
     async delete() {
-
+        console.log("EC: Delete");
     }
 
     async update() {
-
+        console.log("EC: Update");
     }
 
     async get() {
-
+        console.log("EC: get");
     }
 
     async getAll(token) {
 
-        console.log("in get all")
+        console.log("EC: GetAll");
         // get username from token
-        const username = await this.userService.getUserFromToken(token);
-        if (!username) {
+        const user = await this.userService.getUserFromToken(token);
+        if (!user) {
             throw new Error("User not Found");
         }
         console.log("valid username")
 
         //get all calendars from username
-        const calendars = await this.calendarService.getAll(username);
+        const calendars = await this.calendarService.getAll(user.username);
         console.log("got cal")
         if (!calendars) {
             return []

@@ -20,6 +20,7 @@ export default function(dataStore) {
         // Add new event to user's calendar
         try {
 
+            console.log("\n\nR: createEvent");
             const token = req.headers.authorization;
             const { event } = req.body;
             const result = await eventController.create(token, event);
