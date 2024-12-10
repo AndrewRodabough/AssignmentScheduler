@@ -4,7 +4,7 @@ export class EventService {
     }
 
     async getAll(calendars) {
-        return await this.dataStore.getEvents(calendars);
+        return await this.dataStore.getAllEvent(calendars);
     }
 
     async get(eventId) {

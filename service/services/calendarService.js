@@ -16,6 +16,6 @@ export class CalendarService {
     }
 
     async update(newCalendar) {
-        await this.dataStore.updateCalendar(newCalendar)
+        await this.dataStore.updateCalendar(newCalendar);
     }
 }
