@@ -5,45 +5,33 @@ export class UserService {
 
     async getUser(username) {
         if (!username) { throw new Error('Username is required'); }
-        return this.dataStore.users[username];
+        return await this.dataStore.getUser(username);
     }
 
     async createUser(username, password) {
         if (!username || !password) { throw new Error('Username and password are required'); }
-        if (this.dataStore.users[username]) { throw new Error('User already exists'); }
+        if (await this.dataStore.getUser(username)) { throw new Error('User already exists'); }
         
-        this.dataStore.users[username] = {
-            username:username,
-            password:password
-        }
+        await this.dataStore.setUser(username, password)
     }
 
     async storeToken(token, username) {
         if (!token || !username) { throw new Error('Token and username are required'); }
 
-        this.dataStore.tokens[token] = {
-            token:token,
-            username:username
-        }
-
-        console.log("token", token, "username", username)
+        await this.dataStore.setToken(token, username)
     }
 
     async getUserFromToken(token) {
         if (!token) { throw new Error('Token required'); }
-        if (!this.dataStore.tokens[token]) { throw new Error('Token does not Exist'); }
+        if (!await this.dataStore.getToken(token)) { throw new Error('Token does not Exist'); }
 
-        console.log(this.dataStore.tokens[token].username)
-        return this.dataStore.tokens[token].username
-
+        return await this.dataStore.getUserFromToken(token);
     }
 
     async deleteToken(token) {
         if (!token) { throw new Error('Token is required'); }
-        if (!this.dataStore.tokens[token]) { throw new Error('Token does not Exist'); }
+        if (!await this.dataStore.getToken(token)) { throw new Error('Token does not Exist'); }
      
-        delete this.dataStore.tokens[token];
-
+        await this.dataStore.deleteToken(token)
     }
-
 }

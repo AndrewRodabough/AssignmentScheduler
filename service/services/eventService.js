@@ -4,32 +4,18 @@ export class EventService {
     }
 
     async getAll(calendars) {
-        console.log("in service")
-        const filteredEvents = this.dataStore.events.filter(event =>
-            calendars.some(calendar => event.calendarName === calendar.name)
-        );
-        return filteredEvents;
+        return await this.dataStore.getEvents(calendars);
     }
 
     async get(eventId) {
-        return this.dataStore.events.find(event => event.id === eventId)
+        return await this.dataStore.getEvent(eventId);
     }
 
     async create(event) {
-        console.log(event);
-        this.dataStore.events.push(event);
+        await this.dataStore.setEvent(event);
     }
 
     async update(newEvent) {
-        console.log("in update");
-        
-        const index = this.dataStore.events.findIndex(event => event.id === newEvent.id);
-
-        console.log("survived find");
-        
-        if (index === -1) {
-            throw new Error("event not found");
-        }
-        this.dataStore.events[index] = newEvent;
+        await this.dataStore.updateEvent(newEvent);
     }
 }

@@ -17,13 +17,8 @@ import updateEvent from './routes/Event/updateEvent.js';
 
 import clearAll from './routes/clearAll.js'
 
-// Users, Events, and Calendars are stored in memory
-const dataStore = {
-    calendars: [],
-    events: [],
-    users: {},
-    tokens: {}
-}
+import dataStore from './database.js';
+
 
 const app = express();
 app.use(express.json());
@@ -94,10 +89,19 @@ app.use((_req, res) => {
 });
 */
 
-// Start server
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+
+// start server and mongoDB
+(async () => {
+    try {
+        await dataStore.connect(); // Initialize the MongoDB connection
+        app.listen(port, () => {
+            console.log(`Server running on port ${port}`);
+        });
+    } catch (error) {
+        console.error("Failed to start server:", error.message);
+        process.exit(1); // Exit if database connection fails
+    }
+})();
 
 // Additional Potential Endpoints Futur
 // /api/events/range (get events within date range)
