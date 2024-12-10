@@ -11,128 +11,108 @@ const calendarCol = db.collection('calendars');
 const eventCol = db.collection('events');
 const tokenCol = db.collection('tokens');
 
+
 // Test the connection to MongoDB
 (async function testConnection() {
-  try {
-    await client.connect();
-    await db.command({ ping: 1 });
-    console.log("Connected successfully to MongoDB");
-  } catch (ex) {
-    console.error(`Unable to connect to database: ${ex.message}`);
-    process.exit(1);
-  }
+    try {
+            await client.connect();
+            await db.command({ ping: 1 });
+            console.log("Connected successfully to MongoDB");
+    } catch (ex) {
+            console.error(`Unable to connect to database: ${ex.message}`);
+            process.exit(1);
+    }
 })();
+
+process.on('SIGINT', async () => {
+    await client.close();
+    console.log("MongoDB connection closed.");
+    process.exit(0);
+});
 
 
 // User Functions
-function getUser(username) {
-    return userCol.findOne({ username });
+async function getUser(username) {
+    return await userCol.findOne({ username: username });
 }
 
-function setUser(username, password) {
-    userCol.insertOne({ username, password })
+async function setUser(username, password) {
+    await userCol.insertOne({ username, password })
 }
 
-function getToken(token) {
-    return tokenCol.findOne({ token });
+async function getToken(token) {
+    return await tokenCol.findOne({ token: token });
 }
 
-function setToken(token, username) {
-    tokenCol.insertOne({ token, username })
+async function setToken(token, username) {
+    await tokenCol.insertOne({ token, username })
 }
 
-function deleteToken(token) {
-    tokenCol.deleteOne({ token })
+async function deleteToken(token) {
+    await tokenCol.deleteOne({ token })
 }
 
-function getUserByToken(token) {
-  return tokenCol.findOne({ token }).username;
+async function getUserByToken(token) {
+  return await tokenCol.findOne({ token: token }).username;
 }
 
-
-function getCalendar() {
-
-}
-
-function setCalendar() {
-
-}
-
-function getAllCalendar() {
-  
-}
 
 // Calendar Functions
-async function createCalendar(name, username) {
-    const calendar = {
-      name,
-      username,
-      shared: false,
-      sharedUsers: [],
-    };
-    await calendarCol.insertOne(calendar);
+async function getCalendar(name) {
+    return await calendarCol.findOne({ name: name });
+}
+
+async function setCalendar(calendar) {
+    await calendarCol.insertOne(calendar)
+}
+
+async function getAllCalendar(username) {
+    const result = await calendarCol.find({
+      $or: [
+          { username: username },
+          { sharedUsers: username }
+      ]
+    }).toArray();
+
+    return result;
+}
   
-    return calendar;
-  }
+async function updateCalendar(calendar) {
+    await calendarCol.updateOne(
+        { name: calendar.name }, 
+        { $set: calendar }
+    )
+    
+}
+
+
+// Event Functions
+async function setEvent(event) {
+    await eventCol.insertOne(event)
+}
+
+async function getEvent(eventId) {
+    return await eventCol.findOne({ id: eventId });
+}
+
+async function getAllEvent(calendars) {
+    const calendarNames = calendars.map(calendar => calendar.name);
+    const filteredEvents = await eventCol.find({
+        calendarName: { $in: calendarNames }
+    }).toArray();
+    
+    return filteredEvents;
+}
+
+async function updateEvent() {
+    return
+}
   
-  function getCalendarsByUsername(username) {
-    return calendarCol.find({ username }).toArray();
-  }
+async function getEventsByCalendar(calendarName) {
+    return await eventCol.find({ name: calendarName }).toArray();
+}
   
-  async function shareCalendar(calendarName, sharedUser) {
-    return calendarCol.updateOne(
-      { name: calendarName },
-      { $set: { shared: true }, $push: { sharedUsers: sharedUser } }
-    );
-  }
-  
-  // **Event Functions**
-  async function createEvent(event) {
-    const newEvent = {
-      id: event.id,
-      title: event.title,
-      startDate: event.startDate,
-      endDate: event.endDate,
-      startTime: event.startTime,
-      endTime: event.endTime,
-      calendarName: event.calendarName,
-    };
-    await eventCol.insertOne(newEvent);
-  
-    return newEvent;
-  }
-  
-  function getEventsByCalendar(calendarName) {
-    return eventCol.find({ calendarName }).toArray();
-  }
-  
-  async function deleteEvent(eventId) {
-    return eventCol.deleteOne({ id: eventId });
-  }
-  
-  // **Token Functions**
-  async function addToken(token, email) {
-    const tokenEntry = { token, email };
-    await tokenCol.insertOne(tokenEntry);
-  
-    return tokenEntry;
-  }
-  
-  function getToken(token) {
-    return tokenCol.findOne({ token });
-  }
-  
-  module.exports = {
-    createUser,
-    getUser,
-    getUserByToken,
-    createCalendar,
-    getCalendarsByUsername,
-    shareCalendar,
-    createEvent,
-    getEventsByCalendar,
-    deleteEvent,
-    addToken,
-    getToken,
-  };
+async function deleteEvent(eventId) {
+    return await eventCol.deleteOne({ id: eventId });
+}
   
