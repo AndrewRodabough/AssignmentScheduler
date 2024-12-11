@@ -138,3 +138,17 @@ A scheduling app that helps you plan out your availability and your assignments.
         - service/middleware (wip)
     - Endpoint Calls
         - src/Requests (functions to call endpoints)
+
+# login deliverable
+- now on db
+   - login
+   - register
+   - logout
+   - events
+   - calendars
+- functionality based on registration
+   - login
+   - logout
+   - create cal
+   - create event for cal
+   - share calendar 
