@@ -10,6 +10,8 @@ import { clear } from './Requests/clear.js';
 import { createEvent } from './Requests/Event/createEvent.js';
 import { getAllEvent } from './Requests/Event/getAllEvents.js';
 
+import { notifier } from './main/calUpdate.js';
+
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
@@ -63,6 +65,10 @@ export function AuthProvider({ children }) {
         if (!user || !user.token) {
             throw new Error('User must be logged in to create Event');
         }
+
+        console.log("pre broadcast");
+        notifier.broadcastEvent();
+        console.log("post broadcast");
 
         console.log("sending post");
         await createEvent(user.token, event);

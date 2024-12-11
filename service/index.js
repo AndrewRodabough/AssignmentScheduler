@@ -3,21 +3,20 @@ import express from 'express';
 import createUser from './routes/Authentication/createUser.js';
 import login from './routes/Authentication/login.js';
 import logout from './routes/Authentication/logout.js';
-
 import createCalendar from './routes/Calendar/createCalendar.js';
 import deleteCalendar from './routes/Calendar/deleteCalendar.js';
 import getAllCalendars from './routes/Calendar/getAllCalendars.js';
 import updateCalendar from './routes/Calendar/updateCalendar.js';
 import shareCalendar from './routes/Calendar/shareCalendar.js';
-
 import createEvent from './routes/Event/createEvent.js';
 import deleteEvent from './routes/Event/deleteEvent.js';
 import getAllEvents from './routes/Event/getAllEvents.js';
 import updateEvent from './routes/Event/updateEvent.js';
-
 import clearAll from './routes/clearAll.js'
 
 import dataStore from './database.js';
+import socket from './websocket.js';
+
 
 
 const app = express();
@@ -76,39 +75,25 @@ apiRouter.use('/calendar/share', shareCalendar(dataStore));
 apiRouter.use('/clear', clearAll(dataStore));
 
 
-
-//////////////////
-// Other Things //
-//////////////////
-
-// Return the application's default page if the path is unknown
-/*
-app.use((_req, res) => {
-
-    res.sendFile('index.html', { root: 'public' });
-});
-*/
-
+//////////////
+// Database //
+//////////////
 
 // start server and mongoDB
+// Start HTTP Server and WebSocket Server
 (async () => {
     try {
-        await dataStore.connect(); // Initialize the MongoDB connection
-        app.listen(port, () => {
+        await dataStore.connect();
+        const httpService = app.listen(port, () => {
             console.log(`Server running on port ${port}`);
         });
+  
+        // Initialize WebSocket server
+        socket(httpService);
+        console.log("WebSocket server initialized on /ws");
+  
     } catch (error) {
         console.error("Failed to start server:", error.message);
-        process.exit(1); // Exit if database connection fails
+        process.exit(1);
     }
-})();
-
-// Additional Potential Endpoints Futur
-// /api/events/range (get events within date range)
-// /api/profile (user profile management)
-// /api/preferences (calendar display preferences)
-
-
-//////////////////////
-// Helper Functions //
-//////////////////////
+  })();
