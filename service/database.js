@@ -1,5 +1,11 @@
 import { MongoClient } from 'mongodb';
-import config from './dbConfig.json' with { type: 'json' };
+import { readFile } from 'fs/promises';
+
+const config = JSON.parse(
+  await readFile(new URL('./dbConfig.json', import.meta.url))
+);
+console.log(config);
+
 
 const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
 const client = new MongoClient(url);
