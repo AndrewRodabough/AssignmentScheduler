@@ -152,3 +152,17 @@ A scheduling app that helps you plan out your availability and your assignments.
    - create cal
    - create event for cal
    - share calendar 
+
+# WebSocket Deliverable
+- Websocket used to show live updates of adding new events on shared calendars (unfortunatly sharing calendar does not automatically show)
+    - EX
+        - create userA
+        - create userB
+            - create calendar "B"
+            - Share calendar "B" to "userA"
+        - logout and relogin "userA"
+        - Calendar "B" should now show for "userA" as a shared calendar
+        - With "userB" add an event to shared calendar "B"
+        - "userA" should recieve a message "New Event" which refreshes the calendar to diplay the new event
+
+        
