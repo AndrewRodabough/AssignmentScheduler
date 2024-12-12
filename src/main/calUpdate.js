@@ -1,5 +1,8 @@
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 class CalUpdateNotifier {
-    events = [];
     handlers = [];
 
     constructor() {
@@ -17,22 +20,48 @@ class CalUpdateNotifier {
         };
         
         this.socket.onmessage = async (msg) => {
+            console.log("message received");
             try {
-            const text = typeof msg.data === 'string' ? msg.data : new TextDecoder('utf-8').decode(msg.data);
-            const event = JSON.parse(text);
-            this.receiveEvent(event);
-            console.log("message recieved");
-            } catch {}
+                let text;
+                if (typeof msg.data === 'string') {
+                    // If the data is already a string, use it directly
+                    text = msg.data;
+                } else if (msg.data instanceof ArrayBuffer) {
+                    // If the data is an ArrayBuffer, decode it
+                    text = new TextDecoder('utf-8').decode(msg.data);
+                } else if (msg.data instanceof Blob) {
+                    // If the data is a Blob, convert it to ArrayBuffer first
+                    const arrayBuffer = await msg.data.arrayBuffer();
+                    text = new TextDecoder('utf-8').decode(arrayBuffer);
+                } else {
+                    throw new Error("Unsupported message type");
+                }
+        
+                const event = JSON.parse(text);
+                this.receiveEvent(event);
+            } catch (error) {
+                console.error("Failed to process incoming message:", error);
+            }
         };
     }
 
-    broadcastEvent() {
+    async broadcastEvent() {
+        console.log("brodcastEvent()");
         const event = { msg: "update" };
         this.socket.send(JSON.stringify(event));
     }
 
     receiveEvent(event) {
         console.log("recieveEvent: ", event);
+        
+        this.handlers.forEach((handler) => {
+            handler();
+          });
+    }
+
+    addHandle(exthandle)
+    {
+        this.handlers.push(exthandle);
     }
 }
 

@@ -28,7 +28,9 @@ function WSServer(httpServer) {
       console.log("Recieved Message: ", data);
       connections.forEach((c) => {
         if (c.id !== connection.id) {
+          console.log("sending to:, ", c.id)
           c.ws.send(data);
+          console.log("sent:, ", c.id)
         }
       });
     });

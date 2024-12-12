@@ -1,5 +1,5 @@
 // src/contexts/AuthContext.js
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import { login} from './Requests/Authentication/login';
 import { createUser } from './Requests/Authentication/createUser';
 import { logout } from './Requests/Authentication/logout';
@@ -18,6 +18,10 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [calendars, setCalendars] = useState([]);
     const [events, setEvents] = useState([]);
+
+    useEffect(() => {
+        notifier.addHandle(handleGetAllEvent);
+    });
 
     const handleLogin = async (userData) => {
         const result = await login(userData.username, userData.password);
@@ -41,11 +45,14 @@ export function AuthProvider({ children }) {
         }
 
         await createCalendar(user.token, calendarName);
+        notifier.broadcastEvent();
     }
 
     const handleGetAllCalendar = async () => {
         if (!user || !user.token) {
-            throw new Error('User must be logged in to get calendar');
+            console.log('User must be logged in to get calendar');
+            return
+            //throw new Error('User must be logged in to get calendar');
         }
 
         const result = await getAllCalendar(user.token);
@@ -61,23 +68,21 @@ export function AuthProvider({ children }) {
     }
 
     const handleCreateEvent = async (event) => {
-        console.log("in authcontex to auth context");
         if (!user || !user.token) {
             throw new Error('User must be logged in to create Event');
         }
 
-        console.log("pre broadcast");
-        notifier.broadcastEvent();
-        console.log("post broadcast");
-
-        console.log("sending post");
         await createEvent(user.token, event);
+
+        notifier.broadcastEvent();
     }
 
-    const handleGetAllEvent = async (event) => {
+    const handleGetAllEvent = async () => {
         console.log("in authcontex to get events");
         if (!user || !user.token) {
-            throw new Error('User must be logged in to get Events');
+            console.log('User must be logged in to get calendar');
+            //throw new Error('User must be logged in to get calendar');
+            return
         }
 
         console.log("sending get");
