@@ -102,7 +102,7 @@ const CalendarGrid = () => {
 
 function Main() {
   
-    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, calendars, handleGetAllEvent } = useAuth();
+    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, calendars, handleGetAllEvent, messages } = useAuth();
     useEffect(() => { handleGetAllCalendar(); handleGetAllEvent(); }, []);    
     
     const handleSubmitCreateCalendar = async (e) => {
@@ -179,6 +179,14 @@ function Main() {
 
     return (
     <>      
+        <section className='box'>
+            <h3>Websocket Messages:</h3>
+            <div>
+                {messages.map((message, index) => (
+                    <div key={index}>{message}</div>
+                ))}
+            </div>
+        </section>
         <section className="box">
             <h3>New Event</h3>
             <form onSubmit={handleSubmitCreateEvent}>

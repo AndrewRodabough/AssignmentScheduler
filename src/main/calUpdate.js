@@ -59,9 +59,12 @@ class CalUpdateNotifier {
           });
     }
 
-    addHandle(exthandle)
-    {
+    addHandle(exthandle) {
         this.handlers.push(exthandle);
+    }
+
+    clearHandle() {
+        this.handlers = [];
     }
 }
 

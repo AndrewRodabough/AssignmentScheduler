@@ -18,10 +18,17 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [calendars, setCalendars] = useState([]);
     const [events, setEvents] = useState([]);
+    const [messages, setMessages] = useState([]);
 
     useEffect(() => {
+        notifier.clearHandle();
         notifier.addHandle(handleGetAllEvent);
-    });
+        notifier.addHandle(handleMessage);
+    }, []);
+
+    const handleMessage = () => {
+        setMessages(prevMessages => [...prevMessages, "New Event"]);
+    }
 
     const handleLogin = async (userData) => {
         const result = await login(userData.username, userData.password);
@@ -101,6 +108,7 @@ export function AuthProvider({ children }) {
             user,
             calendars,
             events,
+            messages,
             handleLogin,
             handleRegister,
             handleLogout,
