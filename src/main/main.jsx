@@ -53,7 +53,7 @@ const CalendarGrid = () => {
   
     return (
         <>
-            <div className="box calendar-topbar">
+            <section className="box calendar-topbar">
                         <div>
 
                         <label htmlFor="start-date"></label>
@@ -62,10 +62,11 @@ const CalendarGrid = () => {
                         <label htmlFor="end-date"></label> 
                         <input type="date" id="end-date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                         </div>
-            </div>
+            </section>
     
-            {dateColumns.length > 0 && (
-                <div className="calendar-grid">
+            <section className="calendar-view">
+                {dateColumns.length > 0 && (
+                    <div className="calendar-grid">
                         {dateColumns.map(({ fullDate, dayOfWeek, dayOfMonth }) => {
                             // Find events matching the current date
                             const eventsForDay = events.filter(event => event.startDate === fullDate);
@@ -92,7 +93,8 @@ const CalendarGrid = () => {
                             );
                         })}
                     </div>
-            )}
+                )}
+            </section>
       </>
     );
 };
@@ -100,7 +102,7 @@ const CalendarGrid = () => {
 
 function Main() {
   
-    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, calendars, handleGetAllEvent, messages } = useAuth();
+    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, calendars, handleGetAllEvent} = useAuth();
     useEffect(() => { handleGetAllCalendar(); handleGetAllEvent(); }, []);    
     
     const handleSubmitCreateCalendar = async (e) => {
@@ -184,34 +186,17 @@ function Main() {
                     <h3>Calendars</h3>
                     <div>
                         <fieldset>
-                            <legend>Private Calendars</legend>
-                            {calendars.filter(calendar => !calendar.shared).map(calendar => (
-                                <>
-                                    <label htmlFor={calendar.name}>
-                                        {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
-                                    </label>
+                            {calendars.map(calendar => (
+                                <section>
                                     <input 
                                         type="checkbox" 
                                         id={calendar.name} 
-                                        name={calendar.name} 
+                                        name={calendar.name}
                                     />
-                                </>
-                            ))}
-                        </fieldset>
-                        
-                        <fieldset>
-                            <legend>Shared Calendars</legend>
-                            {calendars.filter(calendar => calendar.shared).map(calendar => (
-                                <>
                                     <label htmlFor={calendar.name}>
-                                        {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                                        {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1) + (calendar.shared ? " (shared)" : "")}
                                     </label>
-                                    <input 
-                                        type="checkbox" 
-                                        id={calendar.name} 
-                                        name={calendar.name} 
-                                    />
-                                </>
+                                </section>
                             ))}
                         </fieldset>
                     </div>
@@ -307,16 +292,6 @@ function Main() {
                         <br/>
                         <button type="submit">Create Event</button>
                     </form>
-                </section>
-
-
-                <section>
-                    <h3>Websocket Messages:</h3>
-                    <div>
-                        {messages.map((message, index) => (
-                            <div key={index}>{message}</div>
-                        ))}
-                    </div>
                 </section>
 
             </section>        

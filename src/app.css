@@ -46,7 +46,7 @@ html, body {
 }
 
 .page-footer {
-    
+
 }
 
 header {
@@ -75,7 +75,7 @@ header, nav a{
 
 main {
     flex: 1 0 auto;
-    padding: 20px;
+    padding: 15px;
     background-color: var(--background);
 }
 
@@ -106,23 +106,6 @@ footer {
     padding: 20px;
     width: fit-content;
 }
-
-.loginBox {
-    text-align: center;
-}
-
-.loginBox input {
-    width: 192px;
-}
-
-.loginBox button {
-    width: 100px;
-    cursor: pointer;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
-}
-
 
 button {
   
