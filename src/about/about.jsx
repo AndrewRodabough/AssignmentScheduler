@@ -1,33 +1,10 @@
 import React from 'react';
 import '../app.css';
-import { useEffect, useState } from 'react';
 
 function About() {
 
-    const [quote, setQuote] = useState("");
-    
-
-    const handleGetQuote = () => {
-        const url = "https://api.chucknorris.io/jokes/random?category=dev";
-        fetch(url)
-            .then((response) => response.json())
-            .then((data) => {
-                setQuote(data.value);
-            })
-            .catch((error) => {
-                console.error("Error fetching quote:", error);
-            });
-    };
-
-    useEffect(() => { handleGetQuote(); }, []);
-    
-
     return (
         <>
-            <section>
-                <p>3rd Party API (Deliverable):</p>
-                <p>{quote}</p>
-            </section>
             <section>
                 <br/>
                 Assignment Scheduler is a project for a web dev class at my school. 
