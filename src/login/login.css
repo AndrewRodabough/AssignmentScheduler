@@ -1,0 +1,25 @@
+@import "../app.css";
+
+.login-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginBox {
+    text-align: center;
+}
+
+.loginBox input {
+    width: 192px;
+}
+
+.loginBox button {
+    width: 100px;
+    cursor: pointer;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+}

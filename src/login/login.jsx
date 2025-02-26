@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext.jsx';
+import './login.css';
 
 function login() {
     const { handleLogin, handleRegister } = useAuth();
@@ -46,7 +47,7 @@ function login() {
 
     return (
         
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <section className="login-container">
             <section className="box loginBox">
                 <h3>Login / Register</h3>
                 
@@ -73,7 +74,7 @@ function login() {
                     <button type="submit" name="register" onClick={() => setActionType('register')}>Register</button>
                 </form>
             </section>
-        </div>
+        </section>
     );
 }
 
