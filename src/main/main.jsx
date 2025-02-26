@@ -100,8 +100,8 @@ const CalendarGrid = () => {
                                         {eventsForDay.length > 0 ? (
                                             eventsForDay.map(event => (
                                                 // Display event title with time
-                                                <p key={event.id}>
-                                                    {event.title} ({event.startTime} - {event.endTime})
+                                                <p key={event.id} className="calendar-event">
+                                                    {event.title} ({event.startTime} - {event.endTime}) {'CAL:' + event.calendarName}
                                                 </p>
                                             ))
                                         ) : (
@@ -308,8 +308,6 @@ function Main() {
                         />
                         <br/>
                         
-                        <label htmlFor="createEventCalendar">Add To: </label>
-                        <label htmlFor="createEventCalendar">Add To: </label>
                         <label htmlFor="createEventCalendar">Add To: </label>
                         <select id="createEventCalendar" name="createEventCalendar">
                             {calendars.map(calendar => (

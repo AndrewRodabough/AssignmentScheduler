@@ -37,16 +37,8 @@ html, body {
     flex-direction: column;
 }
 
-.page-header {
-
-}
-
 .page-main {
     display: flex;
-}
-
-.page-footer {
-
 }
 
 header {
@@ -75,7 +67,7 @@ header, nav a{
 
 main {
     flex: 1 0 auto;
-    padding: 15px;
+    padding: 11px;
     background-color: var(--background);
 }
 
@@ -103,7 +95,7 @@ footer {
 .box {
     background-color: var(--primary);
     border-radius: 10px;
-    padding: 20px;
+    padding: 17px;
     width: fit-content;
 }
 
