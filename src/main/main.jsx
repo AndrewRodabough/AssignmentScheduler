@@ -103,7 +103,7 @@ const CalendarGrid = () => {
 function Main() {
   
     const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, calendars, handleGetAllEvent} = useAuth();
-    useEffect(() => { handleGetAllCalendar(); handleGetAllEvent(); }, []);    
+    //useEffect(() => { handleGetAllCalendar(); handleGetAllEvent(); }, []);        //KEEP COMMENT TO STOP UPDATE ON REFRESH
     
     const handleSubmitCreateCalendar = async (e) => {
         e.preventDefault();
@@ -177,6 +177,33 @@ function Main() {
         }
     }
 
+
+
+    const [activeMenu, setActiveMenu] = useState(null);
+
+    const toggleMenu = (calendarName, e) => {
+    e.stopPropagation(); // Prevent event from bubbling up
+    setActiveMenu(activeMenu === calendarName ? null : calendarName);
+    };
+
+    useEffect(() => {
+        const closeDropdowns = (e) => {
+            if (!e.target.closest('.menu-container')) {
+                setActiveMenu(null);
+            }
+        };
+        
+        document.addEventListener('click', closeDropdowns);
+        return () => document.removeEventListener('click', closeDropdowns);
+    }, []);
+    
+
+
+
+
+
+
+
     return (
     <>  
         <section className='calendar-split'>
@@ -187,15 +214,39 @@ function Main() {
                     <div>
                         <fieldset>
                             {calendars.map(calendar => (
-                                <section>
-                                    <input 
-                                        type="checkbox" 
-                                        id={calendar.name} 
-                                        name={calendar.name}
-                                    />
-                                    <label htmlFor={calendar.name}>
-                                        {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1) + (calendar.shared ? " (shared)" : "")}
-                                    </label>
+                                <section className="calendar-list-item" key={calendar.name}>
+                                    
+                                    <div>
+                                        <input 
+                                            type="checkbox" 
+                                            id={calendar.name} 
+                                            name={calendar.name}
+                                        />
+                                        <label htmlFor={calendar.name}>
+                                            {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                                        </label>
+                                    </div>
+                                    
+                                    <div className='calendar-list-icons'>
+                                        
+                                        <div>
+                                            {calendar.shared && <span class="material-symbols-outlined">group</span> }
+                                        </div>
+
+                                        <div className="calendar-list-menu-container">
+                                            
+                                            <div className="calendar-list-menu-trigger" onClick={(e) => toggleMenu(calendar.name, e)}>
+                                                <span className="calendar-list-three-dots">&#8942;</span>
+                                            </div>
+                                            <div className={`calendar-list-dropdown-menu ${activeMenu === calendar.name ? 'active' : ''}`}>
+                                                <ul>
+                                                    <li>Edit Calendar</li>
+                                                    <li>Share Calendar</li>
+                                                    <li>Delete Calendar</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </section>
                             ))}
                         </fieldset>
@@ -230,7 +281,7 @@ function Main() {
                 </section>
 
                 <section>
-                    <h3>New Calendar</h3>
+                    <h3>Create Calendar</h3>
                     <form onSubmit={handleSubmitCreateCalendar}>
                     <input 
                         type="text" 
@@ -243,7 +294,7 @@ function Main() {
                 </section>
 
                 <section>
-                    <h3>New Event</h3>
+                    <h3>Create Event</h3>
                     <form onSubmit={handleSubmitCreateEvent}>
                         <p>Title</p>
                         <input
