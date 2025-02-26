@@ -1,5 +1,6 @@
 import { CalendarService } from '../services/calendarService.js';
 import { UserService } from '../services/userService.js';
+import { EventService } from '../services/eventService.js';
 import { Calendar } from '../models/calendar.js';
 
 export class CalendarController {
@@ -7,6 +8,7 @@ export class CalendarController {
     constructor(dataStore) {
         this.userService = new UserService(dataStore);
         this.calendarService = new CalendarService(dataStore);
+        this.eventService = new EventService(dataStore);
     }
 
     async create(token, calendarName) {
@@ -25,6 +27,23 @@ export class CalendarController {
 
     async delete(token, CalendarName) {
         console.log("CC: Delete()");
+
+        // get username from token
+        const user = await this.userService.getUserFromToken(token);
+        if (!user) {
+            throw new Error("User not Found");
+        }
+                
+        // get calendar from token
+        const calendar = await this.calendarService.get(CalendarName);
+        if (!calendar) {
+            throw new Error("Calendar not Found");
+        }
+        
+        await this.eventService.deleteAll(calendar);
+        await this.calendarService.delete(calendar);
+
+        return { message: "success" };
     }
 
     async update(req, res) {

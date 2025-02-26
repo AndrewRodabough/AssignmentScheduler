@@ -1,6 +1,7 @@
 import express from 'express';
 import { tokenValidation } from '../../middleware/jsonValidation.js';
 import { CalendarController } from '../../controllers/calendarController.js';
+import { EventController } from '../../controllers/eventController.js';
 import { validationResult } from 'express-validator';
 
 const router = express.Router();
@@ -8,6 +9,7 @@ const router = express.Router();
 export default function(dataStore) {
 
     const calendarController = new CalendarController(dataStore);
+    const eventController = new EventController(dataStore);
 
     router.delete('/', tokenValidation, async (req, res) => {
 
@@ -22,8 +24,8 @@ export default function(dataStore) {
 
             console.log("\n\nR: deleteCalendar");
             const token = req.headers.authorization;
-            const { calendarId } = req.body;
-            const result = await calendarController.delete(token, calendarId);
+            const { calendarName } = req.body;
+            const result = await calendarController.delete(token, calendarName);
             
             return res.status(200).json({ message: "success" })
 

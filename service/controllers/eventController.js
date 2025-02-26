@@ -66,4 +66,29 @@ export class EventController {
         return this.eventService.getAll(calendars);
     }
 
+    async deleteAll(token, calendarId) {
+        console.log("EC: DeleteAll");
+        
+        // get username from token
+        const user = await this.userService.getUserFromToken(token);
+        if (!user) {
+            throw new Error("User not Found");
+        }
+        
+        // get calendar from token
+        const calendar = await this.calendarService.get(calendarId);
+        if (!calendar) {
+            throw new Error("Calendar not Found");
+        }
+        
+        // check user and calendar user match
+        if (!(calendar.username === user.username)) {
+            throw new Error("Unathorized to delete events for calendar");
+        }
+
+        await this.eventService.deleteAll(calendarId);
+
+        return { message: "success" }
+    }
+
 }

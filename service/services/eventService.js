@@ -22,4 +22,10 @@ export class EventService {
         console.log("ES: update()");
         await this.dataStore.updateEvent(newEvent);
     }
+
+    async deleteAll(calendarId) {
+    
+        console.log("ES: deleteAll()");
+        await this.dataStore.deleteAllEvent(calendarId);
+    }
 }

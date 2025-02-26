@@ -121,8 +121,8 @@ const CalendarGrid = () => {
 
 function Main() {
   
-    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, calendars, handleGetAllEvent} = useAuth();
-    //useEffect(() => { handleGetAllCalendar(); handleGetAllEvent(); }, []);        //KEEP COMMENT TO STOP UPDATE ON REFRESH
+    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, calendars, handleGetAllEvent, handleDeleteCalendar} = useAuth();
+    useEffect(() => { handleGetAllCalendar(); handleGetAllEvent(); }, []);        //KEEP COMMENT TO STOP UPDATE ON REFRESH
     
     const handleSubmitCreateCalendar = async (e) => {
         e.preventDefault();
@@ -193,6 +193,24 @@ function Main() {
                 console.log(error);
             }
 
+        }
+    }
+
+    const handleSubmitDeleteCalendar = async (e) => {
+        e.preventDefault();
+
+        const calendar = document.querySelector('select[name="deleteCalendarCalendar"]');
+
+        if (calendar && calendar.value) {
+        
+            try {    
+                await handleDeleteCalendar(calendar.value);
+                await handleGetAllCalendar();
+                await handleGetAllEvent();
+            }
+            catch(error) {
+                console.log(error);
+            }
         }
     }
 
@@ -366,6 +384,23 @@ function Main() {
                             ))}
                         </fieldset>
                     </div>
+                </section>
+
+                <section>
+                    <h3>Delete Calendar</h3>
+                    <select id="deleteCalendarCalendar" name="deleteCalendarCalendar">
+                        {calendars.map(calendar => (
+                            <option 
+                                key={calendar.name} 
+                                value={calendar.name}
+                            >
+                                {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                            </option>
+                        ))}
+                    </select>
+                    <form onSubmit={handleSubmitDeleteCalendar}>
+                        <button type="submit">Delete</button>
+                    </form>
                 </section>
 
             </section>        

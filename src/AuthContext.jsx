@@ -9,6 +9,7 @@ import { shareCalendar } from './Requests/Calendar/shareCalendar.js';
 import { clear } from './Requests/clear.js';
 import { createEvent } from './Requests/Event/createEvent.js';
 import { getAllEvent } from './Requests/Event/getAllEvents.js';
+import { deleteCalendar } from './Requests/Calendar/deleteCalendar.js';
 
 import { notifier } from './main/calUpdate.js';
 
@@ -103,6 +104,16 @@ export function AuthProvider({ children }) {
         console.log("cleared");
     }
 
+    const handleDeleteCalendar = async (calendarName) => {
+        if (!user || !user.token) {
+            console.log('User must be logged in to delete calendar');
+            //throw new Error('User must be logged in to delete calendar');
+        }
+
+        console.log("sending delete");
+        await deleteCalendar(user.token, calendarName);
+    }
+
     return (
         <AuthContext.Provider value={{
             user,
@@ -117,7 +128,8 @@ export function AuthProvider({ children }) {
             handleShareCalendar,
             handleClear,
             handleCreateEvent,
-            handleGetAllEvent
+            handleGetAllEvent,
+            handleDeleteCalendar
             }}>
             {children}
         </AuthContext.Provider>

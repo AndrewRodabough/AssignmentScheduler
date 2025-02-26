@@ -24,4 +24,9 @@ export class CalendarService {
         console.log("CS: update()");
         await this.dataStore.updateCalendar(newCalendar);
     }
+
+    async delete(calendar) {
+        console.log("CS: delete()");
+        await this.dataStore.deleteCalendar(calendar);
+    }
 }

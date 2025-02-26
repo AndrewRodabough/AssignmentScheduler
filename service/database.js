@@ -151,6 +151,13 @@ const dataStore = {
         console.log("DB: updateCalendar: ", calendar);
     },
 
+    async deleteCalendar(calendar) {
+        console.log("DB: deleteCalendar()");
+
+        await calendarCol.deleteOne({ name: calendar.name });
+        console.log("DB: deleteCalendar: ", calendar);
+    },
+
 
     // Event Functions
     async setEvent(event) {
@@ -204,6 +211,13 @@ const dataStore = {
         console.log("DB: deleteEvent()");
 
         return await eventCol.deleteOne({ id: eventId });
+    },
+
+    async deleteAllEvent(calendarId) {
+      
+        console.log("DB: deleteAllEvent()");
+
+        return await eventCol.deleteMany({ calendarName: calendarId });
     },
 
     // dev
