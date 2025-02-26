@@ -15,8 +15,8 @@ function App() {
         <BrowserRouter>
             <div className="page-container">
                 
-                {user ? (
-                    <header>
+                <header className='page-header'>
+                    {user ? (
                         <nav>
                             <div>
                                 <NavLink to="/"><h2>Assignment Scheduler</h2></NavLink>
@@ -28,9 +28,7 @@ function App() {
                                 <button onClick={handleLogout}>Logout</button>
                             </div>
                         </nav>
-                    </header>
-                ) : (
-                    <header>
+                    ) : (
                         <nav>
                             <div>
                                 <NavLink to="/"><h2>Assignment Scheduler</h2></NavLink>
@@ -41,9 +39,9 @@ function App() {
                                 <NavLink to="/about">About Page</NavLink>
                             </div>
                         </nav>
-                    </header>
-                )}
-                <main>
+                    )}
+                </header>
+                <main className='page-main'>
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/about" element={<About />} />
@@ -63,7 +61,7 @@ function App() {
                     </Routes>
                 </main >
 
-                <footer>
+                <footer className='page-footer'>
                     <div>
                         <a href="https://github.com/AndrewRodabough/startup.git">Github</a>
                         <br />

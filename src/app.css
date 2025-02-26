@@ -37,6 +37,17 @@ html, body {
     flex-direction: column;
 }
 
+.page-header {
+
+}
+
+.page-main {
+    display: flex;
+}
+
+.page-footer {
+    
+}
 
 header {
     background-color: var(--nav);

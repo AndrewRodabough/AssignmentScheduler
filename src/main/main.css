@@ -42,11 +42,34 @@
     padding: 10px;
 }
   
-.calendar-controls {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+
+  
+
+.calendar-split {
+    flex: 1;
+    display: flex;
     gap: 20px;
-    width: 100%;
-    
-    min-width: 300px; /* Prevents boxes from getting too small */
+}
+
+.calendar-container {
+    flex: 1;
+}
+
+.calendar-controls {
+    flex: 0 0 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-controls > *:not(:last-child):after {
+    content: "";
+    display: block;
+    height: 1px;
+    background-color: var(--secondary);
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+fieldset {
+    border: none;
 }

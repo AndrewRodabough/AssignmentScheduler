@@ -178,154 +178,159 @@ function Main() {
     }
 
     return (
-    <>      
-        <section className='box'>
-            <h3>Websocket Messages:</h3>
-            <div>
-                {messages.map((message, index) => (
-                    <div key={index}>{message}</div>
-                ))}
-            </div>
-        </section>
-        <section className="box">
-            <h3>New Event</h3>
-            <form onSubmit={handleSubmitCreateEvent}>
-                <p>Title</p>
-                <input
-                    type="text" 
-                    id="createEventTitle" 
-                    name="createEventTitle" 
-                />
-                <p>Start Date / End Date</p>
-                <input 
-                    type="date" 
-                    id="createEventStartDate" 
-                    name="createEventStartDate" 
-                    required
-                />
-                <input 
-                    type="time" 
-                    id="createEventStartTime"
-                    name="createEventStartTime"
-                />
-                <br/>
-                <input 
-                    type="date" 
-                    id="createEventEndDate" 
-                    name="createEventEndDate" 
-                    required 
-                />
-                <input 
-                    type="time" 
-                    id="createEventEndTime" 
-                    name="createEventEndTime" 
-                />
-                <br/>
-                
-                <label htmlFor="createEventCalendar">Add To:</label>
-                <br/>
-                <select id="createEventCalendar" name="createEventCalendar">
-                    {calendars.map(calendar => (
-                        <option 
-                            key={calendar.name} 
-                            value={calendar.name}
-                        >
-                            {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
-                        </option>
-                    ))}
-                </select>
-                <br/>
-                <button type="submit">Create Event</button>
-            </form>
+    <>  
+        <section className='topbox'>
             
         </section>
+        
 
-        <section className='box calendar-controls'>
-            <section>
-                <h3>Calendar</h3>
-                <div>
-                    <fieldset>
-                        <legend>Private Calendars</legend>
-                        {calendars.filter(calendar => !calendar.shared).map(calendar => (
-                            <>
-                                <label htmlFor={calendar.name}>
-                                    {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
-                                </label>
-                                <input 
-                                    type="checkbox" 
-                                    id={calendar.name} 
-                                    name={calendar.name} 
-                                />
-                            </>
-                        ))}
-                    </fieldset>
-                    
-                    <fieldset>
-                        <legend>Shared Calendars</legend>
-                        {calendars.filter(calendar => calendar.shared).map(calendar => (
-                            <>
-                                <label htmlFor={calendar.name}>
-                                    {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
-                                </label>
-                                <input 
-                                    type="checkbox" 
-                                    id={calendar.name} 
-                                    name={calendar.name} 
-                                />
-                            </>
-                        ))}
-                    </fieldset>
-                </div>
-            </section>
+        <section className='calendar-split'>
 
-            <section>
-                <h3>Share</h3>
-                <form onSubmit={handleSubmitShareCalendar}>
-                    <label htmlFor="shareCalendar">Calendar:</label>
-                    <select id="shareCalendar" name="shareCalendar">
-                        {calendars.map(calendar => (
-                            <option 
-                                key={calendar.name} 
-                                value={calendar.name}
-                            >
-                                {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
-                            </option>
-                        ))}
-                    </select>
-                    
+            <section className='box calendar-controls'>
+                <section>
+                    <h3>Calendars</h3>
+                    <div>
+                        <fieldset>
+                            <legend>Private Calendars</legend>
+                            {calendars.filter(calendar => !calendar.shared).map(calendar => (
+                                <>
+                                    <label htmlFor={calendar.name}>
+                                        {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                                    </label>
+                                    <input 
+                                        type="checkbox" 
+                                        id={calendar.name} 
+                                        name={calendar.name} 
+                                    />
+                                </>
+                            ))}
+                        </fieldset>
+                        
+                        <fieldset>
+                            <legend>Shared Calendars</legend>
+                            {calendars.filter(calendar => calendar.shared).map(calendar => (
+                                <>
+                                    <label htmlFor={calendar.name}>
+                                        {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                                    </label>
+                                    <input 
+                                        type="checkbox" 
+                                        id={calendar.name} 
+                                        name={calendar.name} 
+                                    />
+                                </>
+                            ))}
+                        </fieldset>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Share</h3>
+                    <form onSubmit={handleSubmitShareCalendar}>
+                        <label htmlFor="shareCalendar">Calendar:</label>
+                        <select id="shareCalendar" name="shareCalendar">
+                            {calendars.map(calendar => (
+                                <option 
+                                    key={calendar.name} 
+                                    value={calendar.name}
+                                >
+                                    {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                                </option>
+                            ))}
+                        </select>
+                        
+                        <input 
+                            type="text" 
+                            id="shareUsername" 
+                            name="shareUsername" 
+                            placeholder="username" 
+                            required 
+                        />
+                        
+                        <button type="submit">Share</button>
+                    </form>
+                </section>
+
+                <section>
+                    <h3>New Calendar</h3>
+                    <form onSubmit={handleSubmitCreateCalendar}>
                     <input 
                         type="text" 
-                        id="shareUsername" 
-                        name="shareUsername" 
-                        placeholder="username" 
+                        name="newCalendarName" 
+                        placeholder="Calendar Name"
                         required 
-                    />
-                    
-                    <button type="submit">Share</button>
-                </form>
-            </section>
+                    />  
+                    <button type="submit" name="CreateCalendar">Create Calendar</button>
+                    </form>
+                </section>
 
-            <section>
-                <h3>New Calendar</h3>
-                <form onSubmit={handleSubmitCreateCalendar}>
-                  <input 
-                      type="text" 
-                      name="newCalendarName" 
-                      placeholder="Calendar Name"
-                      required 
-                  />  
-                  <button type="submit" name="CreateCalendar">Create Calendar</button>
-                </form>
-            </section>
-        </section>        
-        
-        <section>
-            <div>
+                <section>
+                    <h3>New Event</h3>
+                    <form onSubmit={handleSubmitCreateEvent}>
+                        <p>Title</p>
+                        <input
+                            type="text" 
+                            id="createEventTitle" 
+                            name="createEventTitle" 
+                        />
+                        <p>Start Date / End Date</p>
+                        <input 
+                            type="date" 
+                            id="createEventStartDate" 
+                            name="createEventStartDate" 
+                            required
+                        />
+                        <input 
+                            type="time" 
+                            id="createEventStartTime"
+                            name="createEventStartTime"
+                        />
+                        <br/>
+                        <input 
+                            type="date" 
+                            id="createEventEndDate" 
+                            name="createEventEndDate" 
+                            required 
+                        />
+                        <input 
+                            type="time" 
+                            id="createEventEndTime" 
+                            name="createEventEndTime" 
+                        />
+                        <br/>
+                        
+                        <label htmlFor="createEventCalendar">Add To:</label>
+                        <br/>
+                        <select id="createEventCalendar" name="createEventCalendar">
+                            {calendars.map(calendar => (
+                                <option 
+                                    key={calendar.name} 
+                                    value={calendar.name}
+                                >
+                                    {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                                </option>
+                            ))}
+                        </select>
+                        <br/>
+                        <button type="submit">Create Event</button>
+                    </form>
+                </section>
+
+
+                <section>
+                    <h3>Websocket Messages:</h3>
+                    <div>
+                        {messages.map((message, index) => (
+                            <div key={index}>{message}</div>
+                        ))}
+                    </div>
+                </section>
+
+            </section>        
+            <section className='calendar-container'>
                 <CalendarGrid />
-            </div>
+            </section>
         </section>
-
-
     </>
     );
 }
