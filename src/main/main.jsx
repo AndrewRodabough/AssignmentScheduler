@@ -54,14 +54,16 @@ const CalendarGrid = () => {
     return (
         <>
             <section className="box calendar-topbar">
-                        <div>
+                
+                <div>
+                    <label htmlFor="start-date"></label>
+                    <input type="date" id="start-date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                    : 
+                    <label htmlFor="end-date"></label> 
+                    <input type="date" id="end-date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                </div>
 
-                        <label htmlFor="start-date"></label>
-                        <input type="date" id="start-date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-                        : 
-                        <label htmlFor="end-date"></label> 
-                        <input type="date" id="end-date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-                        </div>
+                <
             </section>
     
             <section className="calendar-view">
@@ -209,49 +211,7 @@ function Main() {
         <section className='calendar-split'>
 
             <section className='box calendar-controls'>
-                <section>
-                    <h3>Calendars</h3>
-                    <div>
-                        <fieldset>
-                            {calendars.map(calendar => (
-                                <section className="calendar-list-item" key={calendar.name}>
-                                    
-                                    <div>
-                                        <input 
-                                            type="checkbox" 
-                                            id={calendar.name} 
-                                            name={calendar.name}
-                                        />
-                                        <label htmlFor={calendar.name}>
-                                            {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
-                                        </label>
-                                    </div>
-                                    
-                                    <div className='calendar-list-icons'>
-                                        
-                                        <div>
-                                            {calendar.shared && <span class="material-symbols-outlined">group</span> }
-                                        </div>
-
-                                        <div className="calendar-list-menu-container">
-                                            
-                                            <div className="calendar-list-menu-trigger" onClick={(e) => toggleMenu(calendar.name, e)}>
-                                                <span className="calendar-list-three-dots">&#8942;</span>
-                                            </div>
-                                            <div className={`calendar-list-dropdown-menu ${activeMenu === calendar.name ? 'active' : ''}`}>
-                                                <ul>
-                                                    <li>Edit Calendar</li>
-                                                    <li>Share Calendar</li>
-                                                    <li>Delete Calendar</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </section>
-                            ))}
-                        </fieldset>
-                    </div>
-                </section>
+                
 
                 <section>
                     <h3>Share</h3>
@@ -296,14 +256,15 @@ function Main() {
                 <section>
                     <h3>Create Event</h3>
                     <form onSubmit={handleSubmitCreateEvent}>
-                        <p>Title</p>
                         <input
                             type="text" 
                             id="createEventTitle" 
-                            name="createEventTitle" 
+                            name="createEventTitle"
+                            placeholder='Event Title'
+                            required
                         />
-                        <p>Start Date / End Date</p>
-                        <input 
+                        <br/>
+                        S: <input 
                             type="date" 
                             id="createEventStartDate" 
                             name="createEventStartDate" 
@@ -315,7 +276,7 @@ function Main() {
                             name="createEventStartTime"
                         />
                         <br/>
-                        <input 
+                        E: <input 
                             type="date" 
                             id="createEventEndDate" 
                             name="createEventEndDate" 
@@ -328,8 +289,7 @@ function Main() {
                         />
                         <br/>
                         
-                        <label htmlFor="createEventCalendar">Add To:</label>
-                        <br/>
+                        <label htmlFor="createEventCalendar">Add To: </label>
                         <select id="createEventCalendar" name="createEventCalendar">
                             {calendars.map(calendar => (
                                 <option 
@@ -343,6 +303,50 @@ function Main() {
                         <br/>
                         <button type="submit">Create Event</button>
                     </form>
+                </section>
+
+                <section>
+                    <h3>Calendars</h3>
+                    <div>
+                        <fieldset>
+                            {calendars.map(calendar => (
+                                <section className="calendar-list-item" key={calendar.name}>
+                                    
+                                    <div>
+                                        <input 
+                                            type="checkbox" 
+                                            id={calendar.name} 
+                                            name={calendar.name}
+                                        />
+                                        <label htmlFor={calendar.name}>
+                                            {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1) + (calendar.shared ? " (shared)" : "")}
+                                        </label>
+                                    </div>
+                                    
+                                    <div className='calendar-list-icons'>
+                                        
+                                        <div>
+                                            {calendar.shared && <span class="material-symbols-outlined">group</span> }
+                                        </div>
+
+                                        <div className="calendar-list-menu-container">
+                                            
+                                            <div className="calendar-list-menu-trigger" onClick={(e) => toggleMenu(calendar.name, e)}>
+                                                <span className="calendar-list-three-dots">&#8942;</span>
+                                            </div>
+                                            <div className={`calendar-list-dropdown-menu ${activeMenu === calendar.name ? 'active' : ''}`}>
+                                                <ul>
+                                                    <li>Edit Calendar</li>
+                                                    <li>Share Calendar</li>
+                                                    <li>Delete Calendar</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            ))}
+                        </fieldset>
+                    </div>
                 </section>
 
             </section>        
