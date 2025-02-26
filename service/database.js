@@ -213,11 +213,12 @@ const dataStore = {
         return await eventCol.deleteOne({ id: eventId });
     },
 
-    async deleteAllEvent(calendarId) {
+    async deleteAllEvent(calendarName) {
       
         console.log("DB: deleteAllEvent()");
+        console.log(calendarName);
 
-        return await eventCol.deleteMany({ calendarName: calendarId });
+        return await eventCol.deleteMany({ calendarName: calendarName});
     },
 
     // dev

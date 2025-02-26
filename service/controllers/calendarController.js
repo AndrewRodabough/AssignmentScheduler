@@ -40,7 +40,7 @@ export class CalendarController {
             throw new Error("Calendar not Found");
         }
         
-        await this.eventService.deleteAll(calendar);
+        await this.eventService.deleteAll(calendar.name);
         await this.calendarService.delete(calendar);
 
         return { message: "success" };

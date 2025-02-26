@@ -23,9 +23,9 @@ export class EventService {
         await this.dataStore.updateEvent(newEvent);
     }
 
-    async deleteAll(calendarId) {
+    async deleteAll(calendarName) {
     
         console.log("ES: deleteAll()");
-        await this.dataStore.deleteAllEvent(calendarId);
+        await this.dataStore.deleteAllEvent(calendarName);
     }
 }
