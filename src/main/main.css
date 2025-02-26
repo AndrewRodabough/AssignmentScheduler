@@ -42,6 +42,12 @@
     padding: 10px;
 }
   
+.calendar-topbar {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 12px;
+}
 
   
 
@@ -53,6 +59,9 @@
 
 .calendar-container {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .calendar-controls {

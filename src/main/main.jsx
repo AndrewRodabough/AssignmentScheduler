@@ -52,50 +52,48 @@ const CalendarGrid = () => {
     };
   
     return (
-      <div className="calendar-container">
-        <div className="date-input-section">
-          <div className='box'>
-                <div>
+        <>
+            <div className="box calendar-topbar">
+                        <div>
 
-                <label htmlFor="start-date"></label>
-                <input type="date" id="start-date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-                : 
-                <label htmlFor="end-date"></label> 
-                <input type="date" id="end-date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-                </div>
-          </div>
-        </div>
-  
-        {dateColumns.length > 0 && (
-            <div className="calendar-grid">
-                    {dateColumns.map(({ fullDate, dayOfWeek, dayOfMonth }) => {
-                        // Find events matching the current date
-                        const eventsForDay = events.filter(event => event.startDate === fullDate);
+                        <label htmlFor="start-date"></label>
+                        <input type="date" id="start-date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                        : 
+                        <label htmlFor="end-date"></label> 
+                        <input type="date" id="end-date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                        </div>
+            </div>
+    
+            {dateColumns.length > 0 && (
+                <div className="calendar-grid">
+                        {dateColumns.map(({ fullDate, dayOfWeek, dayOfMonth }) => {
+                            // Find events matching the current date
+                            const eventsForDay = events.filter(event => event.startDate === fullDate);
 
-                        return (
-                            <div key={fullDate} className={`calendar-column ${fullDate === currentDate ? 'current-day' : ''}`}>
-                                <div className="column-header">
-                                    <span className="day-of-week">{dayOfWeek}</span>
-                                    <span className="day-of-month">{dayOfMonth}</span>
+                            return (
+                                <div key={fullDate} className={`calendar-column ${fullDate === currentDate ? 'current-day' : ''}`}>
+                                    <div className="column-header">
+                                        <span className="day-of-week">{dayOfWeek}</span>
+                                        <span className="day-of-month">{dayOfMonth}</span>
+                                    </div>
+                                    <div className="column-content">
+                                        {eventsForDay.length > 0 ? (
+                                            eventsForDay.map(event => (
+                                                // Display event title with time
+                                                <p key={event.id}>
+                                                    {event.title} ({event.startTime} - {event.endTime})
+                                                </p>
+                                            ))
+                                        ) : (
+                                            <p>No Events</p> // Placeholder if no events exist for the day
+                                        )}
+                                    </div>
                                 </div>
-                                <div className="column-content">
-                                    {eventsForDay.length > 0 ? (
-                                        eventsForDay.map(event => (
-                                            // Display event title with time
-                                            <p key={event.id}>
-                                                {event.title} ({event.startTime} - {event.endTime})
-                                            </p>
-                                        ))
-                                    ) : (
-                                        <p>No Events</p> // Placeholder if no events exist for the day
-                                    )}
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-        )}
-      </div>
+                            );
+                        })}
+                    </div>
+            )}
+      </>
     );
 };
 
@@ -179,11 +177,6 @@ function Main() {
 
     return (
     <>  
-        <section className='topbox'>
-            
-        </section>
-        
-
         <section className='calendar-split'>
 
             <section className='box calendar-controls'>

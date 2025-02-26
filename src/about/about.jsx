@@ -6,7 +6,6 @@ function About() {
     return (
         <>
             <section>
-                <br/>
                 Assignment Scheduler is a project for a web dev class at my school. 
                 I have always found it dificult to keep track of my assignments and their deadlines
                 to adequately plan what to work on an when. I found that a calendar to put the due date
