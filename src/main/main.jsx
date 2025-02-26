@@ -62,6 +62,25 @@ const CalendarGrid = () => {
                     <label htmlFor="end-date"></label> 
                     <input type="date" id="end-date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                 </div>
+
+                <div class="custom-radio-group">
+                    <label class="option">
+                        <input type="radio" name="selection" value="option1"/>
+                        <span class="text">View A</span>
+                    </label>
+                    
+                    <label class="option">
+                        <input type="radio" name="selection" value="option2"/>
+                        <span class="text">View B</span>
+                    </label>
+                    
+                    <label class="option">
+                        <input type="radio" name="selection" value="option3"/>
+                        <span class="text">View C</span>
+                    </label>
+                </div>
+
+
             </section>
     
             <section className="calendar-view">

@@ -46,6 +46,7 @@
     display: flex;
     flex-direction: row;
     width: 100%;
+    gap: 12px;
     padding: 12px;
 }
 
@@ -220,3 +221,31 @@ fieldset input[type="checkbox"] {
 .material-symbols-outlined {
     font-size: 20px;
 }
+
+
+
+
+
+.custom-radio-group {
+    background-color: #1e2535;
+    border-radius: 7px;
+}
+
+.custom-radio-group input[type="radio"] {
+    display: none;
+}
+  
+.custom-radio-group .text {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 10pt;
+}
+  
+.custom-radio-group input[type="radio"]:checked + .text {
+    
+    background-color: var(--secondary);
+}
+  
