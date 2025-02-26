@@ -69,14 +69,28 @@
 }
 
 .calendar-controls {
-    flex: 0 0 240px;
+    flex: 0 0 255px;
     display: flex;
     flex-direction: column;
+    font-size: 13px;
 }
 
 .calendar-controls h3 {
     margin-bottom: 5px;
-    font-size: medium;
+    font-size: 18px;
+    font: var(--text-color);
+}
+
+.calendar-controls input[type="text"], input[type="date"], input[type="time"], select {
+    background-color: var(--secondary);
+    border: none;
+    border-radius: 3px;
+    color: var(--text-color);
+    margin: 2px;
+}
+
+.calendar-controls input[type="text"], input[type="date"], input[type="time"], select:focus {
+    outline: none;
 }
 
 .calendar-controls > *:not(:last-child):after {
