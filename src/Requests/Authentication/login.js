@@ -15,7 +15,7 @@ export const login = (username, password) => {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Login failed');
+                response.status === 401 ? reject("invalid username or password") : reject("an error occurred");
             }
             return response.json();
         })

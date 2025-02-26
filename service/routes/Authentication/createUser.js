@@ -30,8 +30,8 @@ export default function(dataStore) {
 
             console.log(error)
 
-            if (error.message === 'Username Taken') {
-                return res.status(401).json({ error: error.message });
+            if (error.message === 'User already exists') {
+                return res.status(409).json({ error: error.message });
             }
             
             return res.status(500).json({ error: error.message });

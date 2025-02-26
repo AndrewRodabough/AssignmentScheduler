@@ -40,7 +40,7 @@ function login() {
             navigate('/main');
         }
         catch(error) {
-            console.log("Failed Login/Register")
+            alert(error);
             return
         }
     };

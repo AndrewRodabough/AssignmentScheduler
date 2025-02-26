@@ -27,8 +27,8 @@ export default function(dataStore) {
             return res.status(200).json(result);
 
         } catch (error) {
-            
-            if (error.message === 'Invalid Username' || error.message === 'Invalid Password') {
+            console.log(error);
+            if (error.message === 'User not found' || error.message === 'Invalid credentials') {
                 return res.status(401).json({ error: error.message });
             }
             

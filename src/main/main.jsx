@@ -262,12 +262,6 @@ function Main() {
                             name="createEventTitle"
                             placeholder='Event Title'
                             required
-                            name="createEventTitle"
-                            placeholder='Event Title'
-                            required
-                            name="createEventTitle"
-                            placeholder='Event Title'
-                            required
                         />
                         <br/>
                         S: <input 

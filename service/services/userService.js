@@ -22,11 +22,11 @@ export class UserService {
 
         if (!username || !password) { 
             console.log('US: Username and password are required');
-            throw new Error('US: Username and password are required');
+            throw new Error('Username and password are required');
         }
         if (await this.dataStore.getUser(username)) { 
             console.log('US: User already exists');
-            throw new Error('US: User already exists'); 
+            throw new Error('User already exists'); 
         }
         
         await this.dataStore.setUser(username, password)
@@ -48,11 +48,11 @@ export class UserService {
 
         if (!token){
             console.log("US: Token Required")
-            throw new Error('US: Token Required');
+            throw new Error('Token Required');
         }
         if (!await this.dataStore.getToken(token)) {
             console.log("US: Token Does Not Exist")
-            throw new Error('US: Token Does Not Exist');
+            throw new Error('Token Does Not Exist');
         }
 
         const gotUser = await this.dataStore.getUserFromToken(token);

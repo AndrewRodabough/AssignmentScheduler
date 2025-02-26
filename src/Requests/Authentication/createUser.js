@@ -15,7 +15,7 @@ export const createUser = (username, password) => {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('User Creation failed');
+                (response.status === 409) ? reject("username already exists") : reject("an error occurred");
             }
             return null
         })
