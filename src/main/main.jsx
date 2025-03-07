@@ -180,12 +180,20 @@ function Main() {
         
         const calendar = document.querySelector('select[name="createEventCalendar"]');
 
-        if ((title && title.value) &&
-        (startDate && startDate.value) &&
-        (endDate && endDate.value) &&
-        (startTime) &&
-        (endTime) &&
-        (calendar && calendar.value)) {
+        var message = "";
+        if (!(title && title.value))            { message += "Title is required. \n"; }
+        if (!(startDate && startDate.value))    { message += "Start date is required. \n"; }
+        if (!(endDate && endDate.value))        { message += "End date is required. \n"; }
+        if (!(startTime))                       { message += "Start time is required. \n"; }
+        if (!(endTime))                         { message += "End time is required. \n"; }
+        if (!(calendar && calendar.value))      { message += "Calendar is required. \n"; }
+        
+        if (message != "") {
+            alert(message);
+            return;
+        }
+        
+        if (message == "") {
     
             const event = new Event(uuid(), title.value , startDate.value, startTime.value, endDate.value, endTime.value, calendar.value);
 
@@ -253,14 +261,20 @@ function Main() {
                     <form onSubmit={handleSubmitShareCalendar}>
                         <label htmlFor="shareCalendar">Calendar:</label>
                         <select id="shareCalendar" name="shareCalendar">
-                            {calendars.map(calendar => (
-                                <option 
-                                    key={calendar.name} 
-                                    value={calendar.name}
-                                >
-                                    {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
-                                </option>
-                            ))}
+                            {
+                                calendars.length === 0 ? (
+                                    <option disabled value="">You Have No Calendars</option>
+                                ) : (
+                                    calendars.map(calendar => (
+                                    <option 
+                                        key={calendar.name} 
+                                        value={calendar.name}
+                                    >
+                                        {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                                    </option>
+                                    ))
+                                )
+                            }
                         </select>
                         
                         <input 
@@ -326,14 +340,21 @@ function Main() {
                         
                         <label htmlFor="createEventCalendar">Add To: </label>
                         <select id="createEventCalendar" name="createEventCalendar">
-                            {calendars.map(calendar => (
+                        {
+                            calendars.length === 0 ? (
+                                <option disabled value="">You Have No Calendars</option>
+                            ) : (
+                                calendars.map(calendar => (
                                 <option 
                                     key={calendar.name} 
                                     value={calendar.name}
                                 >
                                     {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
                                 </option>
-                            ))}
+                                ))
+                            )
+                        }
+
                         </select>
                         <br/>
                         <button type="submit">Create Event</button>
@@ -343,14 +364,20 @@ function Main() {
                 <section>
                     <h3>Delete Calendar</h3>
                     <select id="deleteCalendarCalendar" name="deleteCalendarCalendar">
-                        {calendars.map(calendar => (
-                            <option 
-                                key={calendar.name} 
-                                value={calendar.name}
-                            >
-                                {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
-                            </option>
-                        ))}
+                        {
+                            calendars.length === 0 ? (
+                                <option disabled value="">You Have No Calendars</option>
+                            ) : (
+                                calendars.map(calendar => (
+                                <option 
+                                    key={calendar.name} 
+                                    value={calendar.name}
+                                >
+                                    {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                                </option>
+                                ))
+                            )
+                        }
                     </select>
                     <form onSubmit={handleSubmitDeleteCalendar}>
                         <button type="submit">Delete</button>
@@ -362,42 +389,49 @@ function Main() {
                     <h3>Calendars</h3>
                     <div>
                         <fieldset>
-                            {calendars.map(calendar => (
-                                <section className="calendar-list-item" key={calendar.name}>
-                                    
-                                    <div>
-                                        <input 
-                                            type="checkbox" 
-                                            id={calendar.name} 
-                                            name={calendar.name}
-                                        />
-                                        <label htmlFor={calendar.name}>
-                                            {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1) + (calendar.shared ? " (shared)" : "")}
-                                        </label>
-                                    </div>
-                                    
-                                    <div className='calendar-list-icons'>
+                        {
+                            calendars.length === 0 ? (
+                                <p>You Have No Calendars</p>
+                            ) : (
+                                calendars.map(calendar => (
+                                    <section className="calendar-list-item" key={calendar.name}>
                                         
                                         <div>
-                                            {calendar.shared && <span className="material-symbols-outlined">group</span> }
+                                            <input 
+                                                type="checkbox" 
+                                                id={calendar.name} 
+                                                name={calendar.name}
+                                            />
+                                            <label htmlFor={calendar.name}>
+                                                {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1) + (calendar.shared ? " (shared)" : "")}
+                                            </label>
                                         </div>
-
-                                        <div className="calendar-list-menu-container">
+                                        
+                                        <div className='calendar-list-icons'>
                                             
-                                            <div className="calendar-list-menu-trigger" onClick={(e) => toggleMenu(calendar.name, e)}>
-                                                <span className="calendar-list-three-dots">&#8942;</span>
+                                            <div>
+                                                {calendar.shared && <span className="material-symbols-outlined">group</span> }
                                             </div>
-                                            <div className={`calendar-list-dropdown-menu ${activeMenu === calendar.name ? 'active' : ''}`}>
-                                                <ul>
-                                                    <li>Edit Calendar</li>
-                                                    <li>Share Calendar</li>
-                                                    <li>Delete Calendar</li>
-                                                </ul>
+    
+                                            <div className="calendar-list-menu-container">
+                                                
+                                                <div className="calendar-list-menu-trigger" onClick={(e) => toggleMenu(calendar.name, e)}>
+                                                    <span className="calendar-list-three-dots">&#8942;</span>
+                                                </div>
+                                                <div className={`calendar-list-dropdown-menu ${activeMenu === calendar.name ? 'active' : ''}`}>
+                                                    <ul>
+                                                        <li>Edit Calendar</li>
+                                                        <li>Share Calendar</li>
+                                                        <li>Delete Calendar</li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </section>
-                            ))}
+                                    </section>
+                                ))
+                            )
+                        }
+                            
                         </fieldset>
                     </div>
                 </section>
