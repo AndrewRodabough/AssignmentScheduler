@@ -22,6 +22,8 @@ const CalendarGrid = () => {
         setEndDate(format(eOfWeek, 'yyyy-MM-dd'));
     }, []);
 
+    
+
     useEffect(() => {
         if (startDate && endDate) {
           handleGenerateCalendar();
@@ -51,6 +53,12 @@ const CalendarGrid = () => {
       setDateColumns(columns);
     };
   
+    const handleEventClick = (event) => {
+        console.log("Event clicked:", event);
+        // TODO implement menu that shows event details
+    }
+
+
     return (
         <>
             <section className="box calendar-topbar">
@@ -63,24 +71,22 @@ const CalendarGrid = () => {
                     <input type="date" id="end-date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                 </div>
 
-                <div class="custom-radio-group">
-                    <label class="option">
+                <div className="custom-radio-group">
+                    <label className="option">
                         <input type="radio" name="selection" value="option1"/>
-                        <span class="text">View A</span>
+                        <span className="text">View A</span>
                     </label>
                     
-                    <label class="option">
+                    <label className="option">
                         <input type="radio" name="selection" value="option2"/>
-                        <span class="text">View B</span>
+                        <span className="text">View B</span>
                     </label>
                     
-                    <label class="option">
+                    <label className="option">
                         <input type="radio" name="selection" value="option3"/>
-                        <span class="text">View C</span>
+                        <span className="text">View C</span>
                     </label>
                 </div>
-
-
             </section>
     
             <section className="calendar-view">
@@ -97,16 +103,15 @@ const CalendarGrid = () => {
                                         <span className="day-of-month">{dayOfMonth}</span>
                                     </div>
                                     <div className="column-content">
-                                        {eventsForDay.length > 0 ? (
-                                            eventsForDay.map(event => (
-                                                // Display event title with time
-                                                <p key={event.id} className="calendar-event">
-                                                    {event.title} ({event.startTime} - {event.endTime}) {'CAL:' + event.calendarName}
-                                                </p>
-                                            ))
-                                        ) : (
-                                            <p>No Events</p> // Placeholder if no events exist for the day
-                                        )}
+                                    {eventsForDay.map(event => (
+                                        <p 
+                                            key={event.id} 
+                                            className="calendar-event" 
+                                            onDoubleClick={() => handleEventClick(event)}
+                                        >
+                                            {event.title} ({event.startTime} - {event.endTime}) {'CAL:' + event.calendarName}
+                                        </p>
+                                    ))}
                                     </div>
                                 </div>
                             );
@@ -237,18 +242,11 @@ function Main() {
 
 
 
-
-
-
-
     return (
     <>  
         <section className='calendar-split'>
 
             <section className='box calendar-controls'>
-                
-                
-                
 
                 <section>
                     <h3>Share</h3>
@@ -381,7 +379,7 @@ function Main() {
                                     <div className='calendar-list-icons'>
                                         
                                         <div>
-                                            {calendar.shared && <span class="material-symbols-outlined">group</span> }
+                                            {calendar.shared && <span className="material-symbols-outlined">group</span> }
                                         </div>
 
                                         <div className="calendar-list-menu-container">
