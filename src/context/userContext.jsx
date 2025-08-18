@@ -1,3 +1,33 @@
+/**
+ * UserContext and UserProvider - React context for user authentication management.
+ * 
+ * This module defines a context and provider to manage user authentication state.
+ * It provides the current user state, login, logout, and registration handler functions.
+ * 
+ * The provider manages user state internally and uses imported API functions to communicate
+ * with the backend for login, logout, and user creation.
+ * 
+ * Exports:
+ *   - UserContext: The context object to consume user-related state and functions.
+ *   - UserProvider: The provider component to wrap app parts requiring authentication state.
+ * 
+ * Provided context value includes:
+ *   - user: Current logged-in user information including username and token.
+ *   - setUser: Setter function for user state (primarily for internal use).
+ *   - isLoggedIn: Function to check if there is a logged-in user.
+ *   - handleLogin: Function to authenticate and log in a user.
+ *   - handleLogout: Function to log out the current user.
+ *   - handleRegister: Function to register a new user and automatically log them in.
+ * 
+ * Usage:
+ *   Wrap your components within <UserProvider> for them to have access to authentication state 
+ *   and actions via UserContext.
+ * 
+ * Dependencies:
+ *   - Uses API helper functions for backend communication.
+ */
+
+
 import React, { createContext, useState } from "react";
 import loginApi from '../Api/Authentication/loginApi';
 import createUserApi from '../Api/Authentication/createUserApi';

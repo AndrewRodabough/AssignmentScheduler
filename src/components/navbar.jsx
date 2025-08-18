@@ -14,6 +14,7 @@ const Navbar = () => {
             <div>
                 <NavLink to="/">Home</NavLink>
 
+                {/* Conditionally render links based on user login status */}
                 {isLoggedIn() ? (
                     <>
                         <NavLink to="/main">Main</NavLink>

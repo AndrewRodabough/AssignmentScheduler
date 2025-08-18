@@ -1,4 +1,11 @@
-export const clear = () => {
+/**
+ * clearApi - Makes a DELETE request to clear/reset server-side data.
+ * 
+ * @returns {Promise<void>} Resolves if the clear operation is successful.
+ *          Rejects with an error if the request fails.
+ */
+
+const clearApi = () => {
     return new Promise((resolve, reject) => {
         const endpoint = './api/clear';
 
@@ -23,3 +30,5 @@ export const clear = () => {
         });
     });
 };
+
+export default clearApi;
