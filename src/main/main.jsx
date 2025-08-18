@@ -1,14 +1,10 @@
 import React, { useContext } from 'react';
-import ModalClose from '../components/ModalClose.jsx';
-import Modal from '../components/Modal.jsx';
+import ModalClose from '../components/modal/ModalClose.jsx';
+import Modal from '../components/modal/Modal.jsx';
 import { useEffect, useState } from 'react';
 import { format, eachDayOfInterval, parseISO, startOfWeek, endOfWeek } from 'date-fns';
-import { v4 as uuid } from 'uuid';
 import CalendarContext from '../context/calendarContext.jsx';
 import { Event } from '../models/event.js';
-import CalDeleteCal from './calDeleteCal.jsx';
-import CalCreateCal from './calCreateCal.jsx';
-import CalShareCal from './calShareCal.jsx';
 import CalCreateEvent from './calCreateEvent.jsx';
 import './main.css';
 
@@ -182,16 +178,17 @@ function Main() {
     const [shareUsername, setShareUsername] = useState("");
 
     // State for create calendar modal
-    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [showCreateEventModal, setShowCreateEventModal] = useState(false);
+    const [showCreateCalModal, setShowCreateCalModal] = useState(false);
     const [newCalendarName, setNewCalendarName] = useState("");
 
     // Handler for create calendar
     const handleCreateCalendarOpen = () => {
-        setShowCreateModal(true);
+        setShowCreateCalModal(true);
     };
 
     const handleCreateCalendarClose = () => {
-        setShowCreateModal(false);
+        setShowCreateCalModal(false);
         setNewCalendarName("");
     };
 
@@ -201,7 +198,7 @@ function Main() {
             try {
                 await handleCreateCalendar(newCalendarName);
                 await handleGetAllCalendar();
-                setShowCreateModal(false);
+                setShowCreateCalModal(false);
                 setNewCalendarName("");
             } catch (error) {
                 console.log(error);
@@ -290,7 +287,28 @@ function Main() {
     <>
         <section className='calendar-split'>
             <section className='box calendar-controls'>
-                <CalCreateEvent />
+                        
+                        
+                        
+                <div>
+                    <button 
+                        className="create-event-btn" 
+                        onClick={() => setShowCreateEventModal(true)}
+                        style={{ marginBottom: '16px' }}
+                    >
+                        Create Event
+                    </button>
+                    <ModalClose
+                        isOpen={showCreateEventModal}
+                        onClose={() => setShowCreateEventModal(false)}
+                        title="Create Event"
+                    >
+                        <CalCreateEvent onEventCreated={() => setShowCreateEventModal(false)} />
+                    </ModalClose>
+                </div>
+                
+                
+                
                 <section>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <h3 style={{ margin: 0 }}>Calendars</h3>
@@ -392,7 +410,7 @@ function Main() {
                 <button type="submit">Share</button>
             </form>
         </ModalClose>
-                <ModalClose isOpen={showCreateModal} onClose={handleCreateCalendarClose} title="Create Calendar">
+                <ModalClose isOpen={showCreateCalModal} onClose={handleCreateCalendarClose} title="Create Calendar">
             <form onSubmit={handleCreateCalendarConfirm} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
                 <label htmlFor="newCalendarNameModal">Calendar Name:</label>
                 <input

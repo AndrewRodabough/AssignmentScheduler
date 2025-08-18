@@ -37,26 +37,24 @@ export const CalCreateEvent = () => {
         }
         
         if (message == "") {
-    
             const event = new Event(uuid(), title.value , startDate.value, startTime.value, endDate.value, endTime.value, calendar.value);
-
             try {
-                console.log("send to auth context");
                 await handleCreateEvent(event);
                 await handleGetAllEvent();
+                if (onEventCreated) onEventCreated(); // <-- Close modal after creation
             }
             catch (error) {
                 console.log(error);
             }
-
         }
     }
 
     return (
-        <>
-            <section>
-                <h3>Create Event</h3>
-                <form onSubmit={handleSubmitCreateEvent}>
+    <>
+        <section className="create-event-section">
+            <h3>Create Event</h3>
+            <form className="create-event-form" onSubmit={handleSubmitCreateEvent}>
+                <div className="form-group">
                     <input
                         type="text" 
                         id="createEventTitle" 
@@ -64,8 +62,10 @@ export const CalCreateEvent = () => {
                         placeholder='Event Title'
                         required
                     />
-                    <br/>
-                    S: <input 
+                </div>
+                <div className="form-row">
+                    <label>S:</label>
+                    <input 
                         type="date" 
                         id="createEventStartDate" 
                         name="createEventStartDate" 
@@ -76,8 +76,10 @@ export const CalCreateEvent = () => {
                         id="createEventStartTime"
                         name="createEventStartTime"
                     />
-                    <br/>
-                    E: <input
+                </div>
+                <div className="form-row">
+                    <label>E:</label>
+                    <input
                         type="date" 
                         id="createEventEndDate" 
                         name="createEventEndDate" 
@@ -88,9 +90,9 @@ export const CalCreateEvent = () => {
                         id="createEventEndTime" 
                         name="createEventEndTime" 
                     />
-                    <br/>
-                    
-                    <label htmlFor="createEventCalendar">Add To: </label>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="createEventCalendar">Add To:</label>
                     <select id="createEventCalendar" name="createEventCalendar">
                     {
                         calendars.length === 0 ? (
@@ -106,14 +108,13 @@ export const CalCreateEvent = () => {
                             ))
                         )
                     }
-
                     </select>
-                    <br/>
-                    <button type="submit">Create Event</button>
-                </form>
-            </section>
-        </>    
-    )
+                </div>
+                <button className="create-event-btn" type="submit">Create Event</button>
+            </form>
+        </section>
+    </>    
+)
     
 }
 
