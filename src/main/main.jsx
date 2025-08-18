@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+import ModalClose from '../components/ModalClose.jsx';
+import Modal from '../components/Modal.jsx';
 import { useEffect, useState } from 'react';
 import { format, eachDayOfInterval, parseISO, startOfWeek, endOfWeek } from 'date-fns';
 import { v4 as uuid } from 'uuid';
@@ -129,7 +131,7 @@ const CalendarGrid = () => {
 
 function Main() {
   
-    const { handleGetAllCalendar, handleShareCalendar, calendars, handleGetAllEvent, handleDeleteCalendar} = useContext(CalendarContext);
+    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, calendars, handleGetAllEvent, handleDeleteCalendar} = useContext(CalendarContext);
     useEffect(() => { handleGetAllCalendar(); handleGetAllEvent(); }, []);        //KEEP COMMENT TO STOP UPDATE ON REFRESH
     
     const handleSubmitShareCalendar = async (e) => {
@@ -173,10 +175,102 @@ function Main() {
 
 
     const [activeMenu, setActiveMenu] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [calendarToDelete, setCalendarToDelete] = useState(null);
+    const [showShareModal, setShowShareModal] = useState(false);
+    const [shareCalendarName, setShareCalendarName] = useState("");
+    const [shareUsername, setShareUsername] = useState("");
+
+    // State for create calendar modal
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [newCalendarName, setNewCalendarName] = useState("");
+
+    // Handler for create calendar
+    const handleCreateCalendarOpen = () => {
+        setShowCreateModal(true);
+    };
+
+    const handleCreateCalendarClose = () => {
+        setShowCreateModal(false);
+        setNewCalendarName("");
+    };
+
+    const handleCreateCalendarConfirm = async (e) => {
+        e.preventDefault();
+        if (newCalendarName) {
+            try {
+                await handleCreateCalendar(newCalendarName);
+                await handleGetAllCalendar();
+                setShowCreateModal(false);
+                setNewCalendarName("");
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
+    // Handler skeletons for menu actions
+    const handleEditCalendarMenu = (calendarName) => {
+        // TODO: Implement edit logic (e.g., open edit dialog)
+        console.log('Edit Calendar:', calendarName);
+        setActiveMenu(null);
+    };
+
+    const handleShareCalendarMenu = (calendarName) => {
+        setShareCalendarName(calendarName);
+        setShowShareModal(true);
+        setActiveMenu(null);
+    };
+
+    const handleShareConfirm = async (e) => {
+        e.preventDefault();
+        if (shareCalendarName && shareUsername) {
+            try {
+                await handleShareCalendar(shareUsername, shareCalendarName);
+                await handleGetAllCalendar();
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        setShowShareModal(false);
+        setShareCalendarName("");
+        setShareUsername("");
+    };
+
+    const handleShareClose = () => {
+        setShowShareModal(false);
+        setShareCalendarName("");
+        setShareUsername("");
+    };
+
+    const handleDeleteCalendarMenu = (calendarName) => {
+        setCalendarToDelete(calendarName);
+        setShowDeleteModal(true);
+        setActiveMenu(null);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (calendarToDelete) {
+            try {
+                await handleDeleteCalendar(calendarToDelete);
+                await handleGetAllCalendar();
+                await handleGetAllEvent();
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        setShowDeleteModal(false);
+        setCalendarToDelete(null);
+    };
+
+    const handleCancelDelete = () => {
+        setShowDeleteModal(false);
+        setCalendarToDelete(null);
+    };
 
     const toggleMenu = (calendarName, e) => {
-    e.stopPropagation(); // Prevent event from bubbling up
-    setActiveMenu(activeMenu === calendarName ? null : calendarName);
+        e.stopPropagation(); // Prevent event from bubbling up
+        setActiveMenu(activeMenu === calendarName ? null : calendarName);
     };
 
     useEffect(() => {
@@ -185,7 +279,6 @@ function Main() {
                 setActiveMenu(null);
             }
         };
-        
         document.addEventListener('click', closeDropdowns);
         return () => document.removeEventListener('click', closeDropdowns);
     }, []);
@@ -194,22 +287,22 @@ function Main() {
 
 
     return (
-    <>  
+    <>
         <section className='calendar-split'>
-
             <section className='box calendar-controls'>
-
-                <CalShareCal />
-
-                <CalCreateCal />
-
                 <CalCreateEvent />
-
-                <CalDeleteCal />
-
-
                 <section>
-                    <h3>Calendars</h3>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <h3 style={{ margin: 0 }}>Calendars</h3>
+                        <button 
+                            type="button" 
+                            aria-label="Create Calendar" 
+                            style={{ fontSize: '1.5rem', padding: '0.2rem 0.7rem', borderRadius: '50%', border: 'none', background: 'rgba(0, 0, 0, 0)', cursor: 'pointer' }}
+                            onClick={handleCreateCalendarOpen}
+                        >
+                            +
+                        </button>
+                    </div>
                     <div>
                         <fieldset>
                         {
@@ -218,7 +311,6 @@ function Main() {
                             ) : (
                                 calendars.map(calendar => (
                                     <section className="calendar-list-item" key={calendar.name}>
-                                        
                                         <div>
                                             <input 
                                                 type="checkbox" 
@@ -229,23 +321,19 @@ function Main() {
                                                 {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1) + (calendar.shared ? " (shared)" : "")}
                                             </label>
                                         </div>
-                                        
                                         <div className='calendar-list-icons'>
-                                            
                                             <div>
                                                 {calendar.shared && <span className="material-symbols-outlined">group</span> }
                                             </div>
-    
                                             <div className="calendar-list-menu-container">
-                                                
                                                 <div className="calendar-list-menu-trigger" onClick={(e) => toggleMenu(calendar.name, e)}>
                                                     <span className="calendar-list-three-dots">&#8942;</span>
                                                 </div>
                                                 <div className={`calendar-list-dropdown-menu ${activeMenu === calendar.name ? 'active' : ''}`}>
                                                     <ul>
-                                                        <li>Edit Calendar</li>
-                                                        <li>Share Calendar</li>
-                                                        <li>Delete Calendar</li>
+                                                        <li onClick={() => handleEditCalendarMenu(calendar.name)}>Edit Calendar</li>
+                                                        <li onClick={() => handleShareCalendarMenu(calendar.name)}>Share Calendar</li>
+                                                        <li onClick={() => handleDeleteCalendarMenu(calendar.name)}>Delete Calendar</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -254,17 +342,71 @@ function Main() {
                                 ))
                             )
                         }
-                            
                         </fieldset>
                     </div>
                 </section>
-
             </section>
-
             <section className='calendar-container'>
                 <CalendarGrid />
             </section>
         </section>
+        <Modal isOpen={showDeleteModal} onClose={handleCancelDelete}>
+            <div>
+                <h2>Are you sure you want to delete "{calendarToDelete}"?</h2>
+                <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center', gap: '2rem' }}>
+                    <button onClick={handleConfirmDelete} style={{ padding: '0.5rem 1.5rem' }}>Yes</button>
+                    <button onClick={handleCancelDelete} style={{ padding: '0.5rem 1.5rem' }}>No</button>
+                </div>
+            </div>
+        </Modal>
+        <ModalClose isOpen={showShareModal} onClose={handleShareClose} title="Share">
+            <form onSubmit={handleShareConfirm} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
+                <label htmlFor="shareCalendarModal">Calendar:</label>
+                <select
+                    id="shareCalendarModal"
+                    name="shareCalendarModal"
+                    value={shareCalendarName}
+                    onChange={e => setShareCalendarName(e.target.value)}
+                    required
+                >
+                    <option value="" disabled>Select a calendar</option>
+                    {calendars.length === 0 ? (
+                        <option disabled value="">You Have No Calendars</option>
+                    ) : (
+                        calendars.map(calendar => (
+                            <option key={calendar.name} value={calendar.name}>
+                                {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                            </option>
+                        ))
+                    )}
+                </select>
+                <input
+                    type="text"
+                    id="shareUsernameModal"
+                    name="shareUsernameModal"
+                    placeholder="username"
+                    value={shareUsername}
+                    onChange={e => setShareUsername(e.target.value)}
+                    required
+                />
+                <button type="submit">Share</button>
+            </form>
+        </ModalClose>
+                <ModalClose isOpen={showCreateModal} onClose={handleCreateCalendarClose} title="Create Calendar">
+            <form onSubmit={handleCreateCalendarConfirm} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
+                <label htmlFor="newCalendarNameModal">Calendar Name:</label>
+                <input
+                    type="text"
+                    id="newCalendarNameModal"
+                    name="newCalendarNameModal"
+                    placeholder="Calendar Name"
+                    value={newCalendarName}
+                    onChange={e => setNewCalendarName(e.target.value)}
+                    required
+                />
+                <button type="submit">Create</button>
+            </form>
+        </ModalClose>
     </>
     );
 }
