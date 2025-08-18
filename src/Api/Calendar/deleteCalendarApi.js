@@ -1,4 +1,13 @@
-export const deleteCalendar = (token, calendarName) => {
+/**
+ * deleteCalendarApi - Makes a DELETE request to remove an existing calendar.
+ * 
+ * @param {string} token - The authentication token of the user.
+ * @param {string} calendarName - The name of the calendar to be deleted.
+ * @returns {Promise<void>} Resolves if calendar deletion is successful.
+ *          Rejects with an error if the request fails.
+ */
+
+const deleteCalendarApi = (token, calendarName) => {
     return new Promise((resolve, reject) => {
         const endpoint = './api/calendar/delete';
 
@@ -29,3 +38,5 @@ export const deleteCalendar = (token, calendarName) => {
         });
     });
 };
+
+export default deleteCalendarApi;

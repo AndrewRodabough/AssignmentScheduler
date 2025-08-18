@@ -1,4 +1,12 @@
-export const logout = (token) => {
+/**
+ * logout - Makes a DELETE request to log out the authenticated user.
+ * 
+ * @param {string} token - The authentication token of the user to be logged out.
+ * @returns {Promise<void>} Resolves if logout is successful.
+ *          Rejects with an error if the logout request fails.
+ */
+
+const logoutApi = (token) => {
     return new Promise((resolve, reject) => {
         const endpoint = './api/auth/logout';
 
@@ -27,3 +35,5 @@ export const logout = (token) => {
         });
     });
 };
+
+export default logoutApi;

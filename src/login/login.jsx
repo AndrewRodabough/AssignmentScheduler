@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../AuthContext.jsx';
+import UserContext from '../context/userContext.jsx';
 import './login.css';
 
 function login() {
-    const { handleLogin, handleRegister } = useAuth();
+    const { handleLoginApi, handleRegisterApi } = useContext(UserContext);
     const [actionType, setActionType] = useState(null);
     const navigate = useNavigate();
     
@@ -30,11 +30,11 @@ function login() {
         try {
             if (actionType === 'login') {
                 console.log("Login Clicked")
-                await handleLogin(credentials); // Send Request and update Auth
+                await handleLoginApi(credentials); // Send Request and update Auth
             }
             else if (actionType === 'register') {
                 console.log("Register Clicked")
-                await handleRegister(credentials);
+                await handleRegisterApi(credentials);
             }
 
             navigate('/main');

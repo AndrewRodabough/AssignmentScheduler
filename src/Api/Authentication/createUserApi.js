@@ -1,4 +1,14 @@
-export const createUser = (username, password) => {
+/**
+ * createUserApi - Makes a POST request to create a new user account.
+ * 
+ * @param {string} username - The username for the new user.
+ * @param {string} password - The password for the new user.
+ * @returns {Promise<void>} Resolves if user creation is successful.
+ *          Rejects with an error message if the username already exists
+ *          or if any other error occurs during the request.
+ */
+
+const createUserApi = (username, password) => {
     return new Promise((resolve, reject) => {
         const endpoint = '/api/auth/create';
 
@@ -27,3 +37,5 @@ export const createUser = (username, password) => {
         });
     });
 };
+
+export default createUserApi;

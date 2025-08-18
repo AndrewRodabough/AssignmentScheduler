@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
-import { BrowserRouter, NavLink, Route, Routes, Navigate } from 'react-router-dom';
-import { UserProvider, UserContext } from './context/userContext.jsx';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import UserContext, { UserProvider } from './context/userContext.jsx';
+import { CalendarProvider } from './context/calendarContext.jsx';
 import Login from './login/login';
 import Home from './home/home';
-import Main from './main/main';
 import Footer from './components/footer.jsx';
 import Navbar from './components/navbar.jsx';
 import './app.css';
-
 
 function App() {
     const { isLoggedIn } = useContext(UserContext);
@@ -26,12 +25,7 @@ function App() {
                                 !isLoggedIn() ? <Login /> : <Navigate to="/main" replace />
                             }
                         />
-                        <Route 
-                            path="/main" 
-                            element={
-                                isLoggedIn() ? <Main /> : <Navigate to="/login" replace />
-                            }
-                        />
+
                         <Route path='*' element={<NotFound />} />
                     </Routes>
                 </main >
@@ -50,7 +44,9 @@ function NotFound() {
 export default function WrappedApp() {
     return (
         <UserProvider>
-            <App />
+            <CalendarProvider>
+                <App />
+            </CalendarProvider>
         </UserProvider>
     );
 }

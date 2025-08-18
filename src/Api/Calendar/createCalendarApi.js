@@ -1,4 +1,13 @@
-export const createCalendar = (token, calendarName) => {
+/**
+ * createCalendarApi - Makes a POST request to create a new calendar.
+ * 
+ * @param {string} token - The authentication token of the user.
+ * @param {string} calendarName - The name of the calendar to be created.
+ * @returns {Promise<void>} Resolves if calendar creation is successful.
+ *          Rejects with an error if the request fails.
+ */
+
+const createCalendarApi = (token, calendarName) => {
     return new Promise((resolve, reject) => {
         const endpoint = './api/calendar/create';
 
@@ -29,3 +38,5 @@ export const createCalendar = (token, calendarName) => {
         });
     });
 };
+
+export default createCalendarApi;

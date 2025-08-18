@@ -1,4 +1,13 @@
-export const createEvent = (token, event) => {
+/**
+ * createEventApi - Makes a POST request to create a new event.
+ * 
+ * @param {string} token - The authentication token of the user.
+ * @param {Object} event - The event data object to be created.
+ * @returns {Promise<void>} Resolves if event creation is successful.
+ *          Rejects with an error if the request fails.
+ */
+
+const createEventApi = (token, event) => {
     return new Promise((resolve, reject) => {
         const endpoint = './api/event/create';
 
@@ -29,3 +38,5 @@ export const createEvent = (token, event) => {
         });
     });
 };
+
+export default createEventApi;

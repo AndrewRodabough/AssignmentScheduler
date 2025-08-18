@@ -1,6 +1,14 @@
-export const getAllCalendar = (token) => {
+/**
+ * getAllEventApi - Makes a GET request to retrieve all events associated with the user.
+ * 
+ * @param {string} token - The authentication token of the user.
+ * @returns {Promise<Array>} Resolves with an array of events if successful.
+ *          Rejects with an error if the request fails.
+ */
+
+const getAllEventApi = (token) => {
     return new Promise((resolve, reject) => {
-        const endpoint = './api/calendar/getAll';
+        const endpoint = './api/event/getAll';
 
         fetch(endpoint, {
             method: 'GET',
@@ -12,7 +20,7 @@ export const getAllCalendar = (token) => {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Calendar get failed');
+                throw new Error('Event get failed');
             }
             return response.json();
         })
@@ -25,3 +33,5 @@ export const getAllCalendar = (token) => {
         });
     });
 };
+
+export default getAllEventApi;
