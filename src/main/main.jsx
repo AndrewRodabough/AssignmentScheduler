@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { useEffect, useState } from 'react';
 import { format, eachDayOfInterval, parseISO, startOfWeek, endOfWeek } from 'date-fns';
 import { v4 as uuid } from 'uuid';
-import UserContext from '../context/userContext.jsx';
 import CalendarContext from '../context/calendarContext.jsx';
 import { Event } from '../models/event.js';
 import './main.css';

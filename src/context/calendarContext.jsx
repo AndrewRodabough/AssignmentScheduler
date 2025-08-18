@@ -1,4 +1,5 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useContext } from "react";
+import UserContext from './userContext.jsx';
 import createCalendarApi from "../Api/Calendar/createCalendarApi";
 import getAllCalendarApi from "../Api/Calendar/getAllCalendarsApi";
 import shareCalendarApi from "../Api/Calendar/shareCalendarApi";
@@ -12,6 +13,7 @@ const CalendarProvider = ({ children }) => {
 
     const [calendars, setCalendars] = useState([]);
     const [events, setEvents] = useState([]);
+    const { user } = useContext(UserContext);
 
     const handleCreateCalendar = async (calendarName) => {
         if (!user || !user.token) {
