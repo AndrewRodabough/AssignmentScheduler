@@ -1,13 +1,15 @@
-import React from 'react';
-import './main.css';
+import React, { useContext } from 'react';
 import { useEffect, useState } from 'react';
 import { format, eachDayOfInterval, parseISO, startOfWeek, endOfWeek } from 'date-fns';
-import { useAuth } from '../AuthContext.jsx';
-import { Event } from '../models/event.js';
 import { v4 as uuid } from 'uuid';
+import UserContext from '../context/userContext.jsx';
+import CalendarContext from '../context/calendarContext.jsx';
+import { Event } from '../models/event.js';
+import './main.css';
 
 const CalendarGrid = () => {
-    const { events } = useAuth();
+    const { events } = useContext(CalendarContext);
+
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [dateColumns, setDateColumns] = useState([]);
@@ -21,8 +23,6 @@ const CalendarGrid = () => {
         setStartDate(format(sOfWeek, 'yyyy-MM-dd'));
         setEndDate(format(eOfWeek, 'yyyy-MM-dd'));
     }, []);
-
-    
 
     useEffect(() => {
         if (startDate && endDate) {
@@ -126,7 +126,7 @@ const CalendarGrid = () => {
 
 function Main() {
   
-    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, calendars, handleGetAllEvent, handleDeleteCalendar} = useAuth();
+    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, calendars, handleGetAllEvent, handleDeleteCalendar} = useContext(CalendarContext);
     useEffect(() => { handleGetAllCalendar(); handleGetAllEvent(); }, []);        //KEEP COMMENT TO STOP UPDATE ON REFRESH
     
     const handleSubmitCreateCalendar = async (e) => {

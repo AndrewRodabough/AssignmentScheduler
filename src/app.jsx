@@ -4,6 +4,7 @@ import UserContext, { UserProvider } from './context/userContext.jsx';
 import { CalendarProvider } from './context/calendarContext.jsx';
 import Login from './login/login';
 import Home from './home/home';
+import Main from './main/main';
 import Footer from './components/footer.jsx';
 import Navbar from './components/navbar.jsx';
 import './app.css';
@@ -25,7 +26,12 @@ function App() {
                                 !isLoggedIn() ? <Login /> : <Navigate to="/main" replace />
                             }
                         />
-
+                        <Route 
+                            path="/main" 
+                            element={
+                                isLoggedIn() ? <Main /> : <Navigate to="/login" replace />
+                            }
+                        />
                         <Route path='*' element={<NotFound />} />
                     </Routes>
                 </main >

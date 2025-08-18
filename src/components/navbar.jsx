@@ -4,7 +4,7 @@ import UserContext from '../context/userContext.jsx';
 
 const Navbar = () => {
 
-    const { user, isLoggedIn} = useContext(UserContext);
+    const { user, isLoggedIn, handleLogout} = useContext(UserContext);
 
     return (
         <nav>
@@ -18,7 +18,7 @@ const Navbar = () => {
                     <>
                         <NavLink to="/main">Main</NavLink>
                         <span>Current User: {user.username}</span>
-                        <button>Logout</button>                            
+                        <button onClick={handleLogout}>Logout</button>                            
                     </>
                 ) : (
                     <>

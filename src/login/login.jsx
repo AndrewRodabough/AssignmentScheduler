@@ -4,7 +4,7 @@ import UserContext from '../context/userContext.jsx';
 import './login.css';
 
 function login() {
-    const { handleLoginApi, handleRegisterApi } = useContext(UserContext);
+    const { handleLogin, handleRegister } = useContext(UserContext);
     const [actionType, setActionType] = useState(null);
     const navigate = useNavigate();
     
@@ -30,11 +30,11 @@ function login() {
         try {
             if (actionType === 'login') {
                 console.log("Login Clicked")
-                await handleLoginApi(credentials); // Send Request and update Auth
+                await handleLogin(credentials); // Send Request and update Auth
             }
             else if (actionType === 'register') {
                 console.log("Register Clicked")
-                await handleRegisterApi(credentials);
+                await handleRegister(credentials);
             }
 
             navigate('/main');

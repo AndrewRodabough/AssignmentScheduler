@@ -13,10 +13,10 @@ const UserProvider = ({ children }) => {
         return user !== null;
     }
 
-    const handleLogin = async () => {
-        const result = await loginApi(userData.username, userData.password);
-        userData.token = result;
-        setUser(userData);
+    const handleLogin = async (userInfo) => {
+        const result = await loginApi(userInfo.username, userInfo.password);
+        const newUserData = { username: userInfo.username, token: result };
+        setUser(newUserData);
     }
 
     const handleLogout = async () => {
@@ -24,9 +24,9 @@ const UserProvider = ({ children }) => {
         setUser(null);
     }
 
-    const handleRegister = async () => {
-        await createUserApi(userData.username, userData.password);
-        await handleLoginApi(userData);
+    const handleRegister = async (userInfo) => {
+        await createUserApi(userInfo.username, userInfo.password);
+        await handleLogin(userInfo);
     }
 
     return (
