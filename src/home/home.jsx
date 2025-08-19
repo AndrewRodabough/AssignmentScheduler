@@ -4,12 +4,9 @@ import '../app.css';
 function Home() {
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <section className="title">
+            <div style={{ width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <section className="title" style={{ width: '100%' }}>
                     AssignmentScheduler
-                </section>
-                <section>
-                    <img src="/construction.png" style={{ width: '100vw', height: 'auto', display: 'block', margin: 0, padding: 0 }} />
                 </section>
             </div>
         </>
