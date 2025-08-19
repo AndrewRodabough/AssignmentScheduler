@@ -19,10 +19,9 @@ export class CalendarController {
         if (!user) {
             throw new Error("User not Found");
         }
-        
         const calendar = new Calendar(calendarName, user.username);
-        
         await this.calendarService.create(calendar);
+        return calendar;
     }
 
     async delete(token, CalendarName) {
@@ -94,9 +93,9 @@ export class CalendarController {
             throw new Error("Already shared to user");
         }
 
-        calendar.shared = true;
-        calendar.sharedUsers.push(shareUser);
-
-        await this.calendarService.update(calendar);
+    calendar.shared = true;
+    calendar.sharedUsers.push(shareUser);
+    await this.calendarService.update(calendar);
+    return calendar;
     }
 }

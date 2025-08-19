@@ -11,8 +11,6 @@ const createCalendarApi = (token, calendarName) => {
     return new Promise((resolve, reject) => {
         const endpoint = './api/calendar/create';
 
-        console.log(token);
-
         fetch(endpoint, {
             method: 'POST',
             headers: {
@@ -28,10 +26,13 @@ const createCalendarApi = (token, calendarName) => {
             if (!response.ok) {
                 throw new Error('Calendar Creation failed');
             }
-            return null
+            return response.json();
         })
         .then(data => {
-            resolve();
+            // Assume API returns the new calendar object as 'calendar' or directly as data
+            // If your backend returns { calendar: {...} }, use data.calendar
+            // If it returns the object directly, use data
+            resolve(data.calendar ? data.calendar : data);
         })
         .catch(error => {
             reject(error);

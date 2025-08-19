@@ -30,10 +30,10 @@ const shareCalendarApi = (token, shareUser, shareCalendar) => {
             if (!response.ok) {
                 throw new Error('Calendar Share Fail');
             }
-            return null
+            return response.json();
         })
         .then(data => {
-            resolve();
+            resolve(data.calendar ? data.calendar : data);
         })
         .catch(error => {
             reject(error);

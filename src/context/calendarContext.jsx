@@ -44,16 +44,22 @@ const CalendarContext = createContext();
 
 const CalendarProvider = ({ children }) => {
 
-    const [calendars, setCalendars] = useState([]); {/* Array to hold user's calendars */}
-    const [events, setEvents] = useState([]); {/* Array to hold user's events */}
+    const [calendars, setCalendars] = useState([]); // Array to hold user's calendars
+    const [events, setEvents] = useState([]); // Array to hold user's events
     const { user } = useContext(UserContext);
 
     const handleCreateCalendar = async (calendarName) => {
         if (!user || !user.token) {
             throw new Error('User must be logged in to create a calendar');
         }
-
-        await createCalendarApi(user.token, calendarName);
+        // Assume API returns the new calendar object
+        const newCalendar = await createCalendarApi(user.token, calendarName);
+        if (!newCalendar || !newCalendar.name) {
+            // API did not return a valid calendar, do not update state
+            return null;
+        }
+        setCalendars(prev => [...prev, newCalendar]);
+        return newCalendar;
     }
 
     const handleGetAllCalendar = async () => {
@@ -71,16 +77,28 @@ const CalendarProvider = ({ children }) => {
         if (!user || !user.token) {
             throw new Error('User must be logged in to share calendar');
         }
-
-        await shareCalendarApi(user.token, sharedUsername, sharedCalendar);
+        // Assume API returns the updated calendar object
+        const updatedCalendar = await shareCalendarApi(user.token, sharedUsername, sharedCalendar);
+        if (!updatedCalendar || !updatedCalendar.name) {
+            // API did not return a valid calendar, do not update state
+            return null;
+        }
+        setCalendars(prev => prev.map(cal => cal.name === updatedCalendar.name ? updatedCalendar : cal));
+        return updatedCalendar;
     }
 
     const handleCreateEvent = async (event) => {
         if (!user || !user.token) {
             throw new Error('User must be logged in to create Event');
         }
-
-        await createEventApi(user.token, event);
+        // Assume API returns the new event object
+        const newEvent = await createEventApi(user.token, event);
+        if (!newEvent || !newEvent.id) {
+            // API did not return a valid event, do not update state
+            return null;
+        }
+        setEvents(prev => [...prev, newEvent]);
+        return newEvent;
     }
 
     const handleGetAllEvent = async () => {
@@ -105,11 +123,11 @@ const CalendarProvider = ({ children }) => {
     const handleDeleteCalendar = async (calendarName) => {
         if (!user || !user.token) {
             console.log('User must be logged in to delete calendar');
-            //throw new Error('User must be logged in to delete calendar');
+            return;
         }
-
         console.log("sending delete");
         await deleteCalendarApi(user.token, calendarName);
+        setCalendars(prev => prev.filter(cal => cal.name !== calendarName));
     }
 
     return (

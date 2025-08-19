@@ -24,7 +24,6 @@ function Main() {
         if (shareForm.username && shareForm.calendar) {
             try {
                 await handleShareCalendar(shareForm.username, shareForm.calendar);
-                await handleGetAllCalendar();
                 closeShareModal();
                 setShareForm({ username: '', calendar: '' });
             } catch (error) {
@@ -41,8 +40,8 @@ function Main() {
         if (deleteCalendarName) {
             try {
                 await handleDeleteCalendar(deleteCalendarName);
-                await handleGetAllCalendar();
-                await handleGetAllEvent();
+                // Remove events for the deleted calendar from local state
+                setEvents && setEvents(prev => prev.filter(event => event.calendarName !== deleteCalendarName));
                 closeDeleteModal();
                 setDeleteCalendarName('');
             } catch (error) {
@@ -68,7 +67,6 @@ function Main() {
         if (newCalendarName) {
             try {
                 await handleCreateCalendar(newCalendarName);
-                await handleGetAllCalendar();
                 closeCreateCalModal();
             } catch (error) {
                 console.log(error);
@@ -154,27 +152,29 @@ function Main() {
                                 <p>You Have No Calendars</p>
                             ) : (
                                 calendars.map(calendar => (
-                                    <section className="calendar-list-item" key={calendar.name}>
-                                        <div>
-                                            <input 
-                                                type="checkbox" 
-                                                id={calendar.name} 
-                                                name={calendar.name}
+                                    calendar && calendar.name ? (
+                                        <section className="calendar-list-item" key={calendar.name}>
+                                            <div>
+                                                <input 
+                                                    type="checkbox" 
+                                                    id={calendar.name} 
+                                                    name={calendar.name}
+                                                />
+                                                <label htmlFor={calendar.name}>
+                                                    {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1) + (calendar.shared ? " (shared)" : "")}
+                                                </label>
+                                            </div>
+                                            {/* Modular calendar menu */}
+                                            <CalendarMenu
+                                                calendar={calendar}
+                                                activeMenu={activeMenu}
+                                                onEdit={handleEditCalendarMenu}
+                                                onShare={handleShareCalendarMenu}
+                                                onDelete={handleDeleteCalendarMenu}
+                                                onToggleMenu={toggleMenu}
                                             />
-                                            <label htmlFor={calendar.name}>
-                                                {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1) + (calendar.shared ? " (shared)" : "")}
-                                            </label>
-                                        </div>
-                                        {/* Modular calendar menu */}
-                                        <CalendarMenu
-                                            calendar={calendar}
-                                            activeMenu={activeMenu}
-                                            onEdit={handleEditCalendarMenu}
-                                            onShare={handleShareCalendarMenu}
-                                            onDelete={handleDeleteCalendarMenu}
-                                            onToggleMenu={toggleMenu}
-                                        />
-                                    </section>
+                                        </section>
+                                    ) : null
                                 ))
                             )
                         }
