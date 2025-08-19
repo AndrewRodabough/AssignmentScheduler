@@ -10,7 +10,7 @@ import './main.css';
 
 function Main() {
   
-    const { handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, calendars, handleGetAllEvent, handleDeleteCalendar} = useContext(CalendarContext);
+    const { setEvents, handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, calendars, handleGetAllEvent, handleDeleteCalendar} = useContext(CalendarContext);
     useEffect(() => { handleGetAllCalendar(); handleGetAllEvent(); }, []);        //KEEP COMMENT TO STOP UPDATE ON REFRESH
     
     // Controlled form state for share calendar

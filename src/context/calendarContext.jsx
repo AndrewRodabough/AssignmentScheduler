@@ -131,7 +131,7 @@ const CalendarProvider = ({ children }) => {
     }
 
     return (
-        <CalendarContext.Provider value={{ calendars, events, handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, handleGetAllEvent, handleDeleteCalendar, handleClear }}>
+        <CalendarContext.Provider value={{ setCalendars, setEvents, calendars, events, handleCreateCalendar, handleGetAllCalendar, handleShareCalendar, handleCreateEvent, handleGetAllEvent, handleDeleteCalendar, handleClear }}>
             {children}
         </CalendarContext.Provider>
     );
