@@ -317,7 +317,7 @@ input:focus, select:focus {
     color: #fff;
     border: none;
     border-radius: 6px;
-    padding: 10px 0;
+    padding: 10px 10px;
     font-size: 1em;
     cursor: pointer;
     transition: background 0.2s;

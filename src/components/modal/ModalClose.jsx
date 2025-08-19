@@ -15,9 +15,18 @@ const ModalClose = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
   return (
     <div className="modal-overlay">
-      <div className="modal-content create-event-section">
-        <button className="modal-close-btn" onClick={onClose} aria-label="Close">&times;</button>
-        {title && <h2 style={{ marginTop: 0 }}>{title}</h2>}
+      <div className="modal-content create-event-section" style={{ position: 'relative' }}>
+        <button
+          className="modal-close-btn top-right"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          &times;
+        </button>
+        {title && <>
+          <h2 style={{ marginTop: 0 }}>{title}</h2>
+          <div className="modal-title-divider"></div>
+        </>}
         {children}
       </div>
       <div className="modal-backdrop" onClick={onClose}></div>

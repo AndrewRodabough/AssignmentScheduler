@@ -54,9 +54,6 @@ function Main() {
 
 
     const [activeMenu, setActiveMenu] = useState(null);
-    const [calendarToDelete, setCalendarToDelete] = useState(null);
-    const [shareCalendarName, setShareCalendarName] = useState("");
-    const [shareUsername, setShareUsername] = useState("");
     const [newCalendarName, setNewCalendarName] = useState("");
 
     // Modal states using useModal
@@ -65,12 +62,6 @@ function Main() {
     const [showCreateEventModal, openCreateEventModal, closeCreateEventModal] = useModal(false);
     const [showCreateCalModal, openCreateCalModal, closeCreateCalModal] = useModal(false);
 
-    // Handler for create calendar
-    const handleCreateCalendarOpen = openCreateCalModal;
-    const handleCreateCalendarClose = () => {
-        closeCreateCalModal();
-        setNewCalendarName("");
-    };
 
     const handleCreateCalendarConfirm = async (e) => {
         e.preventDefault();
@@ -79,7 +70,6 @@ function Main() {
                 await handleCreateCalendar(newCalendarName);
                 await handleGetAllCalendar();
                 closeCreateCalModal();
-                setNewCalendarName("");
             } catch (error) {
                 console.log(error);
             }
@@ -90,61 +80,22 @@ function Main() {
     const handleEditCalendarMenu = (calendarName) => {
         // TODO: Implement edit logic (e.g., open edit dialog)
         console.log('Edit Calendar:', calendarName);
+        //openShareModal();
         setActiveMenu(null);
     };
 
+    // Opens share modal with selected calendar and closes 3 dot menu
     const handleShareCalendarMenu = (calendarName) => {
-        setShareCalendarName(calendarName);
         setShareForm(prev => ({ ...prev, calendar: calendarName }));
         openShareModal();
         setActiveMenu(null);
     };
 
-    const handleShareConfirm = async (e) => {
-        e.preventDefault();
-        if (shareCalendarName && shareUsername) {
-            try {
-                await handleShareCalendar(shareUsername, shareCalendarName);
-                await handleGetAllCalendar();
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        setShowShareModal(false);
-        setShareCalendarName("");
-        setShareUsername("");
-    };
-
-    const handleShareClose = () => {
-        closeShareModal();
-        setShareCalendarName("");
-        setShareUsername("");
-    };
-
+    // Opens delete modal with selected calendar and closes 3 dot menu
     const handleDeleteCalendarMenu = (calendarName) => {
-        setCalendarToDelete(calendarName);
         setDeleteCalendarName(calendarName);
         openDeleteModal();
         setActiveMenu(null);
-    };
-
-    const handleConfirmDelete = async () => {
-        if (calendarToDelete) {
-            try {
-                await handleDeleteCalendar(calendarToDelete);
-                await handleGetAllCalendar();
-                await handleGetAllEvent();
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        setShowDeleteModal(false);
-        setCalendarToDelete(null);
-    };
-
-    const handleCancelDelete = () => {
-        closeDeleteModal();
-        setCalendarToDelete(null);
     };
 
     const toggleMenu = (calendarName, e) => {
@@ -169,30 +120,21 @@ function Main() {
     <>
         <section className='calendar-split'>
             <section className='box calendar-controls'>
-                        
-                        
-                        
                 <div>
                     <button 
                         className="create-event-btn" 
                         onClick={openCreateEventModal}
-                        style={{ marginBottom: '16px' }}
                     >
-                        Create Event
+                        New Event
                     </button>
                     <ModalClose
                         isOpen={showCreateEventModal}
                         onClose={closeCreateEventModal}
                         title="Create Event"
                     >
-                        <CalCreateEvent onEventCreated={() => {
-                            closeCreateEventModal();
-                        }} />
+                        <CalCreateEvent onEventCreated={() => { closeCreateEventModal();}} />
                     </ModalClose>
                 </div>
-                
-                
-                
                 <section>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <h3 style={{ margin: 0 }}>Calendars</h3>
@@ -200,7 +142,7 @@ function Main() {
                             type="button" 
                             aria-label="Create Calendar" 
                             style={{ fontSize: '1.5rem', padding: '0.2rem 0.7rem', borderRadius: '50%', border: 'none', background: 'rgba(0, 0, 0, 0)', cursor: 'pointer' }}
-                            onClick={handleCreateCalendarOpen}
+                            onClick={openCreateCalModal}
                         >
                             +
                         </button>
@@ -244,7 +186,8 @@ function Main() {
                 <CalendarGrid onEventClick={event => console.log('Event clicked:', event)} />
             </section>
         </section>
-        <Modal isOpen={showDeleteModal} onClose={handleCancelDelete}>
+
+        <Modal isOpen={showDeleteModal} onClose={closeDeleteModal}>
             <form onSubmit={handleSubmitDeleteCalendar} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
                 <h2>Delete Calendar</h2>
                 <label htmlFor="deleteCalendar">Select Calendar:</label>
@@ -268,11 +211,11 @@ function Main() {
                 </select>
                 <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
                     <button type="submit" style={{ padding: '0.5rem 1.5rem' }}>Delete</button>
-                    <button type="button" onClick={handleCancelDelete} style={{ padding: '0.5rem 1.5rem' }}>Cancel</button>
+                    <button type="button" onClick={closeDeleteModal} style={{ padding: '0.5rem 1.5rem' }}>Cancel</button>
                 </div>
             </form>
         </Modal>
-        <ModalClose isOpen={showShareModal} onClose={handleShareClose} title="Share">
+        <ModalClose isOpen={showShareModal} onClose={closeShareModal} title="Share">
             <form onSubmit={handleSubmitShareCalendar} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
                 <label htmlFor="shareCalendar">Calendar:</label>
                 <select
@@ -305,7 +248,7 @@ function Main() {
                 <button type="submit">Share</button>
             </form>
         </ModalClose>
-                <ModalClose isOpen={showCreateCalModal} onClose={handleCreateCalendarClose} title="Create Calendar">
+        <ModalClose isOpen={showCreateCalModal} onClose={closeCreateCalModal} title="Create Calendar">
             <form onSubmit={handleCreateCalendarConfirm} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
                 <label htmlFor="newCalendarNameModal">Calendar Name:</label>
                 <input

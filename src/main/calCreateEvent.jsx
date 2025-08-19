@@ -51,79 +51,76 @@ const CalCreateEvent = ({ onEventCreated }) => {
 
     return (
     <>
-        <section className="create-event-section">
-            <h3>Create Event</h3>
-            <form className="create-event-form" onSubmit={handleSubmitCreateEvent}>
-                <div className="form-group">
-                    <input
-                        type="text"
-                        id="createEventTitle"
-                        name="title"
-                        placeholder='Event Title'
-                        value={form.title}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-row">
-                    <label>S:</label>
-                    <input
-                        type="date"
-                        id="createEventStartDate"
-                        name="startDate"
-                        value={form.startDate}
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        type="time"
-                        id="createEventStartTime"
-                        name="startTime"
-                        value={form.startTime}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="form-row">
-                    <label>E:</label>
-                    <input
-                        type="date"
-                        id="createEventEndDate"
-                        name="endDate"
-                        value={form.endDate}
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        type="time"
-                        id="createEventEndTime"
-                        name="endTime"
-                        value={form.endTime}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="createEventCalendar">Add To:</label>
-                    <select
-                        id="createEventCalendar"
-                        name="calendar"
-                        value={form.calendar}
-                        onChange={handleChange}
-                        required
-                    >
-                        {calendars.length === 0 ? (
-                            <option disabled value="">You Have No Calendars</option>
-                        ) : (
-                            calendars.map(calendar => (
-                                <option key={calendar.name} value={calendar.name}>
-                                    {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
-                                </option>
-                            ))
-                        )}
-                    </select>
-                </div>
-                <button className="create-event-btn" type="submit">Create Event</button>
-            </form>
-        </section>
+        <form className="create-event-form" onSubmit={handleSubmitCreateEvent}>
+            <div className="form-group">
+                <input
+                    type="text"
+                    id="createEventTitle"
+                    name="title"
+                    placeholder='Event Title'
+                    value={form.title}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+            <div className="form-row">
+                <label>S:</label>
+                <input
+                    type="date"
+                    id="createEventStartDate"
+                    name="startDate"
+                    value={form.startDate}
+                    onChange={handleChange}
+                    required
+                />
+                <input
+                    type="time"
+                    id="createEventStartTime"
+                    name="startTime"
+                    value={form.startTime}
+                    onChange={handleChange}
+                />
+            </div>
+            <div className="form-row">
+                <label>E:</label>
+                <input
+                    type="date"
+                    id="createEventEndDate"
+                    name="endDate"
+                    value={form.endDate}
+                    onChange={handleChange}
+                    required
+                />
+                <input
+                    type="time"
+                    id="createEventEndTime"
+                    name="endTime"
+                    value={form.endTime}
+                    onChange={handleChange}
+                />
+            </div>
+            <div className="form-group">
+                <label htmlFor="createEventCalendar">Add To:</label>
+                <select
+                    id="createEventCalendar"
+                    name="calendar"
+                    value={form.calendar}
+                    onChange={handleChange}
+                    required
+                >
+                    {calendars.length === 0 ? (
+                        <option disabled value="">You Have No Calendars</option>
+                    ) : (
+                        calendars.map(calendar => (
+                            <option key={calendar.name} value={calendar.name}>
+                                {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                            </option>
+                        ))
+                    )}
+                </select>
+            </div>
+            <button className="create-event-btn" type="submit">Create Event</button>
+        </form>
     </>    
 )
     
