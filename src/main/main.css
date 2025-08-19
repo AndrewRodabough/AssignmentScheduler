@@ -173,23 +173,27 @@ input[type="checkbox"] {
 
 .calendar-list-menu-container {
     position: relative;
-    display: flex; /* Change from inline-block to flex */
-    align-items: center; /* Center vertically */
+    display: flex;
+    align-items: center;
     margin-left: 10px;
-    height: 100%; /* Take full height of parent */
+    height: 2.2rem;
 }
 
 
 .calendar-list-three-dots {
     cursor: pointer;
-    font-size: 20px;
-    vertical-align: middle;
-    line-height: 1; /* Add this to improve vertical centering */
-    display: flex; /* Make it a flex container */
-    align-items: center; /* Center its content vertically */
-    height: 100%; /* Take full height of parent */
+    font-size: 1.5rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.2rem;
+    width: 2.2rem;
+    box-sizing: border-box;
 }
-
 
 .calendar-list-dropdown-menu {
     position: absolute;
