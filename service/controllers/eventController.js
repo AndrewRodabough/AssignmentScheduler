@@ -3,92 +3,81 @@ import { CalendarService } from '../services/calendarService.js';
 import { EventService } from '../services/eventService.js';
 
 export class EventController {
-    
     constructor(dataStore) {
         this.userService = new UserService(dataStore);
         this.calendarService = new CalendarService(dataStore);
         this.eventService = new EventService(dataStore);
     }
 
-    async create(token, event) {
-
-        console.log("EC: Create");
-
-        // get user name from token
-        const user = await this.userService.getUserFromToken(token);
-        if (!user) {
-            throw new Error("User not Found");
+    async create(req, res) {
+        try {
+            const token = req.headers.authorization;
+            const { event } = req.body;
+            const user = await this.userService.getUserFromToken(token);
+            if (!user) {
+                return res.status(404).json({ error: "User not Found" });
+            }
+            const calendar = await this.calendarService.get(event.calendarName);
+            if (!calendar) {
+                return res.status(404).json({ error: "Calendar not Found" });
+            }
+            if (!(calendar.username === user.username)) {
+                return res.status(403).json({ error: "Unauthorized to create event for calendar" });
+            }
+            await this.eventService.create(event);
+            return res.status(200).json({ message: "success" });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
         }
-        
-        // get calendar from token
-        const calendar = await this.calendarService.get(event.calendarName);
-        if (!calendar) {
-            throw new Error("Calendar not Found");
-        }
-        
-        // check user and calendar user match
-        if (!(calendar.username === user.username)) {
-            throw new Error("Unathorized to create event for calendar");
-        }
-
-        await this.eventService.create(event);
     }
 
-    async delete() {
-        console.log("EC: Delete");
+    async delete(req, res) {
+        try {
+            const token = req.headers.authorization;
+            const { eventId } = req.body;
+            const user = await this.userService.getUserFromToken(token);
+            if (!user) {
+                return res.status(404).json({ error: "User not Found" });
+            }
+            // You may want to check event ownership here
+            await this.eventService.delete(eventId);
+            return res.status(200).json({ message: "success" });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
     }
 
-    async update() {
-        console.log("EC: Update");
+    async update(req, res) {
+        try {
+            const token = req.headers.authorization;
+            const { event } = req.body;
+            const user = await this.userService.getUserFromToken(token);
+            if (!user) {
+                return res.status(404).json({ error: "User not Found" });
+            }
+            // You may want to check event ownership here
+            await this.eventService.update(event);
+            return res.status(200).json({ message: "success" });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
     }
 
-    async get() {
-        console.log("EC: get");
+    async getAll(req, res) {
+        try {
+            const token = req.headers.authorization;
+            const user = await this.userService.getUserFromToken(token);
+            if (!user) {
+                return res.status(404).json({ error: "User not Found" });
+            }
+            const calendars = await this.calendarService.getAll(user.username);
+            if (!calendars) {
+                return res.status(200).json([]);
+            }
+            const events = await this.eventService.getAll(calendars);
+            return res.status(200).json(events);
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
     }
-
-    async getAll(token) {
-
-        console.log("EC: GetAll");
-        // get username from token
-        const user = await this.userService.getUserFromToken(token);
-        if (!user) {
-            throw new Error("User not Found");
-        }
-        console.log("valid username")
-
-        //get all calendars from username
-        const calendars = await this.calendarService.getAll(user.username);
-        console.log("got cal")
-        if (!calendars) {
-            return []
-        }
-        
-        return this.eventService.getAll(calendars);
-    }
-
-    async deleteAll(token, calendarId) {
-        console.log("EC: DeleteAll");
-        
-        // get username from token
-        const user = await this.userService.getUserFromToken(token);
-        if (!user) {
-            throw new Error("User not Found");
-        }
-        
-        // get calendar from token
-        const calendar = await this.calendarService.get(calendarId);
-        if (!calendar) {
-            throw new Error("Calendar not Found");
-        }
-        
-        // check user and calendar user match
-        if (!(calendar.username === user.username)) {
-            throw new Error("Unathorized to delete events for calendar");
-        }
-
-        await this.eventService.deleteAll(calendarId);
-
-        return { message: "success" }
-    }
-
 }

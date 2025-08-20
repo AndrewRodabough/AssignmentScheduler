@@ -4,98 +4,99 @@ import { EventService } from '../services/eventService.js';
 import { Calendar } from '../models/calendar.js';
 
 export class CalendarController {
-    
     constructor(dataStore) {
         this.userService = new UserService(dataStore);
         this.calendarService = new CalendarService(dataStore);
         this.eventService = new EventService(dataStore);
     }
 
-    async create(token, calendarName) {
-
-        console.log("CC: Create()");
-        // get user name from token
-        const user = await this.userService.getUserFromToken(token);
-        if (!user) {
-            throw new Error("User not Found");
+    async create(req, res) {
+        try {
+            const token = req.headers.authorization;
+            const { calendarName } = req.body;
+            const user = await this.userService.getUserFromToken(token);
+            if (!user) {
+                return res.status(404).json({ error: "User not Found" });
+            }
+            const calendar = new Calendar(calendarName, user.username);
+            await this.calendarService.create(calendar);
+            return res.status(200).json({ calendar });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
         }
-        const calendar = new Calendar(calendarName, user.username);
-        await this.calendarService.create(calendar);
-        return calendar;
     }
 
-    async delete(token, CalendarName) {
-        console.log("CC: Delete()");
-
-        // get username from token
-        const user = await this.userService.getUserFromToken(token);
-        if (!user) {
-            throw new Error("User not Found");
+    async delete(req, res) {
+        try {
+            const token = req.headers.authorization;
+            const { calendarName } = req.body;
+            const user = await this.userService.getUserFromToken(token);
+            if (!user) {
+                return res.status(404).json({ error: "User not Found" });
+            }
+            const calendar = await this.calendarService.get(calendarName);
+            if (!calendar) {
+                return res.status(404).json({ error: "Calendar not Found" });
+            }
+            await this.eventService.deleteAll(calendar.name);
+            await this.calendarService.delete(calendar);
+            return res.status(200).json({ message: "success" });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
         }
-                
-        // get calendar from token
-        const calendar = await this.calendarService.get(CalendarName);
-        if (!calendar) {
-            throw new Error("Calendar not Found");
-        }
-        
-        await this.eventService.deleteAll(calendar.name);
-        await this.calendarService.delete(calendar);
+    }
 
-        return { message: "success" };
+    async getAll(req, res) {
+        try {
+            const token = req.headers.authorization;
+            const user = await this.userService.getUserFromToken(token);
+            if (!user) {
+                return res.status(404).json({ error: "User not Found" });
+            }
+            const calendars = await this.calendarService.getAll(user.username);
+            return res.status(200).json(calendars);
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
+    }
+
+    async share(req, res) {
+        try {
+            const token = req.headers.authorization;
+            const { shareUser, shareCalendar } = req.body;
+            const user = await this.userService.getUserFromToken(token);
+            if (!user) {
+                return res.status(404).json({ error: "User not Found" });
+            }
+            const calendar = await this.calendarService.get(shareCalendar);
+            if (!(calendar.username === user.username)) {
+                return res.status(403).json({ error: "not authorized to change share status" });
+            }
+            if (calendar.sharedUsers.findIndex(item => item === shareUser) !== -1) {
+                return res.status(409).json({ error: "Already shared to user" });
+            }
+            calendar.shared = true;
+            calendar.sharedUsers.push(shareUser);
+            await this.calendarService.update(calendar);
+            return res.status(200).json({ calendar });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
     }
 
     async update(req, res) {
-        console.log("CC: Update()");
-    }
-
-    async get(req, res) {
-        console.log("CC: Get()");
-    }
-
-    async getAll(token) {
-
-        console.log("CC: GetAll()");
-        // get user name from token
-        const user = await this.userService.getUserFromToken(token);
-        if (!user) {
-            console.log("CC: User Not Found");
-            throw new Error("User not Found");
+        try {
+            const token = req.headers.authorization;
+            const { calendar } = req.body;
+            const user = await this.userService.getUserFromToken(token);
+            if (!user) {
+                return res.status(404).json({ error: "User not Found" });
+            }
+            // You may want to check if user is authorized to update this calendar
+            await this.calendarService.update(calendar);
+            return res.status(200).json({ message: "success" });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
         }
-
-        // get calendars from username
-        return await this.calendarService.getAll(user.username)
-    }
-
-    async share(token, shareUser, shareCalendar) {
-
-        console.log("CC: Share()");
-        // get user name from token
-        const user = await this.userService.getUserFromToken(token)
-        if (!user) {
-            console.log("CC: User Not Found");
-            throw new Error("User not Found");
-        }
-
-        const calendar = await this.calendarService.get(shareCalendar);
-
-
-        console.log(calendar);
-        console.log(user);
-
-        if (!(calendar.username === user.username)) {
-            console.log("CC: not authorized to change share status");
-            throw new Error("not authorized to change share status")
-        }
-
-        if (calendar.sharedUsers.findIndex(item => item === shareUser) !== -1) {
-            console.log("CC: Already shared to user");
-            throw new Error("Already shared to user");
-        }
-
-    calendar.shared = true;
-    calendar.sharedUsers.push(shareUser);
-    await this.calendarService.update(calendar);
-    return calendar;
     }
 }

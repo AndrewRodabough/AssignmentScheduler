@@ -1,18 +1,9 @@
 import express from 'express';
 
-import createUser from './routes/Authentication/createUser.js';
-import login from './routes/Authentication/login.js';
-import logout from './routes/Authentication/logout.js';
-import createCalendar from './routes/Calendar/createCalendar.js';
-import deleteCalendar from './routes/Calendar/deleteCalendar.js';
-import getAllCalendars from './routes/Calendar/getAllCalendars.js';
-import updateCalendar from './routes/Calendar/updateCalendar.js';
-import shareCalendar from './routes/Calendar/shareCalendar.js';
-import createEvent from './routes/Event/createEvent.js';
-import deleteEvent from './routes/Event/deleteEvent.js';
-import getAllEvents from './routes/Event/getAllEvents.js';
-import updateEvent from './routes/Event/updateEvent.js';
-import clearAll from './routes/clearAll.js'
+import calendarRoutes from './routes/calendarRoutes.js';
+import eventRoutes from './routes/eventRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import devRoutes from './routes/devRoutes.js';
 
 import dataStore from './database.js';
 import socket from './websocket.js';
@@ -38,42 +29,14 @@ app.use(express.static('public'));
 var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
+////////////
+// Routes //
+////////////
 
-//////////////////////////////
-// Authentication Endpoints //
-//////////////////////////////
-
-apiRouter.use('/auth/create', createUser(dataStore));
-apiRouter.use('/auth/login', login(dataStore));
-apiRouter.use('/auth/logout', logout(dataStore));
-  
-
-//////////////////////////////////
-// Calendar Managment Endpoints //
-//////////////////////////////////
-
-//// Event ////
-
-apiRouter.use('/event/create', createEvent(dataStore));
-apiRouter.use('/event/delete', deleteEvent(dataStore));
-apiRouter.use('/event/getAll', getAllEvents(dataStore));
-apiRouter.use('/event/update', updateEvent(dataStore));
-
-//// Calendars ////
-
-apiRouter.use('/calendar/create', createCalendar(dataStore));
-apiRouter.use('/calendar/delete', deleteCalendar(dataStore));
-apiRouter.use('/calendar/getAll', getAllCalendars(dataStore));
-apiRouter.use('/calendar/update', updateCalendar(dataStore));
-apiRouter.use('/calendar/share', shareCalendar(dataStore));
-
-
-///////////////////
-// Dev Endpoints //
-///////////////////
-
-apiRouter.use('/clear', clearAll(dataStore));
-
+apiRouter.use('/auth', authRoutes(dataStore));
+apiRouter.use('/calendar', calendarRoutes(dataStore));
+apiRouter.use('/event', eventRoutes(dataStore));
+apiRouter.use('/dev', devRoutes(dataStore));
 
 //////////////
 // Database //
