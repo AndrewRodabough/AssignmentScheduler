@@ -1,9 +1,9 @@
 import React, { useContext, userContext } from 'react';
 import { useEffect, useState } from 'react';
-import CalendarContext from '../context/calendarContext.jsx';
-import { Event } from '../models/event.js';
+import CalendarContext from '../../context/calendarContext.jsx';
+import { Event } from '../../models/event.js';
 import { v4 as uuid } from 'uuid';
-import './main.css';
+import './calendar.css';
 
 const CalCreateEvent = ({ onEventCreated }) => {
 

@@ -3,7 +3,7 @@
  * 
  * @param {string} token - The authentication token of the user.
  * @param {string} calendarName - The name of the calendar to be created.
- * @returns {Promise<void>} Resolves if calendar creation is successful.
+ * @returns {Promise<Object>} Resolves with the newly created calendar object if calendar creation is successful.
  *          Rejects with an error if the request fails.
  */
 

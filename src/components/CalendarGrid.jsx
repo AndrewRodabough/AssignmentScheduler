@@ -1,3 +1,10 @@
+/**
+ * CalendarGrid - Displays a grid of calendar days for the current week and events for each day.
+ *
+ * @param {function} onEventClick - Callback for when an event is clicked.
+ * @returns {React.ReactNode} The calendar grid component.
+*/
+
 import React, { useContext, useEffect, useState } from 'react';
 import { format, eachDayOfInterval, parseISO, startOfWeek, endOfWeek } from 'date-fns';
 import CalendarContext from '../context/calendarContext.jsx';

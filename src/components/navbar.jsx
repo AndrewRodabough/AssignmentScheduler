@@ -1,3 +1,9 @@
+/**
+ * Navbar - Displays navigation links and user authentication status.
+ *
+ * @returns {React.ReactNode} The navigation bar component.
+*/
+
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import UserContext from '../context/userContext.jsx';

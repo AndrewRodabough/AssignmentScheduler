@@ -3,8 +3,8 @@
  * 
  * @param {string} token - The authentication token of the user.
  * @param {string} calendarName - The name of the calendar to be deleted.
- * @returns {Promise<void>} Resolves if calendar deletion is successful.
- *          Rejects with an error if the request fails.
+ * @returns {Promise<string>} Resolves with a success message if calendar deletion is successful.
+ *          Does not return updated calendar data. Rejects with an error if the request fails.
  */
 
 const deleteCalendarApi = (token, calendarName) => {

@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import ModalClose from '../components/modal/ModalClose.jsx';
-import Modal from '../components/modal/Modal.jsx';
-import CalendarContext from '../context/calendarContext.jsx';
-import CalCreateEvent from './calCreateEvent.jsx';
-import CalendarGrid from '../components/CalendarGrid.jsx';
-import CalendarMenu from '../components/CalendarMenu.jsx';
-import useModal from '../hooks/useModal.js';
-import './main.css';
+import ModalClose from '../../components/modal/ModalClose.jsx';
+import Modal from '../../components/modal/Modal.jsx';
+import CalendarContext from '../../context/calendarContext.jsx';
+import CalCreateEvent from '../../components/calendar/calCreateEvent.jsx';
+import CalendarGrid from '../../components/CalendarGrid.jsx';
+import CalendarMenu from '../../components/CalendarMenu.jsx';
+import useModal from '../../hooks/useModal.js';
+import './calendar.css';
 
 function Main() {
   

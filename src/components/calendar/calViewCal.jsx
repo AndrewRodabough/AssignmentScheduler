@@ -1,10 +1,9 @@
 import React from 'react';
-import './main.css';
 import { useEffect, useState } from 'react';
-import { format, eachDayOfInterval, parseISO, startOfWeek, endOfWeek } from 'date-fns';
 import { useAuth } from '../AuthContext.jsx';
 import { Event } from '../models/event.js';
 import { v4 as uuid } from 'uuid';
+import './calendar.css';
 
 export const CalViewCal = () => {
 

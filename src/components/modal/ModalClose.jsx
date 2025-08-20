@@ -6,7 +6,7 @@
  * @param {string} [title] - Optional title to display at the top of the modal.
  * @param {React.ReactNode} children - Content to display inside the modal.
  * @returns {React.ReactNode|null} The modal component if open, otherwise null.
- */
+*/
 
 import React from 'react';
 import './Modal.css';

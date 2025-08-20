@@ -1,0 +1,13 @@
+/* Styles for Home page */
+
+.home-container {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    width: 100%;
+    /* Add more styles for .title here if needed */
+}

@@ -1,3 +1,15 @@
+/**
+ * CalendarMenu - Renders menu options for a calendar (edit, share, delete).
+ *
+ * @param {Object} calendar - The calendar object.
+ * @param {string} activeMenu - The currently active menu name.
+ * @param {function} onEdit - Callback for editing the calendar.
+ * @param {function} onShare - Callback for sharing the calendar.
+ * @param {function} onDelete - Callback for deleting the calendar.
+ * @param {function} onToggleMenu - Callback for toggling the menu.
+ * @returns {React.ReactNode} The calendar menu component.
+*/
+
 import React from 'react';
 
 const CalendarMenu = ({
@@ -8,6 +20,7 @@ const CalendarMenu = ({
   onDelete,
   onToggleMenu
 }) => (
+
   <div className='calendar-list-icons'>
     <div>
       {calendar.shared && <span className="material-symbols-outlined">group</span>}

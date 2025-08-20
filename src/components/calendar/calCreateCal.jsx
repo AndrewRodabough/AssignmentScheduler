@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import './main.css';
 import { useEffect, useState } from 'react';
 import CalendarContext from '../context/calendarContext.jsx';
+import './calendar.css';
 
 export const CalCreateCal = () => {
 

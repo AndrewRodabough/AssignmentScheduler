@@ -4,7 +4,7 @@
  * This module defines a context and provider to manage user authentication state.
  * It provides the current user state, login, logout, and registration handler functions.
  * 
- * The provider manages user state internally and uses imported API functions to communicate
+ * The provider manages user state internally, stores username and token in cookies, and uses imported API functions to communicate
  * with the backend for login, logout, and user creation.
  * 
  * Exports:
@@ -12,7 +12,7 @@
  *   - UserProvider: The provider component to wrap app parts requiring authentication state.
  * 
  * Provided context value includes:
- *   - user: Current logged-in user information including username and token.
+ *   - user: Current logged-in user information including username and token (stored in cookies).
  *   - setUser: Setter function for user state (primarily for internal use).
  *   - isLoggedIn: Function to check if there is a logged-in user.
  *   - handleLogin: Function to authenticate and log in a user.
@@ -25,7 +25,8 @@
  * 
  * Dependencies:
  *   - Uses API helper functions for backend communication.
- */
+ *   - Uses js-cookie for storing username and token in cookies.
+*/
 
 
 import React, { createContext, useState } from "react";

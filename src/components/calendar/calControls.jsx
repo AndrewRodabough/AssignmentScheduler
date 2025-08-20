@@ -1,5 +1,4 @@
 import React from 'react';
-import './main.css';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../AuthContext.jsx';
 import CalDeleteCal from './calDeleteCal.jsx';
@@ -7,6 +6,7 @@ import CalViewCal from './calViewCal.jsx';
 import CalCreateEvent from './calCreateEvent.jsx';
 import CalCreateCal from './calCreateCal.jsx';
 import CalShareCal from './calShareCal.jsx';
+import './calendar.css';
 
 export const CalControls = () => {
     const { handleGetAllCalendar, handleGetAllEvent, calendars } = useAuth();

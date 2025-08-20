@@ -4,7 +4,7 @@
  * @param {string} token - The authentication token of the user.
  * @param {string} shareUser - The username or identifier of the user to share the calendar with.
  * @param {string} shareCalendar - The name or identifier of the calendar to share.
- * @returns {Promise<void>} Resolves if the calendar is successfully shared.
+ * @returns {Promise<Object>} Resolves with the updated calendar object if the calendar is successfully shared.
  *          Rejects with an error if the request fails.
  */
 
