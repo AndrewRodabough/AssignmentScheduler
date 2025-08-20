@@ -29,6 +29,7 @@
 
 
 import React, { createContext, useState } from "react";
+import Cookies from "js-cookie";
 import loginApi from '../Api/Authentication/loginApi';
 import createUserApi from '../Api/Authentication/createUserApi';
 import logoutApi from '../Api/Authentication/logoutApi';
@@ -37,20 +38,34 @@ const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
 
-    const [user, setUser] = useState(null);
+    // Initialize user state from cookies if available
+    const [user, setUser] = useState(() => {
+        const username = Cookies.get('username');
+        const token = Cookies.get('token');
+        if (username && token) {
+            return { username, token };
+        }
+        return null;
+    });
 
     const isLoggedIn = () => {
         return user !== null;
     }
 
     const handleLogin = async (userInfo) => {
-        const result = await loginApi(userInfo.username, userInfo.password);
-        const newUserData = { username: userInfo.username, token: result };
-        setUser(newUserData);
+    const result = await loginApi(userInfo.username, userInfo.password);
+    const newUserData = { username: userInfo.username, token: result };
+    Cookies.set('username', userInfo.username);
+    Cookies.set('token', result);
+    setUser(newUserData);
     }
 
     const handleLogout = async () => {
-        await logoutApi(user.token);
+        if (user && user.token) {
+            await logoutApi(user.token);
+        }
+        Cookies.remove('username');
+        Cookies.remove('token');
         setUser(null);
     }
 

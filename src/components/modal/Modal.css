@@ -1,3 +1,5 @@
+@import "../../app.css";
+
 /* Divider between modal title and content */
 .modal-title-divider {
   width: 100%;
@@ -17,7 +19,6 @@
   cursor: pointer;
   z-index: 10;
 }
-@import "../../app.css";
 
 
 .modal-overlay {
