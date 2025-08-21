@@ -2,12 +2,12 @@
  * deleteEventApi - Makes a DELETE request to remove an event.
  *
  * @param {string} token - The authentication token of the user.
- * @param {string} eventId - The ID of the event to be deleted.
+ * @param {string} eventUID - The uid of the event to be deleted.
  * @returns {Promise<void>} Resolves if event deletion is successful.
  *          Rejects with an error if the request fails.
  */
 
-const deleteEventApi = (token, eventId) => {
+const deleteEventApi = (token, eventUID) => {
     return new Promise((resolve, reject) => {
         const endpoint = './api/event/delete';
         fetch(endpoint, {
@@ -17,16 +17,15 @@ const deleteEventApi = (token, eventId) => {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ eventId })
+            body: JSON.stringify({ 
+                eventUID: eventUID
+            })
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Event Deletion failed');
+                throw new Error('Event Deletion Failed');
             }
-            return null;
-        })
-        .then(() => {
-            resolve();
+            resolve(response.json());
         })
         .catch(error => {
             reject(error);

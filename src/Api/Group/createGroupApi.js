@@ -1,31 +1,30 @@
 /**
- * updateEventApi - Makes a PUT request to update an existing event.
- *
+ * createGroupApi - Makes a POST request to create a new group.
+ * 
  * @param {string} token - The authentication token of the user.
- * @param {string} eventUID - The ID of the event to update.
- * @param {Object} event - The data to update in the event.
- * @returns {Promise<Object>} Resolves with the updated event object if successful.
+ * @param {string} groupTitle - The name of the group to be created.
+ * @returns {Promise<Object>} Resolves with the newly created group object if group creation is successful.
  *          Rejects with an error if the request fails.
  */
 
-const updateEventApi = (token, eventUID, event) => {
+const createGroupApi = (token, groupTitle) => {
     return new Promise((resolve, reject) => {
-        const endpoint = './api/event/update';
+        const endpoint = './api/group/create';
+
         fetch(endpoint, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Authorization': token,
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ 
-                eventUID: eventUID, 
-                event: event
+            body: JSON.stringify({
+                groupTitle: groupTitle
             })
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Event Update Failed');
+                throw new Error('Group Creation Failed');
             }
             resolve(response.json());
         })
@@ -35,4 +34,4 @@ const updateEventApi = (token, eventUID, event) => {
     });
 };
 
-export default updateEventApi;
+export default createGroupApi;

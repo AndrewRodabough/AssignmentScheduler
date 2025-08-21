@@ -1,14 +1,14 @@
 /**
- * getAllEventApi - Makes a GET request to retrieve all events associated with the user.
+ * getAllGroupsApi - Makes a GET request to retrieve all groups associated with the user.
  * 
  * @param {string} token - The authentication token of the user.
- * @returns {Promise<Array>} Resolves with an array of events if successful.
+ * @returns {Promise<Array>} Resolves with an array of groups if successful.
  *          Rejects with an error if the request fails.
  */
 
-const getAllEventApi = (token) => {
+const getAllGroupsApi = (token) => {
     return new Promise((resolve, reject) => {
-        const endpoint = './api/event/getAll';
+        const endpoint = './api/group/getAll';
 
         fetch(endpoint, {
             method: 'GET',
@@ -20,13 +20,9 @@ const getAllEventApi = (token) => {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Event get failed');
+                throw new Error('Group Get Failed');
             }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-            resolve(data);
+            resolve(response.json());
         })
         .catch(error => {
             reject(error);
@@ -34,4 +30,4 @@ const getAllEventApi = (token) => {
     });
 };
 
-export default getAllEventApi;
+export default getAllGroupsApi;

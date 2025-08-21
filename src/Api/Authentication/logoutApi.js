@@ -25,10 +25,7 @@ const logoutApi = (token) => {
             if (!response.ok) {
                 throw new Error('Logout failed');
             }
-            return null
-        })
-        .then(data => {
-            resolve();
+            resolve(response.json());
         })
         .catch(error => {
             reject(error);

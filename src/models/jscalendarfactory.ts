@@ -6,7 +6,9 @@ class JSCalendarFactory {
     return {
       "@type": "Group",
       "uid": this.generateUID(),
-      entries: {},
+      "created": new Date().toISOString(),
+      "updated": new Date().toISOString(),
+      "entries": {},
 
       setTitle(title) {
         if (title) this.title = title;
@@ -15,6 +17,11 @@ class JSCalendarFactory {
 
       setColor(color) {
         if (color) this.color = color;
+        return this;
+      },
+
+      setPrivacy(privacy) {
+        if (privacy) this.privacy = privacy;
         return this;
       },
 

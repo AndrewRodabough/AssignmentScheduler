@@ -28,7 +28,6 @@
  *   - Uses js-cookie for storing username and token in cookies.
 */
 
-
 import React, { createContext, useState } from "react";
 import Cookies from "js-cookie";
 import loginApi from '../Api/Authentication/loginApi';
@@ -54,25 +53,50 @@ const UserProvider = ({ children }) => {
     }
 
     const handleLogin = async (userInfo) => {
-    const result = await loginApi(userInfo.username, userInfo.password);
-    const newUserData = { username: userInfo.username, token: result };
-    Cookies.set('username', userInfo.username);
-    Cookies.set('token', result);
-    setUser(newUserData);
+        if (isLoggedIn()) {
+            throw new Error('User already logged in');
+        }
+        
+        try {
+            const result = await loginApi(userInfo.username, userInfo.password);
+            const newUserData = { username: userInfo.username, token: result };
+            Cookies.set('username', userInfo.username);
+            Cookies.set('token', result);
+            setUser(newUserData);         
+        }
+        catch (e) {
+            throw e;
+        }
     }
 
     const handleLogout = async () => {
-        if (user && user.token) {
-            await logoutApi(user.token);
+        if(!isLoggedIn()) {
+            throw new Error('User is not logged in');
         }
-        Cookies.remove('username');
-        Cookies.remove('token');
-        setUser(null);
+
+        try{
+            const result = await logoutApi(user.token);
+            Cookies.remove('username');
+            Cookies.remove('token');
+            setUser(null);
+        }
+        catch (e) {
+            throw e;
+        }
     }
 
     const handleRegister = async (userInfo) => {
-        await createUserApi(userInfo.username, userInfo.password);
-        await handleLogin(userInfo);
+        if (isLoggedIn()) {
+            throw new Error('User already logged in');
+        }
+
+        try {
+            const result = await createUserApi(userInfo.username, userInfo.password);
+            const result2 = await handleLogin(userInfo);
+        }
+        catch (e) {
+            throw e;
+        }
     }
 
     return (

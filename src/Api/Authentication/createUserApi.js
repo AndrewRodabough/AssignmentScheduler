@@ -27,10 +27,7 @@ const createUserApi = (username, password) => {
             if (!response.ok) {
                 (response.status === 409) ? reject("username already exists") : reject("an error occurred");
             }
-            return null
-        })
-        .then(data => {
-            resolve();
+            resolve(response.json());
         })
         .catch(error => {
             reject(error);

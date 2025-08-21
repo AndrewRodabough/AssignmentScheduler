@@ -1,34 +1,34 @@
 /**
- * createEventApi - Makes a POST request to create a new event.
+ * shareGroupApi - Makes a PUT request to share a group with another user.
  * 
  * @param {string} token - The authentication token of the user.
- * @param {string} groupUID - The uid of the group to which the event will be added.
- * @param {Object} event - The event data object to be created.
- * @returns {Promise<void>} Resolves if event creation is successful.
+ * @param {string} shareUser - The username of the user to share the group with.
+ * @param {string} groupUID - The uid of the group to share.
+ * @returns {Promise<Object>} Resolves with the updated group object if the group is successfully shared.
  *          Rejects with an error if the request fails.
  */
 
-const createEventApi = (token, groupUID, event) => {
+const shareGroupApi = (token, username, groupUID) => {
     return new Promise((resolve, reject) => {
-        const endpoint = './api/event/create';
+        const endpoint = './api/group/share';
 
-        console.log(token, event);
+        console.log(token);
 
         fetch(endpoint, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Authorization': token,
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
-                groupUID: groupUID,
-                event: event
+                username: username,
+                groupUID: groupUID
             })
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Event Creation Failed');
+                throw new Error('Group Share Failed');
             }
             resolve(response.json());
         })
@@ -38,4 +38,4 @@ const createEventApi = (token, groupUID, event) => {
     });
 };
 
-export default createEventApi;
+export default shareGroupApi;
