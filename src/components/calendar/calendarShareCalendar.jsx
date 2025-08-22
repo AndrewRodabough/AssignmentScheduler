@@ -4,7 +4,7 @@ import './calendar.css';
 
 export const CalendarShareCalendar = ({ onCalendarShared }) => {
 
-    const { groups, getGroupNames, handleShareCalendar } = useContext(CalendarContext);
+    const { groups, getGroupNames, handleShareCalendar, getGroupUID } = useContext(CalendarContext);
     
     const handleSubmitShareCalendar = async (e) => {
         e.preventDefault();
@@ -16,8 +16,10 @@ export const CalendarShareCalendar = ({ onCalendarShared }) => {
         
         if ((shareUsername && shareUsername.value) && (shareCalendar && shareCalendar.value)) {
         
+            const uid = getGroupUID(shareCalendar.value)
+
             try {    
-                //await handleShareCalendar(shareUsername.value, shareCalendar.value);
+                await handleShareCalendar(shareUsername.value, uid);
                 if(onCalendarShared) { onCalendarShared() }
             }
             catch(error) {

@@ -5,7 +5,7 @@ import './calendar.css';
 
 export const CalendarDeleteCalendar = ({ onCalendarDeleted }) => {
 
-    const { groups, getGroupNames, handleDeleteGroup} = useContext(CalendarContext);
+    const { groups, getGroupNames, handleDeleteGroup, getGroupUID} = useContext(CalendarContext);
     
     const handleSubmitDeleteCalendar = async (e) => {
         e.preventDefault();
@@ -13,9 +13,11 @@ export const CalendarDeleteCalendar = ({ onCalendarDeleted }) => {
         const calendar = document.querySelector('select[name="deleteCalendarCalendar"]');
 
         if (calendar && calendar.value) {
+
+            const uid = getGroupUID(calendar.value)
         
             try {    
-                //await handleDeleteCalendar(calendar.value);
+                await handleDeleteCalendar(uid);
                 if (onCalendarDeleted) { onCalendarDeleted() }
             }
             catch(error) {

@@ -48,6 +48,14 @@ const CalendarProvider = ({ children }) => {
         return groups.map(group => group.title);
     }
 
+    const getGroupUID = (groupTitle) => {
+        if (!groups || groups.length === 0) return null;
+
+        const group = groups.find(g => g.title === groupTitle);
+
+        return group ? group.uid : null;
+    };
+
     const handleCreateGroup = async (groupTitle) => {
         if (!user || !user.token) {
             throw new Error('User must be logged in to create a group');
@@ -127,7 +135,8 @@ const CalendarProvider = ({ children }) => {
             handleShareGroup,
             handleCreateEvent,
             handleDeleteGroup,
-            getGroupNames }}>
+            getGroupNames,
+            getGroupUID}}>
                 
             {children}
         </CalendarContext.Provider>

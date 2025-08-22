@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { useEffect, useState } from 'react';
 import CalendarContext from '../../context/calendarContext.jsx';
+import JSCalendarFactory from '../../models/jscalendarfactory.js';
 import './calendar.css';
 
 export const CalendarCreateCalendar = ({ onCalendarCreated}) => {
@@ -15,7 +16,7 @@ export const CalendarCreateCalendar = ({ onCalendarCreated}) => {
         if (calendarName && calendarName.value) {
         
             try {    
-                //await handleCreateCalendar(calendarName.value);
+                await handleCreateCalendar(calendarName.value);
                 calendarName.value = '';
                 if (onCalendarCreated) { onCalendarCreated() }
             }
