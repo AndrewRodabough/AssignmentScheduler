@@ -7,10 +7,12 @@ import './calendar.css';
 const CalendarCreateEvent = ({ onEventCreated }) => {
 
     const { handleGetAllGroups, handleCreateEvent, groups } = useContext(CalendarContext);
-
+    const [selectedForm, setSelectedForm] = useState("Event"); // default selected
+    
     // Controlled form state
-    const [form, setForm] = useState({
+    const [eventForm, setEventForm] = useState({
         title: '',
+        description: '',
         startDate: '',
         endDate: '',
         startTime: '',
@@ -18,27 +20,41 @@ const CalendarCreateEvent = ({ onEventCreated }) => {
         calendar: ''
     });
 
+    // Controlled form state
+    const [taskForm, setTaskForm] = useState({
+        title: '',
+        description: '',
+        due: '',
+        dueTime: '',
+        estimatedHours: '',
+        estimatedMinutes: '',
+        calendar: ''
+    });
+
+
+
     const handleChange = e => {
         const { name, value } = e.target;
-        setForm(prev => ({ ...prev, [name]: value }));
+        if (selectedForm == "Task") 
+        {
+            setTaskForm(prev => ({ ...prev, [name]: value }));
+        }
+        else if (selectedForm == "Event") {
+            setEventForm(prev => ({ ...prev, [name]: value }));            
+        }
     };
 
     const handleSubmitCreateEvent = async (e) => {
         e.preventDefault();
-        /*
         let message = "";
         if (!form.title) message += "Title is required.\n";
         if (!form.startDate) message += "Start date is required.\n";
-        if (!form.endDate) message += "End date is required.\n";
-        if (!form.startTime) message += "Start time is required.\n";
-        if (!form.endTime) message += "End time is required.\n";
         if (!form.calendar) message += "Calendar is required.\n";
         if (message) {
             alert(message);
             return;
         }
-        const event = new Event(uuid(), form.title, form.startDate, form.startTime, form.endDate, form.endTime, form.calendar);
-        */
+        //const event = new Event(uuid(), form.title, form.startDate, form.startTime, form.endDate, form.endTime, form.calendar);
         try {
             //await handleCreateEvent(event);
             //setForm({ title: '', startDate: '', endDate: '', startTime: '', endTime: '', calendar: '' });
@@ -48,78 +64,214 @@ const CalendarCreateEvent = ({ onEventCreated }) => {
         }
     };
 
+    const handleSubmitCreateTask = async (e) => {
+        e.preventDefault();
+        let message = "";
+        if (!form.title) message += "Title is required.\n";
+        if (!form.calendar) message += "Calendar is required.\n";
+        if (message) {
+            alert(message);
+            return;
+        }
+        //const event = new Event(uuid(), form.title, form.startDate, form.startTime, form.endDate, form.endTime, form.calendar);
+        try {
+            //await handleCreateEvent(event);
+            //setForm({ title: '', startDate: '', endDate: '', startTime: '', endTime: '', calendar: '' });
+            if (onEventCreated) onEventCreated();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
     return (
     <>
-        <form className="create-event-form" onSubmit={handleSubmitCreateEvent}>
-            <div className="form-group">
-                <input
-                    type="text"
-                    id="createEventTitle"
-                    name="title"
-                    placeholder='Event Title'
-                    value={form.title}
-                    onChange={handleChange}
-                    //required
-                />
-            </div>
-            <div className="form-row">
-                <label>S:</label>
-                <input
-                    type="date"
-                    id="createEventStartDate"
-                    name="startDate"
-                    value={form.startDate}
-                    onChange={handleChange}
-                    //required
-                />
-                <input
-                    type="time"
-                    id="createEventStartTime"
-                    name="startTime"
-                    value={form.startTime}
-                    onChange={handleChange}
-                />
-            </div>
-            <div className="form-row">
-                <label>E:</label>
-                <input
-                    type="date"
-                    id="createEventEndDate"
-                    name="endDate"
-                    value={form.endDate}
-                    onChange={handleChange}
-                    //required
-                />
-                <input
-                    type="time"
-                    id="createEventEndTime"
-                    name="endTime"
-                    value={form.endTime}
-                    onChange={handleChange}
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="createEventCalendar">Add To:</label>
-                <select
-                    id="createEventCalendar"
-                    name="calendar"
-                    value={form.calendar}
-                    onChange={handleChange}
-                    //required
-                >
-                    {groups.length === 0 ? (
-                        <option disabled value="">You Have No Calendars</option>
-                    ) : (
-                        groups.map(calendar => (
-                            <option key={calendar.name} value={calendar.name}>
-                                {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
-                            </option>
-                        ))
-                    )}
-                </select>
-            </div>
-            <button className="create-event-btn" type="submit">Create Event</button>
-        </form>
+
+        <div className="custom-radio-group">
+            <label className="option">
+                <input type="radio" name="Event" value="Event" checked={selectedForm === "Event"} onChange={(e) => setSelectedForm(e.target.value)} />
+                <span className="text">Event</span>
+            </label>
+            
+            <label className="option">
+                <input type="radio" name="Task" value="Task" checked={selectedForm === "Task"} onChange={(e) => setSelectedForm(e.target.value)}/>
+                <span className="text">Task</span>
+            </label>
+        </div>
+
+
+        {selectedForm == "Event" && (
+            <form className="create-event-form" onSubmit={handleSubmitCreateEvent}>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        id="createEventTitle"
+                        name="title"
+                        placeholder='Event Title'
+                        value={eventForm.title}
+                        onChange={handleChange}
+                        //required
+                    />
+                </div>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        id="createEventDescription"
+                        name="description"
+                        placeholder='Description'
+                        value={eventForm.description}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="form-row">
+                    <label>S:</label>
+                    <input
+                        type="date"
+                        id="createEventStartDate"
+                        name="startDate"
+                        value={eventForm.startDate}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="time"
+                        id="createEventStartTime"
+                        name="startTime"
+                        value={eventForm.startTime}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="form-row">
+                    <label>E:</label>
+                    <input
+                        type="date"
+                        id="createEventEndDate"
+                        name="endDate"
+                        value={eventForm.endDate}
+                        onChange={handleChange}
+                    />
+                    <input
+                        type="time"
+                        id="createEventEndTime"
+                        name="endTime"
+                        value={eventForm.endTime}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="createEventCalendar">Add To:</label>
+                    <select
+                        id="createEventCalendar"
+                        name="calendar"
+                        value={eventForm.calendar}
+                        onChange={handleChange}
+                        required
+                    >
+                        {groups.length === 0 ? (
+                            <option disabled value="">You Have No Calendars</option>
+                        ) : (
+                            groups.map(calendar => (
+                                <option key={calendar.name} value={calendar.name}>
+                                    {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                                </option>
+                            ))
+                        )}
+                    </select>
+                </div>
+                <button className="create-event-btn" type="submit">Create Event</button>
+            </form>
+        )}
+
+        {selectedForm == "Task" && (
+            <form className="create-event-form" onSubmit={handleSubmitCreateTask}>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        id="createTaskTitle"
+                        name="title"
+                        placeholder='Task Title'
+                        value={taskForm.title}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        id="createTaskDescription"
+                        name="description"
+                        placeholder='Description'
+                        value={taskForm.description}
+                        onChange={handleChange}
+                    />
+                </div>                
+                <div className="form-row">
+                    <label>Due Date:</label>
+                    <input
+                        type="date"
+                        id="createTaskDueDate"
+                        name="due"
+                        value={taskForm.startDate}
+                        onChange={handleChange}
+                    />
+                    <input
+                        type="time"
+                        id="createTaskDueTime"
+                        name="dueTime"
+                        value={taskForm.startTime}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="form-row">
+                    <label>Time to Complete</label>
+                    <label>
+                        Hours:
+                        <input
+                            type="number"
+                            id="createTaskEstimatedHours"
+                            name="estimatedHours"
+                            min={0}
+                            max={99}
+                            value={taskForm.estimatedHours}
+                            onChange={handleChange}
+                        />
+                    </label>
+                    <label>
+                        Minutes:
+                        <input
+                            type="number"
+                            id="createTaskEstimatedMinutes"
+                            name="estimatedMinutes"
+                            min={0}
+                            max={59}
+                            value={taskForm.estimatedMinutes}
+                            onChange={handleChange}
+                        />
+                    </label>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="createTaskCalendar">Add To:</label>
+                    <select
+                        id="createTaskCalendar"
+                        name="calendar"
+                        value={taskForm.calendar}
+                        onChange={handleChange}
+                        required
+                    >
+                        {groups.length === 0 ? (
+                            <option disabled value="">You Have No Calendars</option>
+                        ) : (
+                            groups.map(calendar => (
+                                <option key={calendar.name} value={calendar.name}>
+                                    {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                                </option>
+                            ))
+                        )}
+                    </select>
+                </div>
+                <button className="create-event-btn" type="submit">Create Task</button>
+            </form>
+        )}
     </>    
 )
     
