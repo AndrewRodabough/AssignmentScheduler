@@ -43,6 +43,11 @@ const CalendarProvider = ({ children }) => {
     const [groups, setGroups] = useState([]);
     const { user, setUser } = useContext(UserContext);
 
+    const getGroupNames = () => {
+        if (!groups) return [];
+        return groups.map(group => group.title);
+    }
+
     const handleCreateGroup = async (groupTitle) => {
         if (!user || !user.token) {
             throw new Error('User must be logged in to create a group');
@@ -114,7 +119,16 @@ const CalendarProvider = ({ children }) => {
     }
 
     return (
-        <CalendarContext.Provider value={{ groups, setGroups, handleCreateGroup, handleGetAllGroups, handleShareGroup, handleCreateEvent, handleDeleteGroup }}>
+        <CalendarContext.Provider value={{
+            groups,
+            setGroups,
+            handleCreateGroup,
+            handleGetAllGroups,
+            handleShareGroup,
+            handleCreateEvent,
+            handleDeleteGroup,
+            getGroupNames }}>
+                
             {children}
         </CalendarContext.Provider>
     );

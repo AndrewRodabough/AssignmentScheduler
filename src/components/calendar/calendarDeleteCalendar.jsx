@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
 import { useEffect, useState } from 'react';
-import CalendarContext from '../context/calendarContext';
+import CalendarContext from '../../context/calendarContext';
 import './calendar.css';
 
-export const CalDeleteCal = () => {
+export const CalendarDeleteCalendar = ({ onCalendarDeleted }) => {
 
-    const { handleGetAllCalendar, calendars, handleGetAllEvent, handleDeleteCalendar} = useContext(CalendarContext);
-    useEffect(() => { handleGetAllCalendar(); handleGetAllEvent(); }, []);        //KEEP COMMENT TO STOP UPDATE ON REFRESH
+    const { groups, getGroupNames, handleDeleteGroup} = useContext(CalendarContext);
     
     const handleSubmitDeleteCalendar = async (e) => {
         e.preventDefault();
@@ -16,9 +15,8 @@ export const CalDeleteCal = () => {
         if (calendar && calendar.value) {
         
             try {    
-                await handleDeleteCalendar(calendar.value);
-                await handleGetAllCalendar();
-                await handleGetAllEvent();
+                //await handleDeleteCalendar(calendar.value);
+                if (onCalendarDeleted) { onCalendarDeleted() }
             }
             catch(error) {
                 console.log(error);
@@ -29,13 +27,12 @@ export const CalDeleteCal = () => {
     return (
         <>
             <section>
-                <h3>Delete Calendar</h3>
                 <select id="deleteCalendarCalendar" name="deleteCalendarCalendar">
                     {
-                        calendars.length === 0 ? (
+                        getGroupNames().length === 0 ? (
                             <option disabled value="">You Have No Calendars</option>
                         ) : (
-                            calendars.map(calendar => (
+                            getGroupNames().map(calendar => (
                             <option 
                                 key={calendar.name} 
                                 value={calendar.name}
@@ -55,4 +52,4 @@ export const CalDeleteCal = () => {
     
 }
 
-export default CalDeleteCal;
+export default CalendarDeleteCalendar;

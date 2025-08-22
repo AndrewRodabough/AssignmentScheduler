@@ -1,14 +1,12 @@
-import React, { useContext, userContext } from 'react';
+import React, { useContext } from 'react';
 import { useEffect, useState } from 'react';
 import CalendarContext from '../../context/calendarContext.jsx';
-import { Event } from '../../models/event.js';
 import { v4 as uuid } from 'uuid';
 import './calendar.css';
 
-const CalCreateEvent = ({ onEventCreated }) => {
+const CalendarCreateEvent = ({ onEventCreated }) => {
 
-    const { handleGetAllCalendar, handleCreateEvent, calendars, handleGetAllEvent } = useContext(CalendarContext);
-    useEffect(() => { handleGetAllCalendar(); handleGetAllEvent(); }, []);        //KEEP COMMENT TO STOP UPDATE ON REFRESH
+    const { handleGetAllGroups, handleCreateEvent, groups } = useContext(CalendarContext);
 
     // Controlled form state
     const [form, setForm] = useState({
@@ -27,6 +25,7 @@ const CalCreateEvent = ({ onEventCreated }) => {
 
     const handleSubmitCreateEvent = async (e) => {
         e.preventDefault();
+        /*
         let message = "";
         if (!form.title) message += "Title is required.\n";
         if (!form.startDate) message += "Start date is required.\n";
@@ -39,10 +38,10 @@ const CalCreateEvent = ({ onEventCreated }) => {
             return;
         }
         const event = new Event(uuid(), form.title, form.startDate, form.startTime, form.endDate, form.endTime, form.calendar);
+        */
         try {
-            await handleCreateEvent(event);
-            await handleGetAllEvent();
-            setForm({ title: '', startDate: '', endDate: '', startTime: '', endTime: '', calendar: '' });
+            //await handleCreateEvent(event);
+            //setForm({ title: '', startDate: '', endDate: '', startTime: '', endTime: '', calendar: '' });
             if (onEventCreated) onEventCreated();
         } catch (error) {
             console.log(error);
@@ -60,7 +59,7 @@ const CalCreateEvent = ({ onEventCreated }) => {
                     placeholder='Event Title'
                     value={form.title}
                     onChange={handleChange}
-                    required
+                    //required
                 />
             </div>
             <div className="form-row">
@@ -71,7 +70,7 @@ const CalCreateEvent = ({ onEventCreated }) => {
                     name="startDate"
                     value={form.startDate}
                     onChange={handleChange}
-                    required
+                    //required
                 />
                 <input
                     type="time"
@@ -89,7 +88,7 @@ const CalCreateEvent = ({ onEventCreated }) => {
                     name="endDate"
                     value={form.endDate}
                     onChange={handleChange}
-                    required
+                    //required
                 />
                 <input
                     type="time"
@@ -106,12 +105,12 @@ const CalCreateEvent = ({ onEventCreated }) => {
                     name="calendar"
                     value={form.calendar}
                     onChange={handleChange}
-                    required
+                    //required
                 >
-                    {calendars.length === 0 ? (
+                    {groups.length === 0 ? (
                         <option disabled value="">You Have No Calendars</option>
                     ) : (
-                        calendars.map(calendar => (
+                        groups.map(calendar => (
                             <option key={calendar.name} value={calendar.name}>
                                 {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
                             </option>
@@ -126,4 +125,4 @@ const CalCreateEvent = ({ onEventCreated }) => {
     
 }
 
-export default CalCreateEvent;
+export default CalendarCreateEvent;

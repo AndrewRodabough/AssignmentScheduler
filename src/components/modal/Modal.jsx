@@ -10,12 +10,11 @@
 import React from 'react';
 import './Modal.css';
 
-const Modal = ({ isOpen, onClose, children }) => {
-  if (!isOpen) return null;
+const Modal = ({ onClose, content }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        {children}
+        {content}
       </div>
       <div className="modal-backdrop" onClick={onClose}></div>
     </div>

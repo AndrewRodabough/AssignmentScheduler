@@ -8,6 +8,8 @@ import Calendar from './pages/calendar/calendar.jsx';
 import Footer from './components/footer.jsx';
 import Navbar from './components/navbar.jsx';
 import './app.css';
+import { Modal } from 'bootstrap';
+import { ModalProvider } from './context/modalContext.jsx';
 
 function App() {
     const { isLoggedIn } = useContext(UserContext);
@@ -51,7 +53,9 @@ export default function WrappedApp() {
     return (
         <UserProvider>
             <CalendarProvider>
-                <App />
+                <ModalProvider>
+                    <App />
+                </ModalProvider>
             </CalendarProvider>
         </UserProvider>
     );

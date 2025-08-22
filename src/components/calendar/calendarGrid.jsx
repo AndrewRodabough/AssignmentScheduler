@@ -7,10 +7,10 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { format, eachDayOfInterval, parseISO, startOfWeek, endOfWeek } from 'date-fns';
-import CalendarContext from '../context/calendarContext.jsx';
+import CalendarContext from '../../context/calendarContext.jsx';
 
 const CalendarGrid = ({ onEventClick }) => {
-    const { events } = useContext(CalendarContext);
+    const { groups } = useContext(CalendarContext);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [dateColumns, setDateColumns] = useState([]);
@@ -67,7 +67,10 @@ const CalendarGrid = ({ onEventClick }) => {
                 {dateColumns.length > 0 && (
                     <div className="calendar-grid">
                         {dateColumns.map(({ fullDate, dayOfWeek, dayOfMonth }) => {
-                            const eventsForDay = events.filter(event => event.startDate === fullDate);
+                            
+                            const events = Object.assign({}, ...groups.map(group => group.entries || {}));
+                            const eventsArray = Object.values(events);
+                            const eventsForDay = eventsArray.filter(event => event.startDate === fullDate);
                             return (
                                 <div key={fullDate} className={`calendar-column ${fullDate === currentDate ? 'current-day' : ''}`}>
                                     <div className="column-header">
