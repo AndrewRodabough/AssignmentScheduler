@@ -1,8 +1,8 @@
-import { UserService } from '../services/userService.js';
 import { GroupService } from '../services/groupService.js';
+import { UserService } from '../services/userService.js';
 import { EventService } from '../services/eventService.js';
 
-export class EventController {
+export class GroupController {
     constructor(dataStore) {
         this.userService = new UserService(dataStore);
         this.groupService = new GroupService(dataStore);
@@ -12,48 +12,30 @@ export class EventController {
     async create(req, res) {
         try {
             const token = req.headers.authorization;
-            const { groupUID, event } = req.body;
-            console.log(event);
+            const { group } = req.body;
             const user = await this.userService.getUserFromToken(token);
             if (!user) {
                 return res.status(404).json({ error: "User not Found" });
             }
-            await this.eventService.createEvent(user.userUID, groupUID, event)
+            await this.groupService.createGroup(user.userUID, group);
             return res.status(200).json({ message: "success" });
-        } catch (error) {
-            return res.status(500).json({ error: error.message });
+        } catch (e) {
+            return res.status(500).json({ error: e.message });
         }
     }
 
     async delete(req, res) {
         try {
             const token = req.headers.authorization;
-            const { eventUID } = req.body;
+            const { groupUID } = req.body;
             const user = await this.userService.getUserFromToken(token);
             if (!user) {
                 return res.status(404).json({ error: "User not Found" });
             }
-            await this.eventService.deleteEvent(eventUID);
+            await this.groupService.deleteGroup(user.userUID, groupUID);
             return res.status(200).json({ message: "success" });
-        } catch (error) {
-            return res.status(500).json({ error: error.message });
-        }
-    }
-
-    async update(req, res) {
-        try {
-            const token = req.headers.authorization;
-            const { event } = req.body;
-            const user = await this.userService.getUserFromToken(token);
-            if (!user) {
-                return res.status(404).json({ error: "User not Found" });
-            }
-            // check permissions
-            // update event
-            throw new Error(`not implemented`);
-            return res.status(200).json({ message: "success" });
-        } catch (error) {
-            return res.status(500).json({ error: error.message });
+        } catch (e) {
+            return res.status(500).json({ error: e.message });
         }
     }
 
@@ -64,8 +46,45 @@ export class EventController {
             if (!user) {
                 return res.status(404).json({ error: "User not Found" });
             }
-            const events = await this.eventService.getEventsForUser(user.userUID);
-            return res.status(200).json(events);
+            const groups = await this.groupService.getGroupsForUser(user.userUID);
+            return res.status(200).json(groups);
+        } catch (e) {
+            return res.status(500).json({ error: e.message });
+        }
+    }
+
+    async share(req, res) {
+        try {
+            const token = req.headers.authorization;
+            const { username, groupUID, permission } = req.body;
+            const user = await this.userService.getUserFromToken(token);
+            if (!user) {
+                return res.status(404).json({ error: "User not Found" });
+            }
+            
+            const group = await this.groupService.getGroup(user.userUID, groupUID);
+            // get permissions
+            // change status
+            // update permission
+            throw new Error(`not implemented`);
+            return res.status(200).json({ calendar });
+        } catch (e) {
+            return res.status(500).json({ error: e.message });
+        }
+    }
+
+    async update(req, res) {
+        try {
+            const token = req.headers.authorization;
+            const { groupUID, group } = req.body;
+            const user = await this.userService.getUserFromToken(token);
+            if (!user) {
+                return res.status(404).json({ error: "User not Found" });
+            }
+            // check permissions
+            // update group
+            throw new Error(`not implemented`);
+            return res.status(200).json({ message: "success" });
         } catch (error) {
             return res.status(500).json({ error: error.message });
         }

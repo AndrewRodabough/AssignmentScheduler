@@ -7,7 +7,7 @@
  *          Rejects with an error if the request fails.
  */
 
-const createGroupApi = (token, groupTitle) => {
+const createGroupApi = (token, group) => {
     return new Promise((resolve, reject) => {
         const endpoint = './api/group/create';
 
@@ -19,7 +19,7 @@ const createGroupApi = (token, groupTitle) => {
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
-                groupTitle: groupTitle
+                group: group
             })
         })
         .then(response => {

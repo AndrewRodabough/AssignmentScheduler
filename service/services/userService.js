@@ -20,7 +20,7 @@ export class UserService {
         try {
             if (!password) { throw new Error('password is required') }
             if (!username) { throw new Error('username is required') }
-            if (await this.dataStore.getUser(username)) { 
+            if (await this.dataStore.getUserByUsername(username)) { 
                 throw new Error(`username=${username} already exists`); 
             }
             await this.dataStore.setUser(username, password)
@@ -39,7 +39,7 @@ export class UserService {
                 throw new Error('password does not match');
             }
             const token = v4();
-            await this.dataStore.setToken(token, username)
+            await this.dataStore.setToken(token, userData.userUID)
             return token
         }
         catch (e) {

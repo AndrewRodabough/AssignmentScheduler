@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import CalendarList from './calendarList';
 import CalendarCreateEvent from './calendarCreateEvent.jsx';
 import ModalContext from '../../context/modalContext.jsx';
@@ -9,7 +9,11 @@ import './calendar.css';
 const CalendarMenu = () => {
 
     const { openModal, closeModal } = useContext(ModalContext);
-    const { groups, getGroupNames } = useContext(CalendarContext);
+    const { groups, getGroupNames, handleGetAllGroups, handleGetAllEvents } = useContext(CalendarContext);
+    useEffect(() => {
+        handleGetAllGroups();
+        handleGetAllEvents();
+    }, []);
 
     return (
         <>
@@ -44,7 +48,7 @@ const CalendarMenu = () => {
                 </div>
 
                 <CalendarList
-                    groups={[{title: "Title", privacy: "public", uid:123},{title: "Title2", privacy: "private", uid:234}]}
+                    groups={groups}
                 />
             </div>
         </>

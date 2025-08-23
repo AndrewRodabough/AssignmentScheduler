@@ -6,7 +6,7 @@ import './calendar.css';
 
 const CalendarCreateEvent = ({ onEventCreated }) => {
 
-    const { handleCreateEvent, getGroupUID, getGroupNames} = useContext(CalendarContext);
+    const { groups, events, handleCreateEvent, getGroupUID, getGroupNames, setEvents } = useContext(CalendarContext);
     const [selectedForm, setSelectedForm] = useState("Event");
     
     // Controlled form state
@@ -17,7 +17,7 @@ const CalendarCreateEvent = ({ onEventCreated }) => {
         endDate: '',
         startTime: '',
         endTime: '',
-        calendar: ''
+        group: ''
     });
 
     // Controlled form state
@@ -28,7 +28,7 @@ const CalendarCreateEvent = ({ onEventCreated }) => {
         dueTime: '',
         estimatedHours: '',
         estimatedMinutes: '',
-        calendar: ''
+        group: ''
     });
 
 
@@ -47,9 +47,9 @@ const CalendarCreateEvent = ({ onEventCreated }) => {
     const handleSubmitCreateEvent = async (e) => {
         e.preventDefault();
         let message = "";
-        if (!form.title) message += "Title is required.\n";
-        if (!form.startDate) message += "Start date is required.\n";
-        if (!form.calendar) message += "Calendar is required.\n";
+        if (!eventForm.title) message += "Title is required.\n";
+        if (!eventForm.startDate) message += "Start date is required.\n";
+        if (!eventForm.group) message += "Calendar is required.\n";
         if (message) {
             alert(message);
             return;
@@ -58,12 +58,15 @@ const CalendarCreateEvent = ({ onEventCreated }) => {
         const event = JSCalendarFactory.createEvent()
             .setTitle(eventForm.title)
             .setDescription(eventForm.description)
-            .setStartDate(eventForm.startDate)
+            .setStart(eventForm.startDate)
             .setDuration();
-        const uid = getGroupUID(eventForm.calendar)
+        const groupUID = getGroupUID(eventForm.group)
 
         try {
-            await handleCreateEvent(uid, event);
+            await handleCreateEvent(groupUID, event);
+            // Update local events list
+            setEvents(prevEvents => [...prevEvents, event]);
+
             setEventForm({
                 title: '',
                 description: '',
@@ -71,7 +74,7 @@ const CalendarCreateEvent = ({ onEventCreated }) => {
                 endDate: '',
                 startTime: '',
                 endTime: '',
-                calendar: '' 
+                group: '' 
             });
             setTaskForm({
                 title: '',
@@ -80,7 +83,7 @@ const CalendarCreateEvent = ({ onEventCreated }) => {
                 dueTime: '',
                 estimatedHours: '',
                 estimatedMinutes: '',
-                calendar: ''
+                group: ''
             })
             if (onEventCreated) onEventCreated();
         } catch (error) {
@@ -91,8 +94,8 @@ const CalendarCreateEvent = ({ onEventCreated }) => {
     const handleSubmitCreateTask = async (e) => {
         e.preventDefault();
         let message = "";
-        if (!form.title) message += "Title is required.\n";
-        if (!form.calendar) message += "Calendar is required.\n";
+        if (!taskForm.title) message += "Title is required.\n";
+        if (!taskForm.group) message += "Calendar is required.\n";
         if (message) {
             alert(message);
             return;
@@ -103,10 +106,13 @@ const CalendarCreateEvent = ({ onEventCreated }) => {
             .setDescription(eventForm.description)
             .setDue()
             .setEstimatedDuration()
-        const uid = getGroupUID(eventForm.calendar)
+        const groupUID = getGroupUID(eventForm.group)
         
         try {
-            await handleCreateEvent(uid, task);
+            await handleCreateEvent(groupUID, task);
+            // Update local events list
+            setEvents(prevEvents => [...prevEvents, task]);
+
             setTaskForm({
                 title: '',
                 description: '',
@@ -114,7 +120,7 @@ const CalendarCreateEvent = ({ onEventCreated }) => {
                 dueTime: '',
                 estimatedHours: '',
                 estimatedMinutes: '',
-                calendar: ''
+                group: ''
             })
             setEventForm({
                 title: '',
@@ -123,7 +129,7 @@ const CalendarCreateEvent = ({ onEventCreated }) => {
                 endDate: '',
                 startTime: '',
                 endTime: '',
-                calendar: '' 
+                group: '' 
             });
             if (onEventCreated) onEventCreated();
         } catch (error) {
@@ -206,20 +212,20 @@ const CalendarCreateEvent = ({ onEventCreated }) => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="createEventCalendar">Add To:</label>
+                    <label htmlFor="createEventGroup">Add To:</label>
                     <select
-                        id="createEventCalendar"
-                        name="calendar"
-                        value={eventForm.calendar}
+                        id="createEventGroup"
+                        name="group"
+                        value={eventForm.group}
                         onChange={handleChange}
                         required
                     >
-                        {getGroupNames().length === 0 ? (
+                        {groups.length === 0 ? (
                             <option disabled value="">You Have No Calendars</option>
                         ) : (
-                            getGroupNames().map(calendar => (
-                                <option key={calendar.name} value={calendar.name}>
-                                    {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                            groups.map(group => (
+                                <option key={group.title} value={group.title}>
+                                    {group.title}
                                 </option>
                             ))
                         )}
@@ -297,20 +303,20 @@ const CalendarCreateEvent = ({ onEventCreated }) => {
                     </label>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="createTaskCalendar">Add To:</label>
+                    <label htmlFor="createTaskGroup">Add To:</label>
                     <select
-                        id="createTaskCalendar"
-                        name="calendar"
-                        value={taskForm.calendar}
+                        id="createTaskGroup"
+                        name="group"
+                        value={taskForm.group}
                         onChange={handleChange}
                         required
                     >
-                        {getGroupNames().length === 0 ? (
+                        {groups.length === 0 ? (
                             <option disabled value="">You Have No Calendars</option>
                         ) : (
-                            getGroupNames().map(calendar => (
-                                <option key={calendar.name} value={calendar.name}>
-                                    {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                            groups.map(group => (
+                                <option key={group.title} value={group.title}>
+                                    {group.title}
                                 </option>
                             ))
                         )}

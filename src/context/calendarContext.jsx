@@ -34,17 +34,20 @@ import createGroupApi from "../Api/Group/createGroupApi.js";
 import getAllGroupApi from "../Api/Group/getAllGroupsApi.js";
 import shareGroupApi from "../Api/Group/shareGroupApi.js";
 import deleteGroupApi from "../Api/Group/deleteGroupApi.js";
-import createEventApi from "../Api/Event/createEventApi";
+import createEventApi from "../Api/Event/createEventApi.js";
+import getAllEventsApi from "../Api/Event/getAllEventsApi.js"
+import JSCalendarFactory from "../models/jscalendarfactory.js";
 
 const CalendarContext = createContext();
 
 const CalendarProvider = ({ children }) => {
 
     const [groups, setGroups] = useState([]);
+    const [events, setEvents] = useState([]);
     const { user, setUser } = useContext(UserContext);
 
     const getGroupNames = () => {
-        if (!groups) return [];
+        if (!groups) { return [] }
         return groups.map(group => group.title);
     }
 
@@ -53,7 +56,7 @@ const CalendarProvider = ({ children }) => {
 
         const group = groups.find(g => g.title === groupTitle);
 
-        return group ? group.uid : null;
+        return group ? group.groupUID : null;
     };
 
     const handleCreateGroup = async (groupTitle) => {
@@ -62,8 +65,11 @@ const CalendarProvider = ({ children }) => {
         }
 
         try {
-            const result = await createGroupApi(user.token, groupTitle);
-            setGroups(prev => [...prev, result]);
+            const group = JSCalendarFactory.createCalendar()
+                .setPrivacy("private")
+                .setTitle(groupTitle);
+            await createGroupApi(user.token, group);
+            setGroups(prev => [...prev, group]);
         }
         catch (e) {
             throw e;
@@ -84,6 +90,20 @@ const CalendarProvider = ({ children }) => {
         }
     }
 
+    const handleGetAllEvents = async () => {
+        if (!user || !user.token) {
+            throw new Error('User must be logged in to get all events');
+        }
+
+        try {
+            const result = await getAllEventsApi(user.token);
+            setGroups(result);
+        }
+        catch (e) {
+            throw e;
+        }
+    }
+
     const handleShareGroup = async (username, groupUID) => {
         if (!user || !user.token) {
             throw new Error('User must be logged in to share group');
@@ -91,7 +111,7 @@ const CalendarProvider = ({ children }) => {
         
         try {
             const result = await shareGroupApi(user.token, username, groupUID);
-            setGroups(prev => prev.map(group => group.uid === groupUID ? { ...group, privacy: "public" } : group));
+            //setEvents(prev => prev.map(group => group.groupUID === groupUID ? { ...group, privacy: "public" } : group));
         }
         catch (e) {
             throw e;
@@ -105,7 +125,7 @@ const CalendarProvider = ({ children }) => {
 
         try {
             const result = await createEventApi(user.token, groupUID, event);
-            setGroups(prev => prev.map(group => group.uid === groupUID ? { ...group, entries: [...group.entries, result] } : group));
+            //setEvents(prev => prev.map(group => group.groupUID === groupUID ? { ...group, entries: [...group.entries, result] } : group));
         }
         catch (e) {
             throw e;
@@ -119,7 +139,7 @@ const CalendarProvider = ({ children }) => {
         
         try {
             const result = await deleteGroupApi(user.token, groupUID);
-            setGroups(prev => prev.filter(group => group.uid !== groupUID));
+            setGroups(prev => prev.filter(group => group.groupUID !== groupUID));
         }
         catch(e) {
             throw e;
@@ -135,9 +155,12 @@ const CalendarProvider = ({ children }) => {
             handleShareGroup,
             handleCreateEvent,
             handleDeleteGroup,
+            handleGetAllEvents,
             getGroupNames,
-            getGroupUID}}>
-                
+            events,
+            setEvents,
+            getGroupUID
+        }}>
             {children}
         </CalendarContext.Provider>
     );

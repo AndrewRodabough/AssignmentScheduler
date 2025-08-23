@@ -5,7 +5,7 @@ class JSCalendarFactory {
   static createCalendar() {
     return {
       "@type": "Group",
-      "uid": this.generateUID(),
+      "groupUID": this.generateUID(),
       "created": new Date().toISOString(),
       "updated": new Date().toISOString(),
       "entries": {},
@@ -27,8 +27,8 @@ class JSCalendarFactory {
 
       addEntry(entry) {
         if (!this.entries) this.entries = {};
-        if (entry && entry.uid) {
-          this.entries[entry.uid] = entry;
+        if (entry && entry.eventUID) {
+          this.entries[entry.eventUID] = entry;
         }
         return this;
       }
@@ -38,7 +38,7 @@ class JSCalendarFactory {
   static createTask() {
     return {
       "@type": "Task",
-      "uid": this.generateUID(),
+      "eventUID": this.generateUID(),
       "created": new Date().toISOString(),
       "updated": new Date().toISOString(),
 
@@ -183,7 +183,7 @@ class JSCalendarFactory {
   static createEvent() {
     return {
       "@type": "Event",
-      "uid": this.generateUID(),
+      "eventUID": this.generateUID(),
       "created": new Date().toISOString(),
       "updated": new Date().toISOString(),
 

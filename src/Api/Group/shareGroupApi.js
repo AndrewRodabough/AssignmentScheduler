@@ -8,7 +8,7 @@
  *          Rejects with an error if the request fails.
  */
 
-const shareGroupApi = (token, username, groupUID) => {
+const shareGroupApi = (token, username, groupUID, permission) => {
     return new Promise((resolve, reject) => {
         const endpoint = './api/group/share';
 
@@ -23,7 +23,8 @@ const shareGroupApi = (token, username, groupUID) => {
             },
             body: JSON.stringify({
                 username: username,
-                groupUID: groupUID
+                groupUID: groupUID,
+                permission: permission
             })
         })
         .then(response => {

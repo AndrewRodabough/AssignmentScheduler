@@ -16,10 +16,10 @@ export const CalendarShareCalendar = ({ onCalendarShared }) => {
         
         if ((shareUsername && shareUsername.value) && (shareCalendar && shareCalendar.value)) {
         
-            const uid = getGroupUID(shareCalendar.value)
+            const groupUID = getGroupUID(shareCalendar.value)
 
             try {    
-                await handleShareCalendar(shareUsername.value, uid);
+                await handleShareCalendar(shareUsername.value, groupUID);
                 if(onCalendarShared) { onCalendarShared() }
             }
             catch(error) {
@@ -34,15 +34,15 @@ export const CalendarShareCalendar = ({ onCalendarShared }) => {
                 <label htmlFor="shareCalendar">Calendar:</label>
                 <select id="shareCalendar" name="shareCalendar">
                     {
-                        getGroupNames().length === 0 ? (
+                        groups.length === 0 ? (
                             <option disabled value="">You Have No Calendars</option>
                         ) : (
-                            getGroupNames().map(calendar => (
+                            groups.map(group => (
                             <option 
-                                key={calendar.name} 
-                                value={calendar.name}
+                                key={group.title} 
+                                value={group.title}
                             >
-                                {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                                {group.title}
                             </option>
                             ))
                         )

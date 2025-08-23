@@ -1,7 +1,7 @@
-const SubMenu = ({ uid, items }) => (
+const SubMenu = ({ groupUID, items }) => (
   <ul>
     {items.map(({ title, onClick }, index) => (
-      <li key={index} onClick={() => onClick(uid)}>
+      <li key={index} onClick={() => onClick(groupUID)}>
         {title}
       </li>
     ))}

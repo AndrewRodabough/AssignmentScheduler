@@ -6,7 +6,7 @@ import './calendar.css';
 
 export const CalendarCreateCalendar = ({ onCalendarCreated}) => {
 
-    const { handleCreateCalendar } = useContext(CalendarContext);
+    const { handleCreateGroup } = useContext(CalendarContext);
     
     const handleSubmitCreateCalendar = async (e) => {
         e.preventDefault();
@@ -16,7 +16,7 @@ export const CalendarCreateCalendar = ({ onCalendarCreated}) => {
         if (calendarName && calendarName.value) {
         
             try {    
-                await handleCreateCalendar(calendarName.value);
+                await handleCreateGroup(calendarName.value);
                 calendarName.value = '';
                 if (onCalendarCreated) { onCalendarCreated() }
             }

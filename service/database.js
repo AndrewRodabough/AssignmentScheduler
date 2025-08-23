@@ -64,13 +64,13 @@ const dataStore = {
         }
     },
 
-    async userExists(username) {
+    async userExists(userUID) {
         try {
-            const gotUser = await userCol.findOne({ username: username });
+            const gotUser = await userCol.findOne({ userUID });
             return gotUser !== null;
         }
         catch (e) {
-            throw new Error(`userExists failed for username=${username}: ${e.message}`);
+            throw new Error(`userExists failed for userUID=${userUID}: ${e.message}`);
         }
     },
 
@@ -255,7 +255,7 @@ const dataStore = {
         
         try {
             session.startTransaction();
-            await groupCol.deleteOne({ groupUID: groupUID });
+            await groupCol.deleteOne({ groupUID });
             await eventCol.deleteMany({ groupUID });
             await groupPermissionCol.deleteMany({ groupUID });
             await session.commitTransaction();
@@ -333,9 +333,9 @@ const dataStore = {
             if (!gotGroupPermissions || gotGroupPermissions.length === 0) { return [];}
             const groupUIDs = gotGroupPermissions.map(gp => gp.groupUID);
             if (!groupUIDs || groupUIDs.length === 0) { return []}
-            const events = await this.dataStore.eventCol.find({ groupUID: {$in: GroupUIDs}})
-            if (!events || events.length === 0) { return []}
-            return events
+            const events = await eventCol.find({ groupUID: { $in: groupUIDs } }).toArray();
+            if (!events || events.length === 0) { return [] }
+            return events;
         }
         catch (e) {
             throw new Error(`getEventsForUser failed for userUID${userUID}: ${e.message}`);

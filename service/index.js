@@ -1,9 +1,8 @@
 import express from 'express';
 
-import calendarRoutes from './routes/calendarRoutes.js';
+import groupRoutes from './routes/groupRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
-import authRoutes from './routes/authRoutes.js';
-import devRoutes from './routes/devRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 import dataStore from './database.js';
 import socket from './websocket.js';
@@ -33,10 +32,9 @@ app.use(`/api`, apiRouter);
 // Routes //
 ////////////
 
-apiRouter.use('/auth', authRoutes(dataStore));
-apiRouter.use('/calendar', calendarRoutes(dataStore));
+apiRouter.use('/auth', userRoutes(dataStore));
+apiRouter.use('/group', groupRoutes(dataStore));
 apiRouter.use('/event', eventRoutes(dataStore));
-apiRouter.use('/dev', devRoutes(dataStore));
 
 //////////////
 // Database //

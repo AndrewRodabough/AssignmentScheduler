@@ -14,10 +14,10 @@ export const CalendarDeleteCalendar = ({ onCalendarDeleted }) => {
 
         if (calendar && calendar.value) {
 
-            const uid = getGroupUID(calendar.value)
+            const groupUID = getGroupUID(calendar.value)
         
             try {    
-                await handleDeleteCalendar(uid);
+                await handleDeleteGroup(groupUID);
                 if (onCalendarDeleted) { onCalendarDeleted() }
             }
             catch(error) {
@@ -31,15 +31,15 @@ export const CalendarDeleteCalendar = ({ onCalendarDeleted }) => {
             <section>
                 <select id="deleteCalendarCalendar" name="deleteCalendarCalendar">
                     {
-                        getGroupNames().length === 0 ? (
+                        groups.length === 0 ? (
                             <option disabled value="">You Have No Calendars</option>
                         ) : (
-                            getGroupNames().map(calendar => (
+                            groups.map(group => (
                             <option 
-                                key={calendar.name} 
-                                value={calendar.name}
+                                key={group.title} 
+                                value={group.title}
                             >
-                                {calendar.name.charAt(0).toUpperCase() + calendar.name.slice(1)}
+                                {group.title}
                             </option>
                             ))
                         )

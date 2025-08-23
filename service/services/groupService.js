@@ -43,7 +43,7 @@ export class GroupService {
             if (!userUID) { throw new Error('userUID is required'); }
             if (!group) { throw new Error('group is required'); }
             if (!await this.dataStore.userExists(userUID)) {
-                throw new Error(`createGroup failed for userUID=${userUID}: userUID ${userUID} does not exist`);
+                throw new Error(`userUID ${userUID} does not exist`);
             }
             await this.dataStore.setGroup(userUID, group);
         }

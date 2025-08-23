@@ -28,22 +28,22 @@ const ListWithSubMenu = ({ items, subMenuItems }) => {
   return (
     <ul>
       {items.map(item => (
-        <li key={item.uid} className="calendar-list-item">
+        <li key={item.groupUID} className="calendar-list-item">
           <div className="calendar-list-title">{item.title}</div>
           <div className='calendar-list-icons'>
             <div>
               {item.privacy === "public" && <span className="material-symbols-outlined">group</span>}
             </div>
-            <div className="calendar-list-menu-container" ref={activeMenu === item.uid ? menuRef : null}>
+            <div className="calendar-list-menu-container" ref={activeMenu === item.groupUID ? menuRef : null}>
               <div 
                 className="calendar-list-menu-trigger" 
-                onClick={() => { setActiveMenu(prev => (prev === item.uid ? "" : item.uid)); }}
+                onClick={() => { setActiveMenu(prev => (prev === item.groupUID ? "" : item.groupUID)); }}
               >
                 <span className="calendar-list-three-dots">&#8942;</span>
               </div>
-              {activeMenu === item.uid && (
+              {activeMenu === item.groupUID && (
                 <div className={`calendar-list-dropdown-menu active`}>
-                  <SubMenu uid={item.uid} items={subMenuItems} />
+                  <SubMenu groupUID={item.groupUID} items={subMenuItems} />
                 </div>
               )}
             </div>
