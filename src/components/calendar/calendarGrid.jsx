@@ -8,14 +8,25 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { format, eachDayOfInterval, parseISO, startOfWeek, endOfWeek } from 'date-fns';
 import CalendarContext from '../../context/calendarContext.jsx';
+import ModalContext from '../../context/modalContext.jsx';
+import CalendarEditEvent from './calendarEditEvent.jsx';
 
-const CalendarGrid = ({ onEventClick }) => {
+const CalendarGrid = () => {
     const { groups, events } = useContext(CalendarContext);
+    const { openModal, closeModal } = useContext(ModalContext);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [dateColumns, setDateColumns] = useState([]);
     const today = new Date();
     const currentDate = format(today, 'yyyy-MM-dd');
+
+    const handleOnEventClick = (event) => {
+        console.log("Event clicked:", event);
+        openModal("modal_close", { 
+            title: event.event.title,
+            content: <CalendarEditEvent event={event.event} onSubmit={closeModal} />});
+    };
+
 
     useEffect(() => {
         const sOfWeek = startOfWeek(today, { weekStartsOn: 0 });
@@ -76,9 +87,17 @@ const CalendarGrid = ({ onEventClick }) => {
                                     </div>
                                     <div className="column-content">
                                         {eventsForDay.map(event => (
-                                            <p key={event.event.eventUID} className="calendar-event" onDoubleClick={() => onEventClick(event)}>
-                                                {event.event.title} {event.event.start}
-                                            </p>
+                                            <div key={event.event.eventUID} className="calendar-event-wrapper">
+                                                <p className="calendar-event" onDoubleClick={() => handleOnEventClick(event)}>
+                                                    {event.event.title} {event.event.start}
+                                                    <span className="calendar-event-edit-icon" onClick={(e) => { e.stopPropagation(); handleOnEventClick(event); }}>
+                                                        {/* Solid black pencil SVG icon */}
+                                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="black" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M12.146 2.854a.5.5 0 0 1 .708 0l.292.292a.5.5 0 0 1 0 .708l-8.5 8.5a.5.5 0 0 1-.168.11l-3 1a.5.5 0 0 1-.638-.638l1-3a.5.5 0 0 1 .11-.168l8.5-8.5zM11.207 3.5L3.5 11.207l-.646 1.939 1.939-.646L12.5 4.793l-1.293-1.293z" />
+                                                        </svg>
+                                                    </span>
+                                                </p>
+                                            </div>
                                         ))}
                                     </div>
                                 </div>

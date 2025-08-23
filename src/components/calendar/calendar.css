@@ -1,5 +1,30 @@
 @import "../../app.css";
 
+.calendar-event-wrapper {
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+.calendar-event-edit-icon {
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	opacity: 0;
+	transition: opacity 0.2s;
+	z-index: 2;
+	background: #fcdddd;
+	border-radius: 50%;
+	padding: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.calendar-event-wrapper:hover .calendar-event-edit-icon {
+	opacity: 1;
+}
+
 .calendar-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
@@ -241,9 +266,24 @@ input[type="checkbox"] {
 }
   
 .calendar-event {
+	min-width: 100%;
+	word-break: break-word;
+	overflow-wrap: break-word;
+	white-space: normal;
+	overflow: hidden;
 	background-color: var(--linkHover);
 	color: #fff;
 	border-radius: 10px;
 	padding: 8px;
-	width: fit-content;
+	width: 100%;
+	display: block;
+	text-align: left;
+	box-sizing: border-box;
+	transition: background 0.2s, box-shadow 0.2s;
+}
+
+.calendar-event:hover {
+	background-color: #eb9e9e;
+	box-shadow: 0 2px 8px rgba(45, 140, 240, 0.15);
+	cursor: pointer;
 }

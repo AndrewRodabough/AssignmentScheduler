@@ -163,6 +163,10 @@ const CalendarProvider = ({ children }) => {
         }
     }
 
+    const handleUpdateEvent = async (updatedEvent) => {
+        throw new Error('Not implemented yet');
+    }
+
     return (
         <CalendarContext.Provider value={{
             groups,
@@ -173,6 +177,7 @@ const CalendarProvider = ({ children }) => {
             setPermissions,
             handleCreateGroup,
             handleCreateEvent,
+            handleUpdateEvent,
             handleShareGroup,
             handleDeleteGroup,
             handleGetAllGroups,
