@@ -97,7 +97,7 @@ const CalendarProvider = ({ children }) => {
 
         try {
             const result = await getAllEventsApi(user.token);
-            setGroups(result);
+            setEvents(result);
         }
         catch (e) {
             throw e;

@@ -10,7 +10,7 @@ import { format, eachDayOfInterval, parseISO, startOfWeek, endOfWeek } from 'dat
 import CalendarContext from '../../context/calendarContext.jsx';
 
 const CalendarGrid = ({ onEventClick }) => {
-    const { groups } = useContext(CalendarContext);
+    const { groups, events } = useContext(CalendarContext);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [dateColumns, setDateColumns] = useState([]);
@@ -46,7 +46,7 @@ const CalendarGrid = ({ onEventClick }) => {
                     :
                     <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
                 </div>
-                                <div className="custom-radio-group">
+                    <div className="custom-radio-group">
                     <label className="option">
                         <input type="radio" name="selection" value="option1"/>
                         <span className="text">View A</span>
@@ -67,10 +67,7 @@ const CalendarGrid = ({ onEventClick }) => {
                 {dateColumns.length > 0 && (
                     <div className="calendar-grid">
                         {dateColumns.map(({ fullDate, dayOfWeek, dayOfMonth }) => {
-                            
-                            const events = Object.assign({}, ...groups.map(group => group.entries || {}));
-                            const eventsArray = Object.values(events);
-                            const eventsForDay = eventsArray.filter(event => event.startDate === fullDate);
+                            const eventsForDay = events.filter(event => event.event.start === fullDate);
                             return (
                                 <div key={fullDate} className={`calendar-column ${fullDate === currentDate ? 'current-day' : ''}`}>
                                     <div className="column-header">
@@ -79,8 +76,8 @@ const CalendarGrid = ({ onEventClick }) => {
                                     </div>
                                     <div className="column-content">
                                         {eventsForDay.map(event => (
-                                            <p key={event.id} className="calendar-event" onDoubleClick={() => onEventClick(event)}>
-                                                {event.title} ({event.startTime} - {event.endTime}) {'CAL:' + event.calendarName}
+                                            <p key={event.event.eventUID} className="calendar-event" onDoubleClick={() => onEventClick(event)}>
+                                                {event.event.title} {event.event.start}
                                             </p>
                                         ))}
                                     </div>
