@@ -41,9 +41,10 @@ const UserProvider = ({ children }) => {
     // Initialize user state from cookies if available
     const [user, setUser] = useState(() => {
         const username = Cookies.get('username');
+        const userUID = Cookies.get('userUID');
         const token = Cookies.get('token');
-        if (username && token) {
-            return { username, token };
+        if (username && token && userUID) {
+            return { username, token, userUID };
         }
         return null;
     });
@@ -59,9 +60,10 @@ const UserProvider = ({ children }) => {
         
         try {
             const result = await loginApi(userInfo.username, userInfo.password);
-            const newUserData = { username: userInfo.username, token: result };
+            const newUserData = { userUID: result.userUID, username: userInfo.username, token: result.token };
             Cookies.set('username', userInfo.username);
-            Cookies.set('token', result);
+            Cookies.set('token', result.token);
+            Cookies.set('userUID', result.userUID);
             setUser(newUserData);         
         }
         catch (e) {
@@ -78,6 +80,7 @@ const UserProvider = ({ children }) => {
             const result = await logoutApi(user.token);
             Cookies.remove('username');
             Cookies.remove('token');
+            Cookies.remove('userUID');
             setUser(null);
         }
         catch (e) {
@@ -100,7 +103,7 @@ const UserProvider = ({ children }) => {
     }
 
     return (
-        <UserContext.Provider value={{ user, setUser, isLoggedIn, handleLogin, handleLogout, handleRegister }}>
+        <UserContext.Provider value={{ user, setUser, isLoggedIn, handleLogin, handleLogout, handleRegister}}>
             {children}
         </UserContext.Provider>
   );

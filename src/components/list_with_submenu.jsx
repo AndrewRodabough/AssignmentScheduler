@@ -1,55 +1,51 @@
 import React, { useState, useEffect, useRef } from 'react';
-import SubMenu from "./submenu.jsx"
 
-const ListWithSubMenu = ({ items, subMenuItems }) => {
+const ListWithSubMenu = ({ items, getTitle, getIcons, menuItems, getKey }) => {
   const [activeMenu, setActiveMenu] = useState("");
   const menuRef = useRef(null);
 
-  // Click outside handler
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setActiveMenu("");
       }
     };
-
     if (activeMenu) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
-
-    // Cleanup
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [activeMenu]);
 
   return (
-    <ul>
-      {items.map(item => (
-        <li key={item.groupUID} className="calendar-list-item">
-          <div className="calendar-list-title">{item.title}</div>
-          <div className='calendar-list-icons'>
-            <div>
-              {item.privacy === "public" && <span className="material-symbols-outlined">group</span>}
-            </div>
-            <div className="calendar-list-menu-container" ref={activeMenu === item.groupUID ? menuRef : null}>
-              <div 
-                className="calendar-list-menu-trigger" 
-                onClick={() => { setActiveMenu(prev => (prev === item.groupUID ? "" : item.groupUID)); }}
-              >
-                <span className="calendar-list-three-dots">&#8942;</span>
-              </div>
-              {activeMenu === item.groupUID && (
-                <div className={`calendar-list-dropdown-menu active`}>
-                  <SubMenu groupUID={item.groupUID} items={subMenuItems} />
+    <ul className="list-with-submenu">
+      {items.map(item => {
+        const key = getKey ? getKey(item) : item.id || item.key || item.title;
+        return (
+          <li key={key} className="list-with-submenu-item">
+            <div className="list-with-submenu-title">{getTitle ? getTitle(item) : item.title}</div>
+            <div className="list-with-submenu-icons">
+              {getIcons ? getIcons(item) : null}
+              <div className="list-with-submenu-menu-container" ref={activeMenu === key ? menuRef : null}>
+                <div
+                  className="list-with-submenu-menu-trigger"
+                  onClick={() => setActiveMenu(prev => (prev === key ? "" : key))}
+                >
+                  <span className="list-with-submenu-three-dots">&#8942;</span>
                 </div>
-              )}
+                {activeMenu === key && (
+                  <div className="list-with-submenu-dropdown-menu active">
+                    {menuItems && menuItems(item)}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        </li>
-      ))}
+          </li>
+        );
+      })}
     </ul>
   );
 };

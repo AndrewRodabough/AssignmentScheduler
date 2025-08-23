@@ -83,7 +83,7 @@ const CalendarCreateEvent = ({ onEventCreated, selectedCalendarUID }) => {
     const handleSubmitBoth = async (groupUID, event) => {
         try {
             await handleCreateEvent(groupUID, event);
-            setEvents(prevEvents => [...prevEvents, event]);
+            setEvents(prevEvents => [...prevEvents, {eventUID: event.eventUID, groupUID: groupUID, event: event} ]);
             handleClearForms();
             if (onEventCreated) onEventCreated();
         } catch (error) {

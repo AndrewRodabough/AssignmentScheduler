@@ -9,10 +9,11 @@ import './calendar.css';
 const CalendarMenu = () => {
 
     const { openModal, closeModal } = useContext(ModalContext);
-    const { groups, getGroupNames, handleGetAllGroups, handleGetAllEvents } = useContext(CalendarContext);
+    const { groups, handleGetAllGroups, handleGetAllEvents, handleGetAllPermissions } = useContext(CalendarContext);
     useEffect(() => {
         handleGetAllGroups();
         handleGetAllEvents();
+        handleGetAllPermissions();
     }, []);
 
     return (

@@ -36,6 +36,7 @@ import shareGroupApi from "../Api/Group/shareGroupApi.js";
 import deleteGroupApi from "../Api/Group/deleteGroupApi.js";
 import createEventApi from "../Api/Event/createEventApi.js";
 import getAllEventsApi from "../Api/Event/getAllEventsApi.js"
+import getAllPermissionsApi from "../Api/Group/getAllPermissionsApi.js";
 import JSCalendarFactory from "../models/jscalendarfactory.js";
 
 const CalendarContext = createContext();
@@ -44,7 +45,8 @@ const CalendarProvider = ({ children }) => {
 
     const [groups, setGroups] = useState([]);
     const [events, setEvents] = useState([]);
-    const { user, setUser } = useContext(UserContext);
+    const [permissions, setPermissions] = useState([]);
+    const { user } = useContext(UserContext);
 
     const getGroupNames = () => {
         if (!groups) { return [] }
@@ -70,6 +72,7 @@ const CalendarProvider = ({ children }) => {
                 .setTitle(groupTitle);
             await createGroupApi(user.token, group);
             setGroups(prev => [...prev, group]);
+            setPermissions(prev => [...prev, { userUID: user.userUID, groupUID: group.groupUID, permission: "owner" }]);
         }
         catch (e) {
             throw e;
@@ -146,19 +149,36 @@ const CalendarProvider = ({ children }) => {
         }
     }
 
+    const handleGetAllPermissions = async () => {
+        if (!user || !user.token) {
+            throw new Error('User must be logged in to get all permissions');
+        }
+
+        try {
+            const result = await getAllPermissionsApi(user.token);
+            setPermissions(result);
+        }
+        catch (e) {
+            throw e;
+        }
+    }
+
     return (
         <CalendarContext.Provider value={{
             groups,
-            setGroups,
-            handleCreateGroup,
-            handleGetAllGroups,
-            handleShareGroup,
-            handleCreateEvent,
-            handleDeleteGroup,
-            handleGetAllEvents,
-            getGroupNames,
             events,
+            permissions,
+            setGroups,
             setEvents,
+            setPermissions,
+            handleCreateGroup,
+            handleCreateEvent,
+            handleShareGroup,
+            handleDeleteGroup,
+            handleGetAllGroups,
+            handleGetAllEvents,
+            handleGetAllPermissions,
+            getGroupNames,
             getGroupUID
         }}>
             {children}

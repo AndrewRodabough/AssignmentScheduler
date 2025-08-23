@@ -23,7 +23,7 @@ export class UserController {
         return res.status(401).json({ error: "User not found" });
       }
       const token = await this.userService.createToken(username, password);
-      return res.status(200).json({ token });
+      return res.status(200).json({ token: token, userUID: user.userUID });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }

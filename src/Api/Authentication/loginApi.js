@@ -27,11 +27,7 @@ const loginApi = (username, password) => {
             if (!response.ok) {
                 response.status === 401 ? reject("invalid username or password") : reject("an error occurred");
             }
-            return response.json();
-        })
-        .then(data => {
-            const { token } = data
-            resolve(token);
+            resolve(response.json());
         })
         .catch(error => {
             reject(error);

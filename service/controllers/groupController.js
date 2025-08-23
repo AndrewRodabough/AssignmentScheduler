@@ -86,4 +86,18 @@ export class GroupController {
             return res.status(500).json({ error: error.message });
         }
     }
+
+    async getAllPermissions(req, res) {
+        try {
+            const token = req.headers.authorization;
+            const user = await this.userService.getUserFromToken(token);
+            if (!user) {
+                return res.status(404).json({ error: "User not Found" });
+            }
+            const permissions = await this.groupService.getPermissionsForUser(user.userUID);
+            return res.status(200).json(permissions);
+        } catch (e) {
+            return res.status(500).json({ error: e.message });
+        }
+    }
 }

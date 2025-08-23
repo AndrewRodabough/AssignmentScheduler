@@ -123,4 +123,17 @@ export class GroupService {
             throw new Error(`createPermission failed for userUID=${userUID}, username=${username}, groupUID=${groupUID}, permission=${permission}: ${e.message}`);
         }
     }
+
+    async getPermissionsForUser(userUID) {
+        try {
+            if (!userUID) { throw new Error('userUID is required'); }
+            if (!await this.dataStore.userExists(userUID)) {
+                throw new Error(`userUID ${userUID} does not exist`);
+            }
+            return await this.dataStore.getPermissionsForUser(userUID);
+        }
+        catch (e) {
+            throw new Error(`getPermissionsForUser failed for userUID=${userUID}: ${e.message}`);
+        }
+    }
 }

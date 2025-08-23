@@ -1,13 +1,15 @@
 import React, { useContext } from 'react';
 import ModalContext from '../../context/modalContext';
+import CalendarContext from '../../context/calendarContext.jsx';
 import ListWithSubMenu from '../list_with_submenu';
 import CalendarShareCalendar from './calendarShareCalendar';
 import CalendarDeleteCalendar from './calendarDeleteCalendar';
 import './calendar.css';
+import '../list_with_submenu.css';
 
 const CalendarList = ({ groups }) => {
-
     const { openModal, closeModal } = useContext(ModalContext);
+    const { permissions } = useContext(CalendarContext);
 
     // Open edit modal
     const onEdit = (groupUID) => {
@@ -33,18 +35,50 @@ const CalendarList = ({ groups }) => {
         })
     }
 
-    const subMenuItems=[
-        { title: "Edit", onClick: (groupUID) => onEdit(groupUID) },
-        { title: "Share", onClick: (groupUID) => onShare(groupUID) },
-        { title: "Delete", onClick: (groupUID) => onDelete(groupUID) }
-    ]
+    // Render icons area for each calendar item, with permission info for debugging
+    const getIcons = (item) => {
+        let permissionInfo = null;
+        if (permissions && permissions.length > 0) {
+            const found = permissions.find(p => p.groupUID === item.groupUID);
+            if (found) {
+                permissionInfo = (
+                    <span style={{ fontSize: '0.95em', color: '#888', marginLeft: '0.3em' }}>
+                        
+                        {`(${found.permission})`}
+                    </span>
+                );
+            }
+        }
+        return (
+            <>
+                {item.privacy === "public" && (
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.3em' }}>
+                        <span className="material-symbols-outlined">group</span>
+                        {permissionInfo}
+                    </span>
+                )}
+            </>
+        );
+    };
+
+    // Render dropdown menu for each calendar item
+    const menuItems = (item) => (
+        <>
+            <div className="submenu-item" onClick={() => onEdit(item.groupUID)}>Edit</div>
+            <div className="submenu-item" onClick={() => onShare(item.groupUID)}>Share</div>
+            <div className="submenu-item" onClick={() => onDelete(item.groupUID)}>Delete</div>
+        </>
+    );
 
     return (
         <ListWithSubMenu
             items={groups}
-            subMenuItems={subMenuItems}
+            getTitle={item => item.title}
+            getIcons={getIcons}
+            menuItems={menuItems}
+            getKey={item => item.groupUID}
         />
-    )
+    );
 };
 
 export default CalendarList;

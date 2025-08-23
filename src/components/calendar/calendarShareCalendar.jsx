@@ -4,12 +4,12 @@ import './calendar.css';
 
 export const CalendarShareCalendar = ({ onCalendarShared, selectedCalendarUID }) => {
 
-    const { groups, handleShareGroup, getGroupUID } = useContext(CalendarContext);
+    const { groups, handleShareGroup, getGroupUID} = useContext(CalendarContext);
     const [shareUsername, setShareUsername] = useState("");
     const [shareCalendar, setShareCalendar] = useState("");
     const [permissionLevel, setPermissionLevel] = useState("view");
 
-    const permissions = ["view", "edit"];
+    const perm = ["view", "edit"];
 
     useEffect(() => {
         if (selectedCalendarUID && selectedCalendarUID !== "") {
@@ -75,7 +75,7 @@ export const CalendarShareCalendar = ({ onCalendarShared, selectedCalendarUID })
                     value={permissionLevel}
                     onChange={e => setPermissionLevel(e.target.value)}
                 >
-                    {permissions.map(permission => (
+                    {perm.map(permission => (
                         <option key={permission} value={permission}>
                             {permission.charAt(0).toUpperCase() + permission.slice(1)}
                         </option>
