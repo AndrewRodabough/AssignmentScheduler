@@ -37,6 +37,18 @@ const CalendarViewControls = () => {
         }
     };
 
+    const handleViewChange = (viewId) => {
+        setCurrentView(viewId);
+        if (viewId === "Timeline") {
+            setStartDate(format(startOfWeek(today), 'yyyy-MM-dd'));
+            setEndDate(format(endOfWeek(today), 'yyyy-MM-dd'));
+        }
+        else if (viewId === "Standard") {
+            handleRangeChange(currentRange);
+        }
+
+    };
+
     return (
         <section className="box calendar-topbar">
             <div className="custom-radio-group">
@@ -47,17 +59,13 @@ const CalendarViewControls = () => {
                             name="selection"
                             value={option.id}
                             checked={currentView === option.id}
-                            onChange={() => setCurrentView(option.id)}
+                            onChange={() => handleViewChange(option.id)}
                         />
                         <span className="text">{option.label}</span>
                     </label>
                 ))}
             </div>
-            <div>
-                <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
-                :
-                <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
-            </div>
+
 
 
             {currentView === 'Standard' && (
@@ -76,6 +84,20 @@ const CalendarViewControls = () => {
                     ))}
                 </div>
             )}
+
+            {currentView === 'Timeline' && (
+                <>
+                </>   
+            )}
+
+            {currentView === 'Other' && (
+                <div>
+                    <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
+                    :
+                    <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
+                </div>
+            )}
+
         </section>
     );
 };
