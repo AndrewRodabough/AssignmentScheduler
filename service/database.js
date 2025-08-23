@@ -1,8 +1,7 @@
 import { MongoClient } from 'mongodb';
 import { readFile } from 'fs/promises';
 import { v4 } from 'uuid';
-import bcrypt from 'bcryptjs';
-import { group } from 'console';
+import bcrypt from 'bcrypt';
 
 const config = JSON.parse(
   await readFile(new URL('./dbConfig.json', import.meta.url))
@@ -56,7 +55,7 @@ const dataStore = {
 
     async getUserByUsername(username) {
         try {
-            const gotUser = await userCol.findOne({ username: username });
+            const gotUser = await userCol.findOne({ username });
             if (!gotUser) { return null; }
             return gotUser;
         }
@@ -200,7 +199,7 @@ const dataStore = {
         }
     },
 
-    async setGroup(group, userUID) {
+    async setGroup(userUID, group) {
         const session = client.startSession();
         
         try {
@@ -228,6 +227,7 @@ const dataStore = {
             const gotGroupPermissions = await groupPermissionCol.find({ userUID }).toArray();
             if (!gotGroupPermissions || gotGroupPermissions.length === 0) { return [];}
             const groupUIDs = gotGroupPermissions.map(gp => gp.groupUID);
+            if (!groupUIDs || groupUIDs.length === 0) { return []}
             const gotGroups = await groupCol.find({ groupUID: { $in: groupUIDs } }).toArray();
             return gotGroups;
         }
@@ -315,7 +315,7 @@ const dataStore = {
         throw new Error('Not Implemented');
     },
     
-    async getEventsByGroup(groupUID) {
+    async getEventsForGroup(groupUID) {
         try {
             if (await this.groupExists(groupUID) === false) {
                 throw new Error(`Group with UID ${groupUID} does not exist`);
@@ -326,6 +326,21 @@ const dataStore = {
             throw new Error(`getEventsByGroup failed for groupUID=${groupUID}: ${e.message}`);
         }
     },
+
+    async getEventsForUser(userUID) {
+        try {
+            const gotGroupPermissions = await groupPermissionCol.find({ userUID }).toArray();
+            if (!gotGroupPermissions || gotGroupPermissions.length === 0) { return [];}
+            const groupUIDs = gotGroupPermissions.map(gp => gp.groupUID);
+            if (!groupUIDs || groupUIDs.length === 0) { return []}
+            const events = await this.dataStore.eventCol.find({ groupUID: {$in: GroupUIDs}})
+            if (!events || events.length === 0) { return []}
+            return events
+        }
+        catch (e) {
+            throw new Error(`getEventsForUser failed for userUID${userUID}: ${e.message}`);
+        }
+    },
     
     async deleteEvent(eventUID) {
         try {
@@ -333,6 +348,21 @@ const dataStore = {
         }
         catch (e) {
             throw new Error(`deleteEvent failed for eventUID=${eventUID}: ${e.message}`);
+        }
+    },
+
+    /////////////////
+    // Permissions //
+    /////////////////
+
+    async getPermission(userUID, groupUID) {
+        try {
+            const gotPermission = await groupPermissionCol.findOne({ userUID, groupUID });
+            if (!gotPermission) { return null; }
+            return gotPermission.permission;
+        }
+        catch (e) {
+            throw new Error(`getPermission failed for userUID=${userUID}, groupUID=${groupUID}: ${e.message}`);
         }
     }
 }

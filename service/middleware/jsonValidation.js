@@ -23,14 +23,4 @@ export const tokenValidation = [
     .withMessage('token is required')
     .isString()
     .withMessage('token is invalid type'),
-]
-
-/*
-export const tokenValidation = [
-  header('token')
-    .exists({ checkFalsy: true })
-    .withMessage('token is required')
-    .isString()
-    .withMessage('token is invalid type'),
-]
-*/
+];

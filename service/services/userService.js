@@ -1,75 +1,90 @@
+import { v4 } from 'uuid';
+import bcrypt from 'bcrypt';
+
 export class UserService {
     constructor(dataStore) {
         this.dataStore = dataStore;
     }
 
     async getUser(username) {
-
-        console.log("US: getUser()");
-
-        if (!username) { 
-                console.log('US: Username is required');
-                throw new Error('US: Username is required'); 
-            }
-        const gotUser = await this.dataStore.getUser(username);
-        console.log("US: gotUser: ", gotUser);
-        return gotUser;
+        try {
+            if (!username) { throw new Error('username is required'); }
+            return await this.dataStore.getUserByUsername(username);
+        }
+        catch (e) {
+            throw new Error(`getUser failed for username=${username}: ${e.message}`);
+        }
     }
 
     async createUser(username, password) {
-
-        console.log("US: createUser()");
-
-        if (!username || !password) { 
-            console.log('US: Username and password are required');
-            throw new Error('Username and password are required');
+        try {
+            if (!password) { throw new Error('password is required') }
+            if (!username) { throw new Error('username is required') }
+            if (await this.dataStore.getUser(username)) { 
+                throw new Error(`username=${username} already exists`); 
+            }
+            await this.dataStore.setUser(username, password)
         }
-        if (await this.dataStore.getUser(username)) { 
-            console.log('US: User already exists');
-            throw new Error('User already exists'); 
+        catch (e) {
+            throw new Error(`createUser failed for username=${username}: ${e.message}`)
         }
-        
-        await this.dataStore.setUser(username, password)
-        console.log("US: setUser: ", {username: username, password: password});
     }
 
-    async storeToken(token, username) {
+    async createToken(username, password) {
+        try {
+            if (!password) { throw new Error('password is required') }
+            if (!username) { throw new Error('username is required') }
+            const userData = await this.dataStore.getUserByUsername(username);
+            if (! await bcrypt.compare(password, userData.hashedPassword)) {
+                throw new Error('password does not match');
+            }
+            const token = v4();
+            await this.dataStore.setToken(token, username)
+            return token
+        }
+        catch (e) {
+            throw new Error(`createToken failed with username=${username}: ${e.message}`)
+        }
+    }
 
-        console.log("US: storeToken()");
+    async getToken(token) {
+        try {
+            if (!token){ throw new Error('token Required'); }
+            const tokenData = await this.dataStore.getToken(token);
+            if (!tokenData) {
+                throw new Error('token Does Not Exist');
+            }
+            return tokenData;
+        }
+        catch (e) {
+            throw new Error(`getToken failed with token=${token}: ${e.message}`)
+        }
 
-        if (!token || !username) { throw new Error('US: Token and username are required'); }
-
-        await this.dataStore.setToken(token, username)
     }
 
     async getUserFromToken(token) {
-
-        console.log("US: getUserFromToken()");
-
-        if (!token){
-            console.log("US: Token Required")
-            throw new Error('Token Required');
+        try {
+            if (!token){ throw new Error('token Required'); }
+            const tokenData = await this.dataStore.getToken(token);
+            if (!tokenData) {
+                throw new Error('token Does Not Exist');
+            }
+            return await this.dataStore.getUserFromToken(token);
         }
-        if (!await this.dataStore.getToken(token)) {
-            console.log("US: Token Does Not Exist")
-            throw new Error('Token Does Not Exist');
+        catch (e) {
+            throw new Error(`getUserFromToken failed with token=${token}: ${e.message}`);
         }
 
-        const gotUser = await this.dataStore.getUserFromToken(token);
-        if (!gotUser) {
-            console.log("US: user not found");
-            return null;
-        }
-        return gotUser;
     }
 
     async deleteToken(token) {
-
-        console.log("US: deleteToken()");
-
-        if (!token) { throw new Error('US: Token is required'); }
-        if (!await this.dataStore.getToken(token)) { throw new Error('US: Token does not Exist'); }
-     
-        await this.dataStore.deleteToken(token)
+        try {
+            if (!token) { throw new Error('token is required'); }
+            if (!await this.dataStore.getToken(token)) { throw new Error('token does not Exist'); }
+            await this.dataStore.deleteToken(token);
+        }
+        catch (e) {
+            throw new Error(`deleteToken failed with token=${token}: ${e.message}`);
+        }
     }
 }
