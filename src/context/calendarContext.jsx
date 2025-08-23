@@ -114,7 +114,7 @@ const CalendarProvider = ({ children }) => {
         
         try {
             const result = await shareGroupApi(user.token, username, groupUID, permissionLevel);
-            //setEvents(prev => prev.map(group => group.groupUID === groupUID ? { ...group, privacy: "public" } : group));
+            setGroups(prev => prev.map(group => group.groupUID === groupUID ? { ...group, privacy: "public" } : group));
         }
         catch (e) {
             throw e;
