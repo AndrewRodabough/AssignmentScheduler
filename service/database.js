@@ -364,6 +364,16 @@ const dataStore = {
         catch (e) {
             throw new Error(`getPermission failed for userUID=${userUID}, groupUID=${groupUID}: ${e.message}`);
         }
+    },
+
+    async createPermission(userUID, groupUID, permission) {
+        try {
+            await groupPermissionCol.insertOne({ userUID, groupUID, permission });
+        }
+        catch (e) {
+            throw new Error(`createPermission failed for userUID=${userUID}, groupUID=${groupUID}, permission=${permission}: ${e.message}`);
+        }
+    
     }
 }
 

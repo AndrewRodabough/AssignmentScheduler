@@ -4,9 +4,12 @@ import './calendar.css';
 
 export const CalendarShareCalendar = ({ onCalendarShared, selectedCalendarUID }) => {
 
-    const { groups, handleShareCalendar, getGroupUID } = useContext(CalendarContext);
+    const { groups, handleShareGroup, getGroupUID } = useContext(CalendarContext);
     const [shareUsername, setShareUsername] = useState("");
     const [shareCalendar, setShareCalendar] = useState("");
+    const [permissionLevel, setPermissionLevel] = useState("view");
+
+    const permissions = ["view", "edit"];
 
     useEffect(() => {
         if (selectedCalendarUID && selectedCalendarUID !== "") {
@@ -21,9 +24,8 @@ export const CalendarShareCalendar = ({ onCalendarShared, selectedCalendarUID })
     const handleSubmitShareCalendar = async (e) => {
         e.preventDefault();
         if (shareUsername && shareCalendar) {
-            const groupUID = getGroupUID(shareCalendar);
             try {
-                await handleShareCalendar(shareUsername, groupUID);
+                await handleShareGroup(shareUsername, shareCalendar, permissionLevel);
                 if (onCalendarShared) { onCalendarShared(); }
             } catch (error) {
                 console.log(error);
@@ -66,6 +68,19 @@ export const CalendarShareCalendar = ({ onCalendarShared, selectedCalendarUID })
                     value={shareUsername}
                     onChange={e => setShareUsername(e.target.value)}
                 />
+                <label htmlFor="permissionLevel">Permission:</label>
+                <select
+                    id="permissionLevel"
+                    name="permissionLevel"
+                    value={permissionLevel}
+                    onChange={e => setPermissionLevel(e.target.value)}
+                >
+                    {permissions.map(permission => (
+                        <option key={permission} value={permission}>
+                            {permission.charAt(0).toUpperCase() + permission.slice(1)}
+                        </option>
+                    ))}
+                </select>
 
                 <button type="submit">Share</button>
             </form>

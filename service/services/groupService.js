@@ -96,4 +96,31 @@ export class GroupService {
             throw new Error(`deleteGroup failed for userUID=${userUID}, groupUID=${groupUID}: ${e.message}`);
         }
     }
+
+    async createPermission(userUID, username, groupUID, permission) {
+        try {
+            if (!userUID) { throw new Error('userUID is required'); }
+            if (!username) { throw new Error('username is required'); }
+            if (!groupUID) { throw new Error('groupUID is required'); }
+            if (!permission) { throw new Error('permission is required'); }
+            if (!await this.dataStore.userExists(userUID)) {
+                throw new Error(`userUID ${userUID} does not exist`);
+            }
+            const user = await this.dataStore.getUserByUsername(username);
+            if (!user) {
+                throw new Error(`username ${username} does not exist`);
+            }
+            if (!await this.dataStore.groupExists(groupUID)) {
+                throw new Error(`groupUID ${groupUID} does not exist`);
+            }
+            const calPermission = await this.dataStore.getPermission(userUID, groupUID);
+            if (!calPermission || calPermission!= 'owner') {
+                throw new Error(`userUID ${userUID} does not have permission to share groupUID ${groupUID}`);
+            }
+            await this.dataStore.createPermission(user.userUID, groupUID, permission);
+        }
+        catch (e) {
+            throw new Error(`createPermission failed for userUID=${userUID}, username=${username}, groupUID=${groupUID}, permission=${permission}: ${e.message}`);
+        }
+    }
 }

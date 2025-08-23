@@ -61,13 +61,10 @@ export class GroupController {
             if (!user) {
                 return res.status(404).json({ error: "User not Found" });
             }
-            
-            const group = await this.groupService.getGroup(user.userUID, groupUID);
-            // get permissions
-            // change status
-            // update permission
-            throw new Error(`not implemented`);
-            return res.status(200).json({ calendar });
+
+            await this.groupService.createPermission(user.userUID, username, groupUID, permission);
+            await this.groupService.updateGroup(user.userUID, groupUID, { privacy: "public" });
+            return res.status(200).json({ message: "success" });
         } catch (e) {
             return res.status(500).json({ error: e.message });
         }

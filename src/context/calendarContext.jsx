@@ -104,13 +104,13 @@ const CalendarProvider = ({ children }) => {
         }
     }
 
-    const handleShareGroup = async (username, groupUID) => {
+    const handleShareGroup = async (username, groupUID, permissionLevel) => {
         if (!user || !user.token) {
             throw new Error('User must be logged in to share group');
         }
         
         try {
-            const result = await shareGroupApi(user.token, username, groupUID);
+            const result = await shareGroupApi(user.token, username, groupUID, permissionLevel);
             //setEvents(prev => prev.map(group => group.groupUID === groupUID ? { ...group, privacy: "public" } : group));
         }
         catch (e) {
