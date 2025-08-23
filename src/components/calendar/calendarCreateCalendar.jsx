@@ -4,23 +4,19 @@ import CalendarContext from '../../context/calendarContext.jsx';
 import JSCalendarFactory from '../../models/jscalendarfactory.js';
 import './calendar.css';
 
-export const CalendarCreateCalendar = ({ onCalendarCreated}) => {
+export const CalendarCreateCalendar = ({ onCalendarCreated }) => {
 
     const { handleCreateGroup } = useContext(CalendarContext);
-    
+    const [calendarName, setCalendarName] = useState("");
+
     const handleSubmitCreateCalendar = async (e) => {
         e.preventDefault();
-
-        const calendarName = document.querySelector('input[name="newCalendarName"]');
-
-        if (calendarName && calendarName.value) {
-        
-            try {    
-                await handleCreateGroup(calendarName.value);
-                calendarName.value = '';
-                if (onCalendarCreated) { onCalendarCreated() }
-            }
-            catch(error) {
+        if (calendarName.trim()) {
+            try {
+                await handleCreateGroup(calendarName);
+                setCalendarName("");
+                if (onCalendarCreated) { onCalendarCreated(); }
+            } catch (error) {
                 console.log(error);
             }
         }
@@ -29,16 +25,18 @@ export const CalendarCreateCalendar = ({ onCalendarCreated}) => {
     return (
         <section>
             <form onSubmit={handleSubmitCreateCalendar}>
-            <input 
-                type="text" 
-                name="newCalendarName" 
-                placeholder="Calendar Name"
-                required 
-            />  
-            <button type="submit" name="CreateCalendar">Create Calendar</button>
+                <input
+                    type="text"
+                    name="newCalendarName"
+                    placeholder="Calendar Name"
+                    required
+                    value={calendarName}
+                    onChange={e => setCalendarName(e.target.value)}
+                />
+                <button type="submit" name="CreateCalendar">Create Calendar</button>
             </form>
         </section>
-    )
+    );
 }
 
 export default CalendarCreateCalendar;

@@ -10,7 +10,7 @@ const CalendarList = ({ groups }) => {
     const { openModal, closeModal } = useContext(ModalContext);
 
     // Open edit modal
-    const onEdit = () => {
+    const onEdit = (groupUID) => {
         openModal("modal_close", {
             content: <></>,
             title: "Edit Calendar"
@@ -18,25 +18,25 @@ const CalendarList = ({ groups }) => {
     }
 
     // Open share modal
-    const onShare = () => {
+    const onShare = (groupUID) => {
         openModal("modal_close", {
-            content: <CalendarShareCalendar onCalendarShared={closeModal} />,
+            content: <CalendarShareCalendar selectedCalendarUID={groupUID} onCalendarShared={closeModal} />,
             title: "Share Calendar"
         })
     }
 
     // Open delete modal
-    const onDelete = () => {
+    const onDelete = (groupUID) => {
         openModal("modal_close", {
             title: "Delete Calendar",
-            content: <CalendarDeleteCalendar onCalendarDeleted={closeModal} />,
+            content: <CalendarDeleteCalendar selectedCalendarUID={groupUID} onCalendarDeleted={closeModal} />,
         })
     }
 
     const subMenuItems=[
-        { title: "Edit", onClick: (uid) => onEdit(uid) },
-        { title: "Share", onClick: (uid) => onShare(uid) },
-        { title: "Delete", onClick: (uid) => onDelete(uid) }
+        { title: "Edit", onClick: (groupUID) => onEdit(groupUID) },
+        { title: "Share", onClick: (groupUID) => onShare(groupUID) },
+        { title: "Delete", onClick: (groupUID) => onDelete(groupUID) }
     ]
 
     return (
