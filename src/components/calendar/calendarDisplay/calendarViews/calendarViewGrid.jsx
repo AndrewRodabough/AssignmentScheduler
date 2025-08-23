@@ -1,21 +1,16 @@
-/**
- * CalendarGrid - Displays a grid of calendar days for the current week and events for each day.
- *
- * @param {function} onEventClick - Callback for when an event is clicked.
- * @returns {React.ReactNode} The calendar grid component.
-*/
-
 import React, { useContext, useEffect, useState } from 'react';
 import { format, eachDayOfInterval, parseISO, startOfWeek, endOfWeek } from 'date-fns';
-import CalendarContext from '../../context/calendarContext.jsx';
-import ModalContext from '../../context/modalContext.jsx';
-import CalendarEditEvent from './calendarEditEvent.jsx';
+import CalendarContext from '../../../../context/calendarContext.jsx';
+import ModalContext from '../../../../context/modalContext.jsx';
+import CalendarEditEvent from '../../calendarForms/calendarEditEvent.jsx';
+import CalendarViewContext from '../../../../context/calendarViewContext.jsx';
+import './calendarViews.css';
 
 const CalendarGrid = () => {
     const { groups, events } = useContext(CalendarContext);
     const { openModal, closeModal } = useContext(ModalContext);
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const { startDate, endDate, currentView } = useContext(CalendarViewContext);
+
     const [dateColumns, setDateColumns] = useState([]);
     const today = new Date();
     const currentDate = format(today, 'yyyy-MM-dd');
@@ -28,59 +23,56 @@ const CalendarGrid = () => {
     };
 
 
-    useEffect(() => {
-        const sOfWeek = startOfWeek(today, { weekStartsOn: 0 });
-        const eOfWeek = endOfWeek(today, { weekStartsOn: 0 });
-        setStartDate(format(sOfWeek, 'yyyy-MM-dd'));
-        setEndDate(format(eOfWeek, 'yyyy-MM-dd'));
-    }, []);
+
 
     useEffect(() => {
-        if (startDate && endDate) {
-            const start = parseISO(startDate);
-            const end = parseISO(endDate);
-            if (end < start) return;
-            const columns = eachDayOfInterval({ start, end }).map(date => ({
+        if (!startDate || !endDate) return;
+        const start = parseISO(startDate);
+        const end = parseISO(endDate);
+        let columns = [];
+        const diffDays = (end - start) / (1000 * 60 * 60 * 24) + 1;
+
+        if (diffDays > 7) {
+            // Month view: pad start and end to fill weeks, always start on Sunday
+            const firstDayOfMonth = start;
+            const lastDayOfMonth = end;
+            const startPad = startOfWeek(firstDayOfMonth, { weekStartsOn: 0 });
+            const endPad = endOfWeek(lastDayOfMonth, { weekStartsOn: 0 });
+            columns = eachDayOfInterval({ start: startPad, end: endPad }).map(date => ({
                 fullDate: format(date, 'yyyy-MM-dd'),
                 dayOfWeek: format(date, 'EEE'),
-                dayOfMonth: format(date, 'dd')
+                dayOfMonth: format(date, 'dd'),
+                inMonth: date >= firstDayOfMonth && date <= lastDayOfMonth
             }));
-            setDateColumns(columns);
+        } else if (diffDays > 1) {
+            const weekStart = startOfWeek(start, { weekStartsOn: 0 });
+            const weekEnd = endOfWeek(start, { weekStartsOn: 0 });
+            columns = eachDayOfInterval({ start: weekStart, end: weekEnd }).map(date => ({
+                fullDate: format(date, 'yyyy-MM-dd'),
+                dayOfWeek: format(date, 'EEE'),
+                dayOfMonth: format(date, 'dd'),
+                inMonth: true
+            }));
+        } else if (diffDays === 1) {
+            columns = [{
+                fullDate: format(start, 'yyyy-MM-dd'),
+                dayOfWeek: format(start, 'EEE'),
+                dayOfMonth: format(start, 'dd'),
+                inMonth: true
+            }];
         }
-    }, [startDate, endDate]);
+        setDateColumns(columns);
+    }, [startDate, endDate, currentView]);
 
     return (
         <>
-            <section className="box calendar-topbar">
-                <div>
-                    <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
-                    :
-                    <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
-                </div>
-                    <div className="custom-radio-group">
-                    <label className="option">
-                        <input type="radio" name="selection" value="option1"/>
-                        <span className="text">View A</span>
-                    </label>
-                    
-                    <label className="option">
-                        <input type="radio" name="selection" value="option2"/>
-                        <span className="text">View B</span>
-                    </label>
-                    
-                    <label className="option">
-                        <input type="radio" name="selection" value="option3"/>
-                        <span className="text">View C</span>
-                    </label>
-                </div>
-            </section>
             <section className="calendar-view">
                 {dateColumns.length > 0 && (
-                    <div className="calendar-grid">
-                        {dateColumns.map(({ fullDate, dayOfWeek, dayOfMonth }) => {
+                    <div className={`calendar-grid${dateColumns.length === 1 ? ' single-column' : ''}`}>
+                        {dateColumns.map(({ fullDate, dayOfWeek, dayOfMonth, inMonth }) => {
                             const eventsForDay = events.filter(event => event.event.start === fullDate);
                             return (
-                                <div key={fullDate} className={`calendar-column ${fullDate === currentDate ? 'current-day' : ''}`}>
+                                <div key={fullDate} className={`calendar-column${inMonth ? ' in-month' : ''} ${fullDate === currentDate ? ' current-day' : ''}${!inMonth ? ' empty-day' : ''}`}>
                                     <div className="column-header">
                                         <span className="day-of-week">{dayOfWeek}</span>
                                         <span className="day-of-month">{dayOfMonth}</span>
@@ -89,7 +81,7 @@ const CalendarGrid = () => {
                                         {eventsForDay.map(event => (
                                             <div key={event.event.eventUID} className="calendar-event-wrapper">
                                                 <p className="calendar-event" onDoubleClick={() => handleOnEventClick(event)}>
-                                                    {event.event.title} {event.event.start}
+                                                    {event.event.title}
                                                     <span className="calendar-event-edit-icon" onClick={(e) => { e.stopPropagation(); handleOnEventClick(event); }}>
                                                         {/* Solid black pencil SVG icon */}
                                                         <svg width="16" height="16" viewBox="0 0 16 16" fill="black" xmlns="http://www.w3.org/2000/svg">

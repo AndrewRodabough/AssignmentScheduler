@@ -1,25 +1,10 @@
 @import "../../app.css";
 
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
-    gap: 5px;
-    width: 100%;
-}
 .calendar-main {
     flex: 1;
     width: 100%;
     display: flex;
     flex-direction: column;
-}
-
-.calendar-column {
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--primary);
-    border-radius: 10px;
-    font-size: 11pt;
 }
   
 .current-day {
@@ -329,5 +314,5 @@ input:focus, select:focus {
 }
 
 .create-event-btn:hover {
-    background: #ff4b61;
+    background: #f78592;
 }

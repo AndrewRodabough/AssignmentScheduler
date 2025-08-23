@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useEffect, useState } from 'react';
-import CalendarContext from '../../context/calendarContext';
-import './calendar.css';
+import CalendarContext from '../../../context/calendarContext';
+import '../calendar.css';
 
 export const CalendarDeleteCalendar = ({ onCalendarDeleted, selectedCalendarUID }) => {
 

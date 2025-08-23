@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
-import CalendarContext from '../../context/calendarContext.jsx';
-import './calendar.css';
+import CalendarContext from '../../../context/calendarContext.jsx';
+import '../calendar.css';
 
 export const CalendarShareCalendar = ({ onCalendarShared, selectedCalendarUID }) => {
 

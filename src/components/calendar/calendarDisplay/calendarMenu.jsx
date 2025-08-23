@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from 'react';
-import CalendarList from './calendarList';
-import CalendarCreateEvent from './calendarCreateEvent.jsx';
-import ModalContext from '../../context/modalContext.jsx';
-import CalendarContext from '../../context/calendarContext.jsx';
-import CalendarCreateCalendar from "./calendarCreateCalendar.jsx";
-import './calendar.css';
+import CalendarList from './calendarList.jsx';
+import CalendarCreateEvent from '../calendarForms/calendarCreateEvent.jsx';
+import ModalContext from '../../../context/modalContext.jsx';
+import CalendarContext from '../../../context/calendarContext.jsx';
+import CalendarCreateCalendar from "../calendarForms/calendarCreateCalendar.jsx";
+import '../calendar.css';
 
 const CalendarMenu = () => {
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useContext } from 'react';
-import CalendarContext from '../../context/calendarContext';
-import './calendar.css';
+import CalendarContext from '../../../context/calendarContext';
+import '../calendar.css';
 
 const CalendarEditEvent = ({ event, onSubmit }) => {
     if (!event) return <div>No event selected.</div>;

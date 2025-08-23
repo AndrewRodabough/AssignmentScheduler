@@ -1,5 +1,5 @@
-import CalendarGrid from '../../components/calendar/calendarGrid.jsx';
-import CalendarMenu from '../../components/calendar/calendarMenu.jsx';
+import CalendarView from '../../components/calendar/calendarDisplay/calendarViews/calendarView.jsx';
+import CalendarMenu from '../../components/calendar/calendarDisplay/calendarMenu.jsx';
 import './calendar.css';
 
 function Main() {
@@ -10,7 +10,7 @@ function Main() {
                     <CalendarMenu />
                 </section>
                 <section className='calendar-main'>
-                    <CalendarGrid />
+                    <CalendarView />
                 </section>
             </section>
         </>

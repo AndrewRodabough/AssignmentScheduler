@@ -24,22 +24,8 @@
 .calendar-event-wrapper:hover .calendar-event-edit-icon {
 	opacity: 1;
 }
-
-.calendar-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
-	gap: 5px;
-	width: 100%;
-}
   
-.calendar-column {
-	min-height: 200px;
-	display: flex;
-	flex-direction: column;
-	background-color: var(--primary);
-	border-radius: 10px;
-	font-size: 11pt;
-}
+
   
 .current-day {
 	background-color: #2f3b54;

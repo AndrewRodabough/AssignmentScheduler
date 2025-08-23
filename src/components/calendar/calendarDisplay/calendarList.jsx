@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import ModalContext from '../../context/modalContext';
-import CalendarContext from '../../context/calendarContext.jsx';
-import ListWithSubMenu from '../list_with_submenu';
-import CalendarShareCalendar from './calendarShareCalendar';
-import CalendarDeleteCalendar from './calendarDeleteCalendar';
-import './calendar.css';
-import '../list_with_submenu.css';
+import ModalContext from '../../../context/modalContext.jsx';
+import CalendarContext from '../../../context/calendarContext.jsx';
+import ListWithSubMenu from '../../menu/list_with_submenu.jsx';
+import CalendarShareCalendar from '../calendarForms/calendarShareCalendar.jsx';
+import CalendarDeleteCalendar from '../calendarForms/calendarDeleteCalendar.jsx';
+import '../calendar.css';
+import '../../menu/list_with_submenu.css';
 
 const CalendarList = ({ groups }) => {
     const { openModal, closeModal } = useContext(ModalContext);

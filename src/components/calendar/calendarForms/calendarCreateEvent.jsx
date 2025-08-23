@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { useEffect, useState } from 'react';
-import CalendarContext from '../../context/calendarContext.jsx';
-import JSCalendarFactory from '../../models/jscalendarfactory.js'
-import './calendar.css';
+import CalendarContext from '../../../context/calendarContext.jsx';
+import JSCalendarFactory from '../../../models/jscalendarfactory.js'
+import '../calendar.css';
 
 const CalendarCreateEvent = ({ onEventCreated, selectedCalendarUID }) => {
 
