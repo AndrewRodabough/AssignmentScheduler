@@ -8,14 +8,14 @@
 
 .calendar-event-edit-icon {
 	position: absolute;
-	top: 6px;
-	right: 6px;
+	top: 1px;
+	right: 1px;
 	opacity: 0;
 	transition: opacity 0.2s;
 	z-index: 2;
 	background: #fcdddd;
 	border-radius: 50%;
-	padding: 4px;
+	padding: 1px;
 	display: flex;
 	align-items: center;
 	justify-content: center;

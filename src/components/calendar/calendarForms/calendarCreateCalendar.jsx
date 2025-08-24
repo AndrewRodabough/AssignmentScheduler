@@ -8,13 +8,16 @@ export const CalendarCreateCalendar = ({ onCalendarCreated }) => {
 
     const { handleCreateGroup } = useContext(CalendarContext);
     const [calendarName, setCalendarName] = useState("");
+    const [calendarColor, setCalendarColor] = useState("#2196f3"); // Default color
 
     const handleSubmitCreateCalendar = async (e) => {
         e.preventDefault();
         if (calendarName.trim()) {
             try {
-                await handleCreateGroup(calendarName);
+                // Pass color to handleCreateGroup if supported
+                await handleCreateGroup(calendarName, calendarColor);
                 setCalendarName("");
+                setCalendarColor("#2196f3");
                 if (onCalendarCreated) { onCalendarCreated(); }
             } catch (error) {
                 console.log(error);
@@ -33,7 +36,18 @@ export const CalendarCreateCalendar = ({ onCalendarCreated }) => {
                     value={calendarName}
                     onChange={e => setCalendarName(e.target.value)}
                 />
-                <button type="submit" name="CreateCalendar">Create Calendar</button>
+                <label htmlFor="calendarColor" style={{ marginLeft: '1em' }}>
+                    Color:
+                    <input
+                        type="color"
+                        id="calendarColor"
+                        name="calendarColor"
+                        value={calendarColor}
+                        onChange={e => setCalendarColor(e.target.value)}
+                        style={{ marginLeft: '0.5em', verticalAlign: 'middle' }}
+                    />
+                </label>
+                <button type="submit" name="CreateCalendar" style={{ marginLeft: '1em' }}>Create Calendar</button>
             </form>
         </section>
     );

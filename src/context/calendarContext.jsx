@@ -61,7 +61,7 @@ const CalendarProvider = ({ children }) => {
         return group ? group.groupUID : null;
     };
 
-    const handleCreateGroup = async (groupTitle) => {
+    const handleCreateGroup = async (groupTitle, calendarColor) => {
         if (!user || !user.token) {
             throw new Error('User must be logged in to create a group');
         }
@@ -69,7 +69,8 @@ const CalendarProvider = ({ children }) => {
         try {
             const group = JSCalendarFactory.createCalendar()
                 .setPrivacy("private")
-                .setTitle(groupTitle);
+                .setTitle(groupTitle)
+                .setColor(calendarColor);
             await createGroupApi(user.token, group);
             setGroups(prev => [...prev, group]);
             setPermissions(prev => [...prev, { userUID: user.userUID, groupUID: group.groupUID, permission: "owner" }]);

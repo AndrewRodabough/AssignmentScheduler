@@ -24,9 +24,12 @@ const ListWithSubMenu = ({ items, getTitle, getIcons, menuItems, getKey }) => {
     <ul className="list-with-submenu">
       {items.map(item => {
         const key = getKey ? getKey(item) : item.id || item.key || item.title;
+        const textColor = item.color || '#fff';
         return (
           <li key={key} className="list-with-submenu-item">
-            <div className="list-with-submenu-title">{getTitle ? getTitle(item) : item.title}</div>
+            <div className="list-with-submenu-title" style={{ color: textColor }}>
+              {getTitle ? getTitle(item) : item.title}
+            </div>
             <div className="list-with-submenu-icons">
               {getIcons ? getIcons(item) : null}
               <div className="list-with-submenu-menu-container" ref={activeMenu === key ? menuRef : null}>

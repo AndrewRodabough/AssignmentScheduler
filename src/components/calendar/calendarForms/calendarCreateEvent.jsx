@@ -207,7 +207,7 @@ const CalendarCreateEvent = ({ onEventCreated, selectedCalendarUID }) => {
                         <label htmlFor="createEventGroup">Add To:</label>
                         <select
                             id="createEventGroup"
-                            name="group"
+                            name="groupUID"
                             value={eventForm.groupUID}
                             onChange={handleChange}
                             required
@@ -298,7 +298,7 @@ const CalendarCreateEvent = ({ onEventCreated, selectedCalendarUID }) => {
                         <label htmlFor="createTaskGroup">Add To:</label>
                         <select
                             id="createTaskGroup"
-                            name="group"
+                            name="groupUID"
                             value={taskForm.groupUID}
                             onChange={handleChange}
                             required
