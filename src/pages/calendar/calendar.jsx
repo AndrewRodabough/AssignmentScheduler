@@ -4,7 +4,7 @@ import './calendar.css';
 
 function Main() {
     return (
-        <>
+        <main>
             <section className='calendar-split'>
                 <section className='box calendar-controls'>
                     <CalendarMenu />
@@ -13,7 +13,7 @@ function Main() {
                     <CalendarView />
                 </section>
             </section>
-        </>
+        </main>
     );
 }
 

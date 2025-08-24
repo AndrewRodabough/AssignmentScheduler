@@ -24,30 +24,24 @@ const CalendarMenu = () => {
                     onClick={() => openModal("modal_close", {
                         title: "Create Event",
                         content: <CalendarCreateEvent onEventCreated={closeModal} />
-                    })
-                }
+                    })}
                 >
                     New Event
                 </button>
             </div>
-
-            <div>
-
+            <div className='calendar-list-container'>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <h3 style={{ margin: 0 }}>Calendars</h3>
+                    <h1>Calendars</h1>
                     <button 
-                        type="button" 
-                        aria-label="Create Calendar" 
-                        style={{ fontSize: '1.5rem', padding: '0.2rem 0.7rem', borderRadius: '50%', border: 'none', background: 'rgba(0, 0, 0, 0)', cursor: 'pointer' }}
+                        className='create-calendar-btn'
                         onClick={() => openModal("modal_close", {
                             title: "Create Calendar",
                             content: <CalendarCreateCalendar onCalendarCreated={closeModal} />
                         })}
-                        >
+                    >
                         +
                     </button>
                 </div>
-
                 <CalendarList
                     groups={groups}
                 />

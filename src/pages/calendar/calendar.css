@@ -6,43 +6,6 @@
     display: flex;
     flex-direction: column;
 }
-  
-.current-day {
-    background-color: #2f3b54;
-}
-
-.column-header {
-    background-color: var(--secondary);
-    padding: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 10px 10px 0px 0px;
-}
-  
-.day-of-week {
-    font-weight: bold;
-}
-  
-.day-of-month {
-    color: var(--text-color);
-}
-  
-.column-content {
-    flex-grow: 1;
-    padding: 8px;
-    gap: 8px;
-    display: flex;
-    flex-direction: column;
-}
-  
-.calendar-topbar {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    gap: 11px;
-    padding: 11px;
-}
 
 .calendar-view {
     display: flex;
@@ -63,40 +26,6 @@
     gap: 11px;
 }
 
-.calendar-controls {
-    flex: 0 0 255px;
-    display: flex;
-    flex-direction: column;
-    font-size: 13px;
-}
-
-.calendar-controls h3 {
-    margin-bottom: 5px;
-    font-size: 18px;
-    font: var(--text-color);
-}
-
-.calendar-controls input[type="text"], input[type="date"], input[type="time"], select {
-    background-color: var(--secondary);
-    border: none;
-    border-radius: 3px;
-    color: var(--text-color);
-    margin: 2px;
-}
-
-.calendar-controls input[type="text"], input[type="date"], input[type="time"], select:focus {
-    outline: none;
-}
-
-.calendar-controls > *:not(:last-child):after {
-    content: "";
-    display: block;
-    height: 1px;
-    background-color: var(--secondary);
-    margin-top: 15px;
-    margin-bottom: 15px;
-}
-
 fieldset {
     border: none;
 }
@@ -105,11 +34,6 @@ input[type="checkbox"] {
     margin-right: 10px;
     accent-color: var(--linkHover);
 }
-
-
-
-
-
 
 .calendar-item {
     display: flex;
@@ -220,47 +144,6 @@ input[type="checkbox"] {
     font-size: 20px;
 }
 
-
-
-
-
-.custom-radio-group {
-    background-color: #1e2535;
-    border-radius: 7px;
-}
-
-.custom-radio-group input[type="radio"] {
-    display: none;
-}
-  
-.custom-radio-group .text {
-    display: inline-block;
-    padding: 4px 8px;
-    border: 2px solid transparent;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 10pt;
-}
-  
-.custom-radio-group input[type="radio"]:checked + .text {
-    
-    background-color: var(--secondary);
-}
-  
-
-.calendar-event {
-    background-color: var(--linkHover);
-    color: #fff;
-    border-radius: 10px;
-    padding: 8px;
-    width: fit-content;
-}
-
-
-
-
-
-
 .create-event-section {
     background: #23243a;
     padding: 24px;
@@ -275,6 +158,9 @@ input[type="checkbox"] {
     flex-direction: column;
     gap: 16px;
 }
+
+
+
 
 .form-group {
     display: flex;
@@ -300,19 +186,4 @@ input, select {
 input:focus, select:focus {
     outline: none;
     border-color: #6c63ff;
-}
-
-.create-event-btn {
-    background: #ff6b81;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 10px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.create-event-btn:hover {
-    background: #f78592;
 }

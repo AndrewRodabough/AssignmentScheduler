@@ -9,15 +9,17 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 8px;
   align-items: center;
   min-height: 24px;
 }
 
 .list-with-submenu-title {
-  font-size: 1rem;
+  font-size: 11pt;
   font-weight: 500;
   flex: 1;
+      white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .list-with-submenu-icons {
@@ -37,7 +39,8 @@
 
 .list-with-submenu-three-dots {
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 13pt;
+  font-weight: bold;
   padding: 0.2rem 0.7rem;
   border-radius: 50%;
   border: none;

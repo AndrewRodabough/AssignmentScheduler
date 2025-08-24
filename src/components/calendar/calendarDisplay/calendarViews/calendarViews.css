@@ -10,26 +10,143 @@
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
     width: 100%;
     height: 100%;
+    border-collapse: collapse;
 }
 
-.calendar-column.in-month {
-    outline: 2px solid #b9696970;
-    outline-offset: -2px;
-}
+
 
 .calendar-grid.single-column {
     grid-template-columns: 1fr;
 }
 
 .calendar-column {
-    min-height: 200px;
+    min-height: 100px;
+    
     min-width: 100%;
     display: flex;
     flex-direction: column;
-    background-color: var(--primary);
-    border-radius: 10px;
     font-size: 11pt;
+    background: none;
+    border: none;
+    border-radius: 0;
+    /* Only add right border for separation except last column */
+    border-right: 1px solid #3b4457cb;
+    border-bottom: 1px solid #3b4457cb;
+}
+
+/* Remove right border from last column items */
+.calendar-column:nth-child(7n) {
+  border-right: none;
+}
+/* Remove bottom border from last row items */
+.calendar-column:nth-last-child(-n + 7) {
+  border-bottom: none;
+}
+
+.current-day {
+	background-color: #323b501e;
+}
+
+.day-of-week {
+	font-weight: bold;
+}
+  
+.day-of-month {
+	color: var(--text-color);
+}
+
+.column-header {
+    background-color: #3b445710;
+    padding: 3px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+.column-content {
+    flex-grow: 1;
+    padding: 6px;
+    gap: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-event {
+    background-color: #b66b6b;
+    color: #fff;
+    border-radius: 5px;
+    padding: 2px 6px;
+    font-size: 9pt;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.calendar-topbar {
+	display: flex;
+	flex-direction: row;
+	min-width: 100%;
+	gap: 8px;
+}
+
+
+.custom-radio-group {
+	background-color: #181b24;
+	border-radius: 7px;
+}
+
+.custom-radio-group input[type="radio"] {
+	display: none;
+}
+  
+.custom-radio-group .text {
+	display: inline-block;
+	padding: 4px 8px;
+	border: 2px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 10pt;
+}
+  
+.custom-radio-group input[type="radio"]:checked + .text {
+	background-color: var(--secondary);
+}
+
+.date-input {
+    padding: 4px 8px;
+    margin: 0;
+}
+
+.calendar-controls {
+	flex: 0 0 235px;
+    max-width: 235px;
+	display: flex;
+	flex-direction: column;
+	font-size: 13px;
+}
+
+.calendar-controls h1 {
+	font-size: 13pt;
+}
+
+.calendar-controls input[type="text"], input[type="date"], input[type="time"], select {
+	background-color: var(--secondary);
+	border: none;
+	border-radius: 3px;
+	color: var(--text-color);
+}
+
+.calendar-controls input[type="text"], input[type="date"], input[type="time"], select:focus {
+	outline: none;
+}
+
+.calendar-controls > *:not(:last-child):after {
+	content: "";
+	display: block;
+	height: 1px;
+	background-color: var(--secondary);
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
