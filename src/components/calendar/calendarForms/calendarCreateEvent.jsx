@@ -14,10 +14,9 @@ const CalendarCreateEvent = ({ onEventCreated, selectedCalendarUID }) => {
     const [eventForm, setEventForm] = useState({
         title: '',
         description: '',
-        startDate: '',
-        endDate: '',
-        startTime: '',
-        endTime: '',
+        isAllDay: false,
+        startDateTime: '',
+        endDateTime: '',
         groupUID: ''
     });
 
@@ -25,7 +24,7 @@ const CalendarCreateEvent = ({ onEventCreated, selectedCalendarUID }) => {
     const [taskForm, setTaskForm] = useState({
         title: '',
         description: '',
-        due: '',
+        dueDate: '',
         dueTime: '',
         estimatedHours: '',
         estimatedMinutes: '',
@@ -48,31 +47,33 @@ const CalendarCreateEvent = ({ onEventCreated, selectedCalendarUID }) => {
     }, [groups, selectedCalendarUID]);
 
     const handleChange = e => {
-        const { name, value } = e.target;
-        if (selectedForm == "Task") 
-        {
-            setTaskForm(prev => ({ ...prev, [name]: value }));
-        }
-        else if (selectedForm == "Event") {
-            setEventForm(prev => ({ ...prev, [name]: value }));            
+        const { name, type, value, checked } = e.target;
+        if (selectedForm === "Task") {
+            setTaskForm(prev => ({
+                ...prev,
+                [name]: type === "checkbox" ? checked : value
+            }));
+        } else if (selectedForm === "Event") {
+            setEventForm(prev => ({
+                ...prev,
+                [name]: type === "checkbox" ? checked : value
+            }));
         }
     };
 
     const handleClearForms = async () => {
-        //selectedCalendarUID = null;
         setEventForm({
             title: '',
             description: '',
-            startDate: '',
-            endDate: '',
-            startTime: '',
-            endTime: '',
-            groupUID: '' 
+            isAllDay: false,
+            startDateTime: '',
+            endDateTime: '',
+            groupUID: ''
         });
         setTaskForm({
             title: '',
             description: '',
-            due: '',
+            dueDate: '',
             dueTime: '',
             estimatedHours: '',
             estimatedMinutes: '',
@@ -91,22 +92,66 @@ const CalendarCreateEvent = ({ onEventCreated, selectedCalendarUID }) => {
         }
     }
 
+    // Helper: calculate ISO 8601 duration string from two date/time strings
+    function calculateDuration(start, end) {
+        if (!start || !end) return "PT0S";
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+        let diffMs = endDate - startDate;
+        if (isNaN(diffMs) || diffMs < 0) return "PT0S";
+        const totalSeconds = Math.floor(diffMs / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        let duration = "P";
+        if (days) duration += days + "D";
+        if (hours || minutes || seconds) {
+            duration += "T";
+            if (hours) duration += hours + "H";
+            if (minutes) duration += minutes + "M";
+            if (seconds) duration += seconds + "S";
+        }
+        if (duration === "P") duration = "PT0S";
+        return duration;
+    }
+
     const handleSubmitCreateEvent = async (e) => {
         e.preventDefault();
         let message = "";
         if (!eventForm.title) message += "Title is required.\n";
-        if (!eventForm.startDate) message += "Start date is required.\n";
+        if (!eventForm.startDateTime) message += "Start date and time are required.\n";
         if (!eventForm.groupUID) message += "Calendar is required.\n";
         if (message) {
             alert(message);
             return;
         }
 
+        // If no end date/time, set end to start
+        const endDateTime = eventForm.endDateTime && eventForm.endDateTime !== ''
+            ? eventForm.endDateTime
+            : eventForm.startDateTime;
+
+        // Helper to check if time is specified in datetime-local value
+        const hasTime = (dt) => {
+            if (!dt) return false;
+            const parts = dt.split('T');
+            if (parts.length < 2) return false;
+            const [hour, min] = parts[1].split(':');
+            return !!(hour && min);
+        };
+
+        const showWithoutTime = !hasTime(eventForm.startDateTime);
+
+        // Calculate duration for JSCalendar
+        const duration = calculateDuration(eventForm.startDateTime, endDateTime);
+
         const event = JSCalendarFactory.createEvent()
             .setTitle(eventForm.title)
             .setDescription(eventForm.description)
-            .setStart(eventForm.startDate)
-            .setDuration();
+            .setStart(eventForm.startDateTime)
+            .setDuration(duration)
+            .setShowWithoutTime(showWithoutTime);
 
         handleSubmitBoth(eventForm.groupUID, event);
     };
@@ -124,7 +169,7 @@ const CalendarCreateEvent = ({ onEventCreated, selectedCalendarUID }) => {
         const task = JSCalendarFactory.createTask()
             .setTitle(taskForm.title)
             .setDescription(taskForm.description)
-            .setDue(taskForm.due)
+            .setDue(taskForm.dueDate, taskForm.dueTime)
             .setEstimatedDuration(taskForm.estimatedHours, taskForm.estimatedMinutes);
 
         handleSubmitBoth(taskForm.groupUID, task);
@@ -169,39 +214,54 @@ const CalendarCreateEvent = ({ onEventCreated, selectedCalendarUID }) => {
                         />
                     </div>
                     <div className="form-row">
-                        <label>S:</label>
+                        <label>AllDay</label>
                         <input
-                            type="date"
-                            id="createEventStartDate"
-                            name="startDate"
-                            value={eventForm.startDate}
-                            onChange={handleChange}
-                            required
-                        />
-                        <input
-                            type="time"
-                            id="createEventStartTime"
-                            name="startTime"
-                            value={eventForm.startTime}
+                            type="checkbox"
+                            id="createEventisAllDay"
+                            name="isAllDay"
+                            checked={eventForm.isAllDay}
                             onChange={handleChange}
                         />
                     </div>
                     <div className="form-row">
-                        <label>E:</label>
-                        <input
-                            type="date"
-                            id="createEventEndDate"
-                            name="endDate"
-                            value={eventForm.endDate}
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="time"
-                            id="createEventEndTime"
-                            name="endTime"
-                            value={eventForm.endTime}
-                            onChange={handleChange}
-                        />
+                        <label>Start:</label>
+                        {eventForm.isAllDay ? (
+                            <input
+                                type="date"
+                                id="createEventStartDate"
+                                name="startDateTime"
+                                value={eventForm.startDateTime}
+                                onChange={handleChange}
+                            />
+                        ) : (
+                            <input
+                                type="datetime-local"
+                                id="createEventStartDateTime"
+                                name="startDateTime"
+                                value={eventForm.startDateTime}
+                                onChange={handleChange}
+                            />
+                        )}
+                    </div>
+                    <div className="form-row">
+                        <label>End:</label>
+                        {eventForm.isAllDay ? (
+                            <input
+                                type="date"
+                                id="createEventEndDate"
+                                name="endDateTime"
+                                value={eventForm.endDateTime}
+                                onChange={handleChange}
+                            />
+                        ) : (
+                            <input
+                                type="datetime-local"
+                                id="createEventEndDateTime"
+                                name="endDateTime"
+                                value={eventForm.endDateTime}
+                                onChange={handleChange}
+                            />
+                        )}
                     </div>
                     <div className="form-group">
                         <label htmlFor="createEventGroup">Add To:</label>
@@ -255,15 +315,15 @@ const CalendarCreateEvent = ({ onEventCreated, selectedCalendarUID }) => {
                         <input
                             type="date"
                             id="createTaskDueDate"
-                            name="due"
-                            value={taskForm.startDate}
+                            name="dueDate"
+                            value={taskForm.dueDate}
                             onChange={handleChange}
                         />
                         <input
                             type="time"
                             id="createTaskDueTime"
                             name="dueTime"
-                            value={taskForm.startTime}
+                            value={taskForm.dueTime}
                             onChange={handleChange}
                         />
                     </div>

@@ -302,6 +302,11 @@ class JSCalendarFactory {
         return this;
       },
 
+      setShowWithoutTime(show) {
+        if (show) this.showWithoutTime = show;
+        return this;
+      },
+
       setStatus(status) {
         if (status) this.status = status;
         return this;

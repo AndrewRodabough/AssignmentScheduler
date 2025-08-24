@@ -11,3 +11,26 @@
     width: 100%;
     /* Add more styles for .title here if needed */
 }
+
+.dev-notes-box {
+    margin-top: 1.5em;
+    padding: 1em 1.5em;
+    background: var(--primary);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    max-width: 400px;
+    color: var(--text-color);
+    font-size: 1em;
+}
+.dev-notes-box h3 {
+    margin-top: 0;
+    font-size: 1.1em;
+    color: var(--accent-color);
+}
+.dev-notes-box ul {
+    padding-left: 1.2em;
+    margin: 0.5em 0 0 0;
+}
+.dev-notes-box li { 
+    margin-bottom: 0.4em;
+}
