@@ -2,43 +2,44 @@ import React, { useState, useEffect,useContext } from 'react';
 import CalendarContext from '../../../context/calendarContext';
 import '../calendar.css';
 
-const CalendarEditCalendar = ({ calendar, onSubmit }) => {
-    if (!calendar) return <div>No calendar selected.</div>;
+const CalendarEditCalendar = ({ selectedCalendarUID, onCalendarEdited }) => {
+    if (!selectedCalendarUID) return <div>No calendar selected.</div>;
 
-    const { handleUpdateCalendar } = useContext(CalendarContext);
+    const { handleUpdateGroup, groups } = useContext(CalendarContext);
     const [formData, setFormData] = useState({
         title: '',
-        description: '',
-        start: '',
-        end: '',
+        color: '',
     });
 
     useEffect(() => {
-        if (calendar) {
+        if (selectedCalendarUID) {
+            const group = groups.find(g => g.groupUID === selectedCalendarUID);
             setFormData({
-                title: calendar.title || '',
-                description: calendar.description || '',
-                start: calendar.start || '',
-                end: calendar.end || '',
+                title: group.title || '',
+                color: group.color || '',
+                privacy: group.privacy || '',
             });
         }
-    }, [calendar]);
+    }, [selectedCalendarUID]);
 
     const handleClearForms = () => {
         setFormData({
             title: '',
-            description: '',
-            start: '',
-            end: '',
+            color: '',
         });
     };
 
     const handleSubmit = async (e) => {
+
+        const updates = Object.fromEntries(
+            Object.entries(formData).filter(([_, value]) => value !== '')
+        );
+
         e.preventDefault();
         try {
-            await handleUpdateEvent(event);
+            await handleUpdateGroup(selectedCalendarUID, updates);
             handleClearForms();
-            if (onSubmit) {onSubmit()};
+            if (onCalendarEdited) {onCalendarEdited()};
         }
         catch (e) {
             console.error("Error submitting form:", e);
@@ -51,9 +52,29 @@ const CalendarEditCalendar = ({ calendar, onSubmit }) => {
     };
 
     return (
-        <>
-            Placeholder for Calendar Edit
-        </>
+        <form onSubmit={handleSubmit} className="calendar-edit-form">
+            <div>
+                <label htmlFor="title">Title:</label>
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                />
+            </div>
+            <div>
+                <label htmlFor="color">Color:</label>
+                <input
+                    type="color"
+                    id="color"
+                    name="color"
+                    value={formData.color}
+                    onChange={handleChange}
+                />
+            </div>
+            <button type="submit">Save</button>
+        </form>
     );
 };
 

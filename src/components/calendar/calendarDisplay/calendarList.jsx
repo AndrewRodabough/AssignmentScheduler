@@ -4,6 +4,7 @@ import CalendarContext from '../../../context/calendarContext.jsx';
 import ListWithSubMenu from '../../menu/list_with_submenu.jsx';
 import CalendarShareCalendar from '../calendarForms/calendarShareCalendar.jsx';
 import CalendarDeleteCalendar from '../calendarForms/calendarDeleteCalendar.jsx';
+import CalendarEditCalendar from '../calendarForms/calendarEditCalendar.jsx';
 import '../calendar.css';
 import '../../menu/list_with_submenu.css';
 
@@ -14,7 +15,7 @@ const CalendarList = ({ groups }) => {
     // Open edit modal
     const onEdit = (groupUID) => {
         openModal("modal_close", {
-            content: <></>,
+            content: <CalendarEditCalendar selectedCalendarUID={groupUID} onCalendarEdited={closeModal} />,
             title: "Edit Calendar"
         })
     }

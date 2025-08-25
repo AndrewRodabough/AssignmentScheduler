@@ -73,14 +73,12 @@ export class GroupController {
     async update(req, res) {
         try {
             const token = req.headers.authorization;
-            const { groupUID, group } = req.body;
+            const { groupUID, updates } = req.body;
             const user = await this.userService.getUserFromToken(token);
             if (!user) {
                 return res.status(404).json({ error: "User not Found" });
             }
-            // check permissions
-            // update group
-            throw new Error(`not implemented`);
+            await this.groupService.updateGroup(user.userUID, groupUID, updates);
             return res.status(200).json({ message: "success" });
         } catch (error) {
             return res.status(500).json({ error: error.message });

@@ -8,7 +8,7 @@
  *          Rejects with an error if the request fails.
  */
 
-const updateGroupApi = (token, groupUID, group) => {
+const updateGroupApi = (token, groupUID, updates) => {
     return new Promise((resolve, reject) => {
         const endpoint = './api/group/update';
         fetch(endpoint, {
@@ -20,7 +20,7 @@ const updateGroupApi = (token, groupUID, group) => {
             },
             body: JSON.stringify({
                 groupUID: groupUID, 
-                group: group
+                updates: updates
             })
         })
         .then(response => {

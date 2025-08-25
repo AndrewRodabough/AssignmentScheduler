@@ -37,6 +37,7 @@ import deleteGroupApi from "../Api/Group/deleteGroupApi.js";
 import createEventApi from "../Api/Event/createEventApi.js";
 import getAllEventsApi from "../Api/Event/getAllEventsApi.js"
 import getAllPermissionsApi from "../Api/Group/getAllPermissionsApi.js";
+import updateGroupApi from "../Api/Group/updateGroupApi.js";
 import JSCalendarFactory from "../models/jscalendarfactory.js";
 
 const CalendarContext = createContext();
@@ -164,8 +165,22 @@ const CalendarProvider = ({ children }) => {
         }
     }
 
-    const handleUpdateEvent = async (updatedEvent) => {
+    const handleUpdateEvent = async (eventUID, updates) => {
         throw new Error('Not implemented yet');
+    }
+
+    const handleUpdateGroup = async (calendarUID, updates) => {
+        if (!user || !user.token) {
+            throw new Error('User must be logged in to update a group');
+        }
+
+        try {
+            const result = await updateGroupApi(user.token, calendarUID, updates);
+            setGroups(prev => prev.map(group => group.groupUID === calendarUID ? { ...group, ...updates } : group));
+        }
+        catch (e) {
+            throw e;
+        }
     }
 
     return (
@@ -179,6 +194,7 @@ const CalendarProvider = ({ children }) => {
             handleCreateGroup,
             handleCreateEvent,
             handleUpdateEvent,
+            handleUpdateGroup,
             handleShareGroup,
             handleDeleteGroup,
             handleGetAllGroups,
