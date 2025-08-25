@@ -6,6 +6,14 @@
 	width: 100%;
 }
 
+.calendar-event-wrapper:hover .calendar-event-edit-icon {
+	opacity: 1;
+}
+
+.calendar-event-wrapper:hover .calendar-event-delete-icon {
+	opacity: 1;
+}
+
 .calendar-event-edit-icon {
 	position: absolute;
 	top: 1px;
@@ -21,9 +29,23 @@
 	justify-content: center;
 }
 
-.calendar-event-wrapper:hover .calendar-event-edit-icon {
-	opacity: 1;
+.calendar-event-delete-icon {
+	position: absolute;
+	top: 1px;
+	right: 22px;
+	opacity: 0;
+	transition: opacity 0.2s;
+	z-index: 2;
+	background: #fcdddd;
+	border-radius: 50%;
+	padding: 1px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
+
+
+
 
 .calendar-view {
 	display: flex;

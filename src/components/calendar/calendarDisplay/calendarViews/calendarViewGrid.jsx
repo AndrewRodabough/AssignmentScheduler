@@ -4,6 +4,7 @@ import CalendarContext from '../../../../context/calendarContext.jsx';
 import ModalContext from '../../../../context/modalContext.jsx';
 import CalendarEditEvent from '../../calendarForms/calendarEditEvent.jsx';
 import CalendarViewContext from '../../../../context/calendarViewContext.jsx';
+import CalendarDeleteEvent from '../../calendarForms/calendarDeleteEvent.jsx';
 import './calendarViews.css';
 
 const CalendarGrid = () => {
@@ -18,11 +19,15 @@ const CalendarGrid = () => {
     const handleOnEventClick = (event) => {
         openModal("modal_close", { 
             title: event.event.title,
-            content: <CalendarEditEvent eventUID={event.event.eventUID} onEventEdited={closeModal} />});
+            content: <CalendarEditEvent eventUID={event.eventUID} onEventEdited={closeModal} />});
     };
 
-
-
+    const handleOnEventDeleteClick = (event) => {
+        openModal("modal_close", {
+            title: "Delete Event",
+            content: <CalendarDeleteEvent selectedEventUID={event.eventUID} onEventDeleted={closeModal} />
+        });
+    };
 
     useEffect(() => {
         if (!startDate || !endDate) return;
@@ -90,6 +95,11 @@ const CalendarGrid = () => {
                                                 <div key={event.event.eventUID} className="calendar-event-wrapper">
                                                     <p className="calendar-event" onDoubleClick={() => handleOnEventClick(event)} style={{ backgroundColor: eventColor }}>
                                                         {event.event.title}
+                                                        <span className="calendar-event-delete-icon" onClick={(e) => { e.stopPropagation(); handleOnEventDeleteClick(event); }}>
+                                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="red" xmlns="http://www.w3.org/2000/svg" >
+                                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                                            </svg>
+                                                        </span>
                                                         <span className="calendar-event-edit-icon" onClick={(e) => { e.stopPropagation(); handleOnEventClick(event); }}>
                                                             {/* Solid black pencil SVG icon */}
                                                             <svg width="16" height="16" viewBox="0 0 16 16" fill="black" xmlns="http://www.w3.org/2000/svg">

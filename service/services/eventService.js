@@ -86,6 +86,15 @@ export class EventService {
     }
 
     async deleteEvent(eventUID) {
-        throw new Error(`Not implemented`)
+        try {
+            if (!eventUID) { throw new Error('eventUID is required'); }
+            if (!await this.dataStore.eventExists(eventUID)) {
+                throw new Error(`eventUID ${eventUID} does not exist`);
+            }
+            await this.dataStore.deleteEvent(eventUID);
+        }
+        catch (e) {
+            throw new Error(`deleteEvent failed with eventUID=${eventUID}: ${e.message}`);
+        }
     }
 }

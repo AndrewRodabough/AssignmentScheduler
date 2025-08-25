@@ -40,6 +40,7 @@ import getAllPermissionsApi from "../Api/Group/getAllPermissionsApi.js";
 import updateGroupApi from "../Api/Group/updateGroupApi.js";
 import JSCalendarFactory from "../models/jscalendarfactory.js";
 import updateEventApi from "../Api/Event/updateEventApi.js";
+import deleteEventApi from "../Api/Event/deleteEventApi.js";
 
 const CalendarContext = createContext();
 
@@ -198,6 +199,20 @@ const CalendarProvider = ({ children }) => {
         }
     }
 
+    const handleDeleteEvent = async (eventUID) => {
+        if (!user || !user.token) {
+            throw new Error('User must be logged in to delete an event');
+        }
+
+        try {
+            await deleteEventApi(user.token, eventUID);
+            setEvents(prev => prev.filter(event => event.eventUID !== eventUID));
+        }
+        catch (e) {
+            throw e;
+        }
+    }
+
     return (
         <CalendarContext.Provider value={{
             groups,
@@ -210,11 +225,12 @@ const CalendarProvider = ({ children }) => {
             handleCreateEvent,
             handleUpdateEvent,
             handleUpdateGroup,
-            handleShareGroup,
+            handleDeleteEvent,
             handleDeleteGroup,
             handleGetAllGroups,
             handleGetAllEvents,
             handleGetAllPermissions,
+            handleShareGroup,
             getGroupNames,
             getGroupUID
         }}>
