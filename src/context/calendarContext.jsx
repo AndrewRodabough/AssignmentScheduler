@@ -39,6 +39,7 @@ import getAllEventsApi from "../Api/Event/getAllEventsApi.js"
 import getAllPermissionsApi from "../Api/Group/getAllPermissionsApi.js";
 import updateGroupApi from "../Api/Group/updateGroupApi.js";
 import JSCalendarFactory from "../models/jscalendarfactory.js";
+import updateEventApi from "../Api/Event/updateEventApi.js";
 
 const CalendarContext = createContext();
 
@@ -166,7 +167,21 @@ const CalendarProvider = ({ children }) => {
     }
 
     const handleUpdateEvent = async (eventUID, updates) => {
-        throw new Error('Not implemented yet');
+        if (!user || !user.token) {
+            throw new Error('User must be logged in to update an event');
+        }
+
+        try {
+            const result = await updateEventApi(user.token, eventUID, updates);
+            setEvents(prev => prev.map(event =>
+                event.eventUID === eventUID
+                    ? { ...event, event: { ...event.event, ...updates } }
+                    : event
+            ));
+        }
+        catch (e) {
+            throw e;
+        }
     }
 
     const handleUpdateGroup = async (calendarUID, updates) => {

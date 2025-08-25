@@ -1,6 +1,7 @@
 import { UserService } from '../services/userService.js';
 import { GroupService } from '../services/groupService.js';
 import { EventService } from '../services/eventService.js';
+import { th } from 'date-fns/locale';
 
 export class EventController {
     constructor(dataStore) {
@@ -43,14 +44,12 @@ export class EventController {
     async update(req, res) {
         try {
             const token = req.headers.authorization;
-            const { event } = req.body;
+            const { eventUID, updates } = req.body;
             const user = await this.userService.getUserFromToken(token);
             if (!user) {
                 return res.status(404).json({ error: "User not Found" });
             }
-            // check permissions
-            // update event
-            throw new Error(`not implemented`);
+            await this.eventService.updateEvent(user.userUID, eventUID, updates);
             return res.status(200).json({ message: "success" });
         } catch (error) {
             return res.status(500).json({ error: error.message });

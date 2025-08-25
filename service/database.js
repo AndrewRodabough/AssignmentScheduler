@@ -311,8 +311,22 @@ const dataStore = {
     },
 
     async updateEvent(eventUID, updates) {
-        //TODO: implement
-        throw new Error('Not Implemented');
+        try {
+            // Only update fields inside the nested event object
+            const updateFields = {};
+            for (const [key, value] of Object.entries(updates)) {
+                updateFields[`event.${key}`] = value;
+            }
+            const result = await eventCol.updateOne(
+                { eventUID },
+                { $set: updateFields }
+            );
+            if (result.matchedCount === 0) {
+                throw new Error('Event Does Not Exist');
+            }
+        } catch (e) {
+            throw new Error(`updateEvent failed for eventUID=${eventUID}, updates=${JSON.stringify(updates)}: ${e.message}`);
+        }
     },
     
     async getEventsForGroup(groupUID) {

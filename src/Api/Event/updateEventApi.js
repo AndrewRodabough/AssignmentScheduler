@@ -3,12 +3,12 @@
  *
  * @param {string} token - The authentication token of the user.
  * @param {string} eventUID - The ID of the event to update.
- * @param {Object} event - The data to update in the event.
+ * @param {Object} updates - The data to update in the event.
  * @returns {Promise<Object>} Resolves with the updated event object if successful.
  *          Rejects with an error if the request fails.
  */
 
-const updateEventApi = (token, eventUID, event) => {
+const updateEventApi = (token, eventUID, updates) => {
     return new Promise((resolve, reject) => {
         const endpoint = './api/event/update';
         fetch(endpoint, {
@@ -20,7 +20,7 @@ const updateEventApi = (token, eventUID, event) => {
             },
             body: JSON.stringify({ 
                 eventUID: eventUID, 
-                event: event
+                updates: updates
             })
         })
         .then(response => {

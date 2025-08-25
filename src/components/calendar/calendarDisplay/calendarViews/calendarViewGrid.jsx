@@ -16,10 +16,9 @@ const CalendarGrid = () => {
     const currentDate = format(today, 'yyyy-MM-dd');
 
     const handleOnEventClick = (event) => {
-        console.log("Event clicked:", event);
         openModal("modal_close", { 
             title: event.event.title,
-            content: <CalendarEditEvent event={event.event} onSubmit={closeModal} />});
+            content: <CalendarEditEvent eventUID={event.event.eventUID} onEventEdited={closeModal} />});
     };
 
 
@@ -70,7 +69,12 @@ const CalendarGrid = () => {
                 {dateColumns.length > 0 && (
                     <div className={`calendar-grid${dateColumns.length === 1 ? ' single-column' : ''}`}>
                         {dateColumns.map(({ fullDate, dayOfWeek, dayOfMonth, inMonth }) => {
-                            const eventsForDay = events.filter(event => event.event.start === fullDate);
+                            const eventsForDay = events.filter(event => {
+                                if (!event.event.start) return false;
+                                // If event.start is a datetime, extract the date part
+                                const eventDate = event.event.start.split('T')[0];
+                                return eventDate === fullDate;
+                            });
                             return (
                                 <div key={fullDate} className={`calendar-column${inMonth ? ' in-month' : ''} ${fullDate === currentDate ? ' current-day' : ''}${!inMonth ? ' empty-day' : ''}`}>
                                     <div className="column-header">
@@ -81,7 +85,6 @@ const CalendarGrid = () => {
                                         {eventsForDay.map(event => {
                                             // Find the group/calendar for this event
                                             const group = groups.find(g => g.groupUID === event.groupUID);
-                                            console.log(event.groupUID);
                                             const eventColor = (group && group.color) ? group.color : '#fff';
                                             return (
                                                 <div key={event.event.eventUID} className="calendar-event-wrapper">
