@@ -15,7 +15,7 @@ export const CalendarCreateCalendar = ({ onCalendarCreated }) => {
         if (calendarName.trim()) {
             try {
                 // Pass color to handleCreateGroup if supported
-                await handleCreateGroup(calendarName, calendarColor);
+                await handleCreateGroup({ title: calendarName, color: calendarColor });
                 setCalendarName("");
                 setCalendarColor("#2196f3");
                 if (onCalendarCreated) { onCalendarCreated(); }

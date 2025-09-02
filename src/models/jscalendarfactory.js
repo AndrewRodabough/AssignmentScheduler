@@ -88,11 +88,6 @@ class JSCalendarFactory {
         return this;
       },
 
-      setColor(color) {
-        if (color) this.color = color;
-        return this;
-      },
-
       setRecurrenceId(recurrenceId) {
         if (recurrenceId) this.recurrenceId = recurrenceId;
         return this;
@@ -187,6 +182,11 @@ class JSCalendarFactory {
       "created": new Date().toISOString(),
       "updated": new Date().toISOString(),
 
+      setGroupUID(groupUID) {
+        if (groupUID) this.groupUID = groupUID;
+        return this;
+      },
+
       setRelatedTo(relatedTo) {
         if (relatedTo && relatedTo.length) this.relatedTo = relatedTo;
         return this;
@@ -229,11 +229,6 @@ class JSCalendarFactory {
 
       setCategories(categories) {
         if (categories && categories.length) this.categories = categories;
-        return this;
-      },
-
-      setColor(color) {
-        if (color) this.color = color;
         return this;
       },
 

@@ -5,7 +5,7 @@ import '../calendar.css';
 const CalendarEditEvent = ({ eventUID, onEventEdited }) => {
     if (!eventUID) return <div>No event selected.</div>;
 
-    const { handleUpdateEvent, groups, events } = useContext(CalendarContext);
+    const { handleUpdateEvent, getEventByEventUID } = useContext(CalendarContext);
 
     const [eventForm, setEventForm] = useState({
         title: '',
@@ -35,10 +35,12 @@ const CalendarEditEvent = ({ eventUID, onEventEdited }) => {
     }
 
     useEffect(() => {
+        console.log("Editing event:", eventUID);
         if (eventUID) {
-            const found = events.find(e => e.eventUID === eventUID);
+            const found = getEventByEventUID(eventUID);
+            console.log("Found event:", found);
             if (found) {
-                const event = found.event;
+                const event = found;
                 setEventForm({
                     title: event.title || '',
                     description: event.description || '',
@@ -52,14 +54,14 @@ const CalendarEditEvent = ({ eventUID, onEventEdited }) => {
                 });
             }
         }
-    }, [eventUID, events]);
+    }, [eventUID]);
 
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const event = events.find(e => e.eventUID === eventUID).event;
-        
+        const event = getEventByEventUID(eventUID);
+
         const defaultForm = {
             title: '',
             description: '',

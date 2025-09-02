@@ -273,18 +273,17 @@ const dataStore = {
     // Event Functions //
     /////////////////////
 
-    async setEvent(groupUID, event) {
+    async setEvent(event) {
         try {
             if (!event || !event.eventUID) { throw new Error('Invalid event object'); }
 
-            if (await this.groupExists(groupUID) === false) {
-                throw new Error(`Group with UID ${groupUID} does not exist`);
+            if (await this.groupExists(event.groupUID) === false) {
+                throw new Error(`Group with UID ${event.groupUID} does not exist`);
             }
-
-            await eventCol.insertOne({ eventUID: event.eventUID, groupUID, event })
+            await eventCol.insertOne({ ...event })
         }
         catch (e) {
-            throw new Error(`setEvent failed for groupUID=${groupUID}: ${e.message}`);
+            throw new Error(`setEvent failed for groupUID=${event.groupUID}: ${e.message}`);
         }
     },
 
@@ -312,14 +311,10 @@ const dataStore = {
 
     async updateEvent(eventUID, updates) {
         try {
-            // Only update fields inside the nested event object
-            const updateFields = {};
-            for (const [key, value] of Object.entries(updates)) {
-                updateFields[`event.${key}`] = value;
-            }
+            // Update fields directly at the root level
             const result = await eventCol.updateOne(
                 { eventUID },
-                { $set: updateFields }
+                { $set: updates }
             );
             if (result.matchedCount === 0) {
                 throw new Error('Event Does Not Exist');

@@ -49,8 +49,20 @@ const UserProvider = ({ children }) => {
         return null;
     });
 
+    const getToken = () => {
+        return user && user.token;
+    }
+
+    const getUserUID = () => {
+        return user && user.userUID;
+    }
+
+    const getUsername = () => {
+        return user && user.username;
+    }
+
     const isLoggedIn = () => {
-        return user !== null;
+        return user && user.token;
     }
 
     const handleLogin = async (userInfo) => {
@@ -67,7 +79,7 @@ const UserProvider = ({ children }) => {
             setUser(newUserData);         
         }
         catch (e) {
-            throw e;
+            throw new Error("handleLogin failed: " + e.message);
         }
     }
 
@@ -77,7 +89,7 @@ const UserProvider = ({ children }) => {
         }
 
         try{
-            const result = await logoutApi(user.token);
+            await logoutApi(user.token);
             Cookies.remove('username');
             Cookies.remove('token');
             Cookies.remove('userUID');
@@ -94,16 +106,24 @@ const UserProvider = ({ children }) => {
         }
 
         try {
-            const result = await createUserApi(userInfo.username, userInfo.password);
-            const result2 = await handleLogin(userInfo);
+            await createUserApi(userInfo.username, userInfo.password);
+            await handleLogin(userInfo);
         }
         catch (e) {
-            throw e;
+            throw new Error("handleRegister failed: " + e.message);
         }
     }
 
     return (
-        <UserContext.Provider value={{ user, setUser, isLoggedIn, handleLogin, handleLogout, handleRegister}}>
+        <UserContext.Provider value={{
+            getToken,
+            getUserUID,
+            getUsername,
+            isLoggedIn,
+            handleLogin,
+            handleLogout,
+            handleRegister
+        }}>
             {children}
         </UserContext.Provider>
   );

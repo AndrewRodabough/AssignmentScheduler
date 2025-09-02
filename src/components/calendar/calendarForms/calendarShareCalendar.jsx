@@ -4,7 +4,7 @@ import '../calendar.css';
 
 export const CalendarShareCalendar = ({ onCalendarShared, selectedCalendarUID }) => {
 
-    const { groups, handleShareGroup, getGroupUID} = useContext(CalendarContext);
+    const { getGroups, handleShareGroup } = useContext(CalendarContext);
     const [shareUsername, setShareUsername] = useState("");
     const [shareCalendar, setShareCalendar] = useState("");
     const [permissionLevel, setPermissionLevel] = useState("view");
@@ -14,12 +14,12 @@ export const CalendarShareCalendar = ({ onCalendarShared, selectedCalendarUID })
     useEffect(() => {
         if (selectedCalendarUID && selectedCalendarUID !== "") {
             setShareCalendar(selectedCalendarUID);
-        } else if (groups.length > 0) {
-            setShareCalendar(groups[0].groupUID);
+        } else if (getGroups().length > 0) {
+            setShareCalendar(getGroups()[0].groupUID);
         } else {
             setShareCalendar("");
         }
-    }, [groups, selectedCalendarUID]);
+    }, [getGroups, selectedCalendarUID]);
 
     const handleSubmitShareCalendar = async (e) => {
         e.preventDefault();
@@ -44,10 +44,10 @@ export const CalendarShareCalendar = ({ onCalendarShared, selectedCalendarUID })
                     onChange={e => setShareCalendar(e.target.value)}
                 >
                     {
-                        groups.length === 0 ? (
+                        getGroups().length === 0 ? (
                             <option disabled value="">You Have No Calendars</option>
                         ) : (
-                            groups.map(group => (
+                            getGroups().map(group => (
                                 <option
                                     key={group.groupUID}
                                     value={group.groupUID}

@@ -9,11 +9,9 @@ import '../calendar.css';
 const CalendarMenu = () => {
 
     const { openModal, closeModal } = useContext(ModalContext);
-    const { groups, handleGetAllGroups, handleGetAllEvents, handleGetAllPermissions } = useContext(CalendarContext);
+    const { getGroups, handleGetAllRemote } = useContext(CalendarContext);
     useEffect(() => {
-        handleGetAllGroups();
-        handleGetAllEvents();
-        handleGetAllPermissions();
+        handleGetAllRemote();
     }, []);
 
     return (
@@ -43,7 +41,7 @@ const CalendarMenu = () => {
                     </button>
                 </div>
                 <CalendarList
-                    groups={groups}
+                    groups={getGroups()}
                 />
             </div>
         </>

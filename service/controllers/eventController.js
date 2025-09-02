@@ -1,7 +1,6 @@
 import { UserService } from '../services/userService.js';
 import { GroupService } from '../services/groupService.js';
 import { EventService } from '../services/eventService.js';
-import { th } from 'date-fns/locale';
 
 export class EventController {
     constructor(dataStore) {
@@ -13,13 +12,13 @@ export class EventController {
     async create(req, res) {
         try {
             const token = req.headers.authorization;
-            const { groupUID, event } = req.body;
-            console.log(event);
+            const { event } = req.body;
+            console.log("Creating Event", event);
             const user = await this.userService.getUserFromToken(token);
             if (!user) {
                 return res.status(404).json({ error: "User not Found" });
             }
-            await this.eventService.createEvent(user.userUID, groupUID, event)
+            await this.eventService.createEvent(user.userUID, event)
             return res.status(200).json({ message: "success" });
         } catch (error) {
             return res.status(500).json({ error: error.message });

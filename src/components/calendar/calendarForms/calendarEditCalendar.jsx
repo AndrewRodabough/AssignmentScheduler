@@ -5,7 +5,7 @@ import '../calendar.css';
 const CalendarEditCalendar = ({ selectedCalendarUID, onCalendarEdited }) => {
     if (!selectedCalendarUID) return <div>No calendar selected.</div>;
 
-    const { handleUpdateGroup, groups } = useContext(CalendarContext);
+    const { handleUpdateGroup, getGroups } = useContext(CalendarContext);
     const [formData, setFormData] = useState({
         title: '',
         color: '',
@@ -13,7 +13,7 @@ const CalendarEditCalendar = ({ selectedCalendarUID, onCalendarEdited }) => {
 
     useEffect(() => {
         if (selectedCalendarUID) {
-            const group = groups.find(g => g.groupUID === selectedCalendarUID);
+            const group = getGroups().find(g => g.groupUID === selectedCalendarUID);
             setFormData({
                 title: group.title || '',
                 color: group.color || '',

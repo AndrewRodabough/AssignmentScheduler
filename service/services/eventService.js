@@ -38,26 +38,26 @@ export class EventService {
         }
     }
 
-    async createEvent(userUID, groupUID, event) {
+    async createEvent(userUID, event) {
         try {
             // TODO validate event data
             if (!userUID) { throw new Error('userUID is required'); }
-            if (!groupUID) { throw new Error('groupID is required'); }
+            if (!event.groupUID) { throw new Error('groupID is required'); }
             if (!event) { throw new Error('event is required'); }
             if (!await this.dataStore.userExists(userUID)) {
                 throw new Error(`userUID ${userUID} does not exist`);
             }
-            if (!await this.dataStore.groupExists(groupUID)) {
-                throw new Error(`groupUID ${groupUID} does not exist`);
+            if (!await this.dataStore.groupExists(event.groupUID)) {
+                throw new Error(`groupUID ${event.groupUID} does not exist`);
             }
-            const permission = await this.dataStore.getPermission(userUID, groupUID)
+            const permission = await this.dataStore.getPermission(userUID, event.groupUID)
             if (!permission || (permission != 'owner' && permission != 'write')) {
-                throw new Error(`userUID ${userUID} does not have permission to create eventUID ${eventUID}`);
+                throw new Error(`userUID ${userUID} does not have permission to create eventUID ${event.eventUID}`);
             }
-            this.dataStore.setEvent(groupUID, event);
+            this.dataStore.setEvent(event);
         }
         catch (e) {
-            throw new Error(`createEvent failed with userUID=${userUID}, groupUID=${groupUID}: ${e.message}`)
+            throw new Error(`createEvent failed with userUID=${userUID}, groupUID=${event.groupUID}: ${e.message}`)
         }
     }
 

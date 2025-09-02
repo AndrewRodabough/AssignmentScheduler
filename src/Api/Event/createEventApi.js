@@ -8,11 +8,9 @@
  *          Rejects with an error if the request fails.
  */
 
-const createEventApi = (token, groupUID, event) => {
+const createEventApi = (token, event) => {
     return new Promise((resolve, reject) => {
         const endpoint = './api/event/create';
-
-        console.log(token, event);
 
         fetch(endpoint, {
             method: 'POST',
@@ -22,8 +20,7 @@ const createEventApi = (token, groupUID, event) => {
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
-                groupUID: groupUID,
-                event: event
+                event
             })
         })
         .then(response => {

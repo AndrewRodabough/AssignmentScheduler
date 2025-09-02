@@ -5,18 +5,18 @@ import '../calendar.css';
 
 export const CalendarDeleteCalendar = ({ onCalendarDeleted, selectedCalendarUID }) => {
 
-    const { groups, getGroupNames, handleDeleteGroup, getGroupUID } = useContext(CalendarContext);
+    const { getGroups, handleDeleteGroup, getGroupUID } = useContext(CalendarContext);
     const [selectedCalendar, setSelectedCalendar] = useState("");
 
     useEffect(() => {
         if (selectedCalendarUID && selectedCalendarUID !== "") {
             setSelectedCalendar(selectedCalendarUID);
-        } else if (groups.length > 0) {
-            setSelectedCalendar(groups[0].groupUID);
+        } else if (getGroups().length > 0) {
+            setSelectedCalendar(getGroups()[0].groupUID);
         } else {
             setSelectedCalendar("");
         }
-    }, [groups, selectedCalendarUID, getGroupUID]);
+    }, [getGroups, selectedCalendarUID, getGroupUID]);
 
     const handleSubmitDeleteCalendar = async (e) => {
         e.preventDefault();
@@ -43,10 +43,10 @@ export const CalendarDeleteCalendar = ({ onCalendarDeleted, selectedCalendarUID 
                         value={selectedCalendar}
                         onChange={e => setSelectedCalendar(e.target.value)}
                     >
-                        {groups.length === 0 ? (
+                        {getGroups().length === 0 ? (
                             <option disabled value="">You Have No Calendars</option>
                         ) : (
-                            groups.map(group => (
+                            getGroups().map(group => (
                                 <option key={group.groupUID} value={group.groupUID}>
                                     {group.title}
                                 </option>

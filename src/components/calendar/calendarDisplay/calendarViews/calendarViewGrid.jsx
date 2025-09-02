@@ -8,7 +8,7 @@ import CalendarDeleteEvent from '../../calendarForms/calendarDeleteEvent.jsx';
 import './calendarViews.css';
 
 const CalendarGrid = () => {
-    const { groups, events } = useContext(CalendarContext);
+    const { getGroups, getEvents } = useContext(CalendarContext);
     const { openModal, closeModal } = useContext(ModalContext);
     const { startDate, endDate, currentView } = useContext(CalendarViewContext);
 
@@ -18,7 +18,7 @@ const CalendarGrid = () => {
 
     const handleOnEventClick = (event) => {
         openModal("modal_close", { 
-            title: event.event.title,
+            title: event.title,
             content: <CalendarEditEvent eventUID={event.eventUID} onEventEdited={closeModal} />});
     };
 
@@ -74,10 +74,10 @@ const CalendarGrid = () => {
                 {dateColumns.length > 0 && (
                     <div className={`calendar-grid${dateColumns.length === 1 ? ' single-column' : ''}`}>
                         {dateColumns.map(({ fullDate, dayOfWeek, dayOfMonth, inMonth }) => {
-                            const eventsForDay = events.filter(event => {
-                                if (!event.event.start) return false;
+                            const eventsForDay = getEvents().filter(event => {
+                                if (!event.start) return false;
                                 // If event.start is a datetime, extract the date part
-                                const eventDate = event.event.start.split('T')[0];
+                                const eventDate = event.start.split('T')[0];
                                 return eventDate === fullDate;
                             });
                             return (
@@ -89,21 +89,21 @@ const CalendarGrid = () => {
                                     <div className="column-content">
                                         {eventsForDay.map(event => {
                                             // Find the group/calendar for this event
-                                            const group = groups.find(g => g.groupUID === event.groupUID);
+                                            const group = getGroups().find(g => g.groupUID === event.groupUID);
                                             const eventColor = (group && group.color) ? group.color : '#fff';
                                             return (
-                                                <div key={event.event.eventUID} className="calendar-event-wrapper">
+                                                <div key={event.eventUID} className="calendar-event-wrapper">
                                                     <p className="calendar-event" onDoubleClick={() => handleOnEventClick(event)} style={{ backgroundColor: eventColor }}>
-                                                        {event.event.title}
-                                                        <span className="calendar-event-delete-icon" onClick={(e) => { e.stopPropagation(); handleOnEventDeleteClick(event); }}>
-                                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="red" xmlns="http://www.w3.org/2000/svg" >
-                                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                                            </svg>
-                                                        </span>
+                                                        {event.title}
                                                         <span className="calendar-event-edit-icon" onClick={(e) => { e.stopPropagation(); handleOnEventClick(event); }}>
                                                             {/* Solid black pencil SVG icon */}
                                                             <svg width="16" height="16" viewBox="0 0 16 16" fill="black" xmlns="http://www.w3.org/2000/svg">
                                                                 <path d="M12.146 2.854a.5.5 0 0 1 .708 0l.292.292a.5.5 0 0 1 0 .708l-8.5 8.5a.5.5 0 0 1-.168.11l-3 1a.5.5 0 0 1-.638-.638l1-3a.5.5 0 0 1 .11-.168l8.5-8.5zM11.207 3.5L3.5 11.207l-.646 1.939 1.939-.646L12.5 4.793l-1.293-1.293z" />
+                                                            </svg>
+                                                        </span>
+                                                        <span className="calendar-event-delete-icon" onClick={(e) => { e.stopPropagation(); handleOnEventDeleteClick(event); }}>
+                                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="red" xmlns="http://www.w3.org/2000/svg" >
+                                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                                                             </svg>
                                                         </span>
                                                     </p>

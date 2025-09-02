@@ -46,193 +46,257 @@ const CalendarContext = createContext();
 
 const CalendarProvider = ({ children }) => {
 
+    const { getUserUID, getToken, isLoggedIn } = useContext(UserContext);
     const [groups, setGroups] = useState([]);
     const [events, setEvents] = useState([]);
     const [permissions, setPermissions] = useState([]);
-    const { user } = useContext(UserContext);
 
-    const getGroupNames = () => {
-        if (!groups) { return [] }
-        return groups.map(group => group.title);
-    }
+    const eventFieldsToExpose = [
+        "eventUID",
+        "groupUID",
+        "title",
+        "description",
+        "showWithoutTime",
+        "start",
+        "duration",
+    ];
 
-    const getGroupUID = (groupTitle) => {
+    const getGroupByGroupUID = (groupUID) => {
         if (!groups || groups.length === 0) return null;
-
-        const group = groups.find(g => g.title === groupTitle);
-
-        return group ? group.groupUID : null;
+        const group = groups.find(g => g.groupUID === groupUID);
+        if (!group) return null;
+        return {
+            groupUID: group.groupUID,
+            title: group.title,
+            color: group.color,
+            privacy: group.privacy,
+        };
     };
 
-    const handleCreateGroup = async (groupTitle, calendarColor) => {
-        if (!user || !user.token) {
-            throw new Error('User must be logged in to create a group');
-        }
+    const getGroups = () => {
+        return groups.map(group => ({
+            groupUID: group.groupUID,
+            title: group.title,
+            color: group.color,
+            privacy: group.privacy,
+        }));
+    };
 
+    const getEventByEventUID = (eventUID) => {
+        if (!events || events.length === 0) return null;
+        const event = events.find(e => e.eventUID === eventUID);
+        if (!event) return null;
+        const exposed = {};
+        eventFieldsToExpose.forEach(field => {
+            exposed[field] = event[field];
+        });
+        return exposed;
+    };
+
+    const getEventsByGroupUID = (groupUID) => {
+        if (!events || events.length === 0) return [];
+        return events
+            .filter(e => e.groupUID === groupUID)
+            .map(event => {
+                const exposed = {};
+                eventFieldsToExpose.forEach(field => {
+                    exposed[field] = event[field];
+                });
+                return exposed;
+            });
+    };
+
+    const getEvents = () => {
+        return events.map(event => {
+            const exposed = {};
+            eventFieldsToExpose.forEach(field => {
+            exposed[field] = event[field];
+            });
+            return exposed;
+        });
+    };
+
+    const getPermissions = () => {
+        return permissions.map(permission => ({
+            userUID: permission.userUID,
+            groupUID: permission.groupUID,
+            permission: permission.permission,
+        }));
+    }
+
+    const getPermissionByGroupUID = (groupUID) => {
+        if (!permissions || permissions.length === 0) return null;
+        const permission = permissions.find(p => p.groupUID === groupUID);
+        if (!permission) return null;
+        return {
+            userUID: permission.userUID,
+            groupUID: permission.groupUID,
+            permission: permission.permission,
+        };
+    }
+
+    const checkLogin = async () => {        
+        if (!isLoggedIn()) {
+            throw new Error('User is not logged in');
+        }
+    }
+
+    const handleGetAllRemote = async () => {
+        await Promise.all([
+            handleGetAllRemoteGroups(),
+            handleGetAllRemoteEvents(),
+            handleGetAllRemotePermissions()
+        ]);
+    }
+
+    const handleGetAllRemoteGroups = async () => {
         try {
+            checkLogin();
+            setGroups(await getAllGroupApi(getToken()));
+        }
+        catch (e) {
+            throw new Error('Failed to get all remote groups: ' + e.message);
+        }
+    }
+
+    const handleGetAllRemoteEvents = async () => {
+        try {
+            checkLogin();
+            setEvents(await getAllEventsApi(getToken()));
+        }
+        catch (e) {
+            throw new Error('Failed to get all remote events: ' + e.message);
+        }
+    }
+
+    const handleGetAllRemotePermissions = async () => {
+        try {
+            checkLogin();
+            setPermissions(await getAllPermissionsApi(getToken()));
+        }
+        catch (e) {
+            throw new Error('Failed to get all remote permissions: ' + e.message);
+        }
+    }
+
+    const handleCreateGroup = async ({
+        title,
+        color
+    }) => {
+        try {
+            checkLogin();
             const group = JSCalendarFactory.createCalendar()
                 .setPrivacy("private")
-                .setTitle(groupTitle)
-                .setColor(calendarColor);
-            await createGroupApi(user.token, group);
+                .setTitle(title)
+                .setColor(color);
+            await createGroupApi(getToken(), group);
             setGroups(prev => [...prev, group]);
-            setPermissions(prev => [...prev, { userUID: user.userUID, groupUID: group.groupUID, permission: "owner" }]);
+            setPermissions(prev => [...prev, { userUID: getUserUID(), groupUID: group.groupUID, permission: "owner" }]);
         }
         catch (e) {
-            throw e;
+            throw new Error('Failed to create group: ' + e.message);
         }
     }
 
-    const handleGetAllGroups = async () => {
-        if (!user || !user.token) {
-            throw new Error('User must be logged in to get all groups');
-        }
-
+    const handleCreateEvent = async ({
+        groupUID,
+        title,
+        description,
+        showWithoutTime,
+        start,
+        duration,
+    }) => {
         try {
-            const result = await getAllGroupApi(user.token);
-            setGroups(result);
+            checkLogin();
+            const event = JSCalendarFactory.createEvent()
+                .setGroupUID(groupUID)
+                .setTitle(title)
+                .setDescription(description)
+                .setShowWithoutTime(showWithoutTime)
+                .setStart(start)
+                .setDuration(duration);
+            await createEventApi(getToken(), event);
+            setEvents(prev => [...prev, event]);
         }
         catch (e) {
-            throw e;
-        }
-    }
-
-    const handleGetAllEvents = async () => {
-        if (!user || !user.token) {
-            throw new Error('User must be logged in to get all events');
-        }
-
-        try {
-            const result = await getAllEventsApi(user.token);
-            setEvents(result);
-        }
-        catch (e) {
-            throw e;
-        }
-    }
-
-    const handleShareGroup = async (username, groupUID, permissionLevel) => {
-        if (!user || !user.token) {
-            throw new Error('User must be logged in to share group');
-        }
-        
-        try {
-            const result = await shareGroupApi(user.token, username, groupUID, permissionLevel);
-            setGroups(prev => prev.map(group => group.groupUID === groupUID ? { ...group, privacy: "public" } : group));
-        }
-        catch (e) {
-            throw e;
-        }
-    }
-
-    const handleCreateEvent = async (groupUID, event) => {
-        if (!user || !user.token) {
-            throw new Error('User must be logged in to create Event');
-        }
-
-        try {
-            const result = await createEventApi(user.token, groupUID, event);
-            //setEvents(prev => prev.map(group => group.groupUID === groupUID ? { ...group, entries: [...group.entries, result] } : group));
-        }
-        catch (e) {
-            throw e;
+            throw new Error('Failed to create event: ' + e.message);
         }
     }
 
     const handleDeleteGroup = async (groupUID) => {
-        if (!user || !user.token) {
-            throw new Error('User must be logged in to delete a group');
-        }
-        
         try {
-            const result = await deleteGroupApi(user.token, groupUID);
+            checkLogin();
+            await deleteGroupApi(getToken(), groupUID);
             setGroups(prev => prev.filter(group => group.groupUID !== groupUID));
         }
         catch(e) {
-            throw e;
-        }
-    }
-
-    const handleGetAllPermissions = async () => {
-        if (!user || !user.token) {
-            throw new Error('User must be logged in to get all permissions');
-        }
-
-        try {
-            const result = await getAllPermissionsApi(user.token);
-            setPermissions(result);
-        }
-        catch (e) {
-            throw e;
-        }
-    }
-
-    const handleUpdateEvent = async (eventUID, updates) => {
-        if (!user || !user.token) {
-            throw new Error('User must be logged in to update an event');
-        }
-
-        try {
-            const result = await updateEventApi(user.token, eventUID, updates);
-            setEvents(prev => prev.map(event =>
-                event.eventUID === eventUID
-                    ? { ...event, event: { ...event.event, ...updates } }
-                    : event
-            ));
-        }
-        catch (e) {
-            throw e;
-        }
-    }
-
-    const handleUpdateGroup = async (calendarUID, updates) => {
-        if (!user || !user.token) {
-            throw new Error('User must be logged in to update a group');
-        }
-
-        try {
-            const result = await updateGroupApi(user.token, calendarUID, updates);
-            setGroups(prev => prev.map(group => group.groupUID === calendarUID ? { ...group, ...updates } : group));
-        }
-        catch (e) {
-            throw e;
+            throw new Error('Failed to delete group: ' + e.message);
         }
     }
 
     const handleDeleteEvent = async (eventUID) => {
-        if (!user || !user.token) {
-            throw new Error('User must be logged in to delete an event');
-        }
-
         try {
-            await deleteEventApi(user.token, eventUID);
+            checkLogin();
+            await deleteEventApi(getToken(), eventUID);
             setEvents(prev => prev.filter(event => event.eventUID !== eventUID));
         }
         catch (e) {
-            throw e;
+            throw new Error('Failed to delete event: ' + e.message);
+        }
+    }
+
+    const handleUpdateEvent = async (eventUID, updates) => {
+        try {
+            checkLogin();
+            await updateEventApi(getToken(), eventUID, updates);
+            setEvents(prev => prev.map(event =>
+                event.eventUID === eventUID ? { ...event, ...updates } : event
+            ));
+        }
+        catch (e) {
+            throw new Error('Failed to update event: ' + e.message);
+        }
+    }
+
+    const handleUpdateGroup = async (calendarUID, updates) => {
+        try {
+            checkLogin();
+            await updateGroupApi(getToken(), calendarUID, updates);
+            setGroups(prev => prev.map(group => group.groupUID === calendarUID ? { ...group, ...updates } : group));
+        }
+        catch (e) {
+            throw new Error('Failed to update group: ' + e.message);
+        }
+    }
+
+    const handleShareGroup = async (userUID, groupUID, permissionLevel) => {
+        try {
+            checkLogin();
+            await shareGroupApi(getToken(), userUID, groupUID, permissionLevel);
+            setGroups(prev => prev.map(group => group.groupUID === groupUID ? { ...group, privacy: "public" } : group));
+        }
+        catch (e) {
+            throw new Error('Failed to share group: ' + e.message);
         }
     }
 
     return (
         <CalendarContext.Provider value={{
-            groups,
-            events,
-            permissions,
-            setGroups,
-            setEvents,
-            setPermissions,
+            getGroupByGroupUID,
+            getGroups,
+            getEventByEventUID,
+            getEventsByGroupUID,
+            getEvents,
+            getPermissions,
+            getPermissionByGroupUID,
+            handleGetAllRemote,
             handleCreateGroup,
             handleCreateEvent,
             handleUpdateEvent,
             handleUpdateGroup,
             handleDeleteEvent,
             handleDeleteGroup,
-            handleGetAllGroups,
-            handleGetAllEvents,
-            handleGetAllPermissions,
             handleShareGroup,
-            getGroupNames,
-            getGroupUID
         }}>
             {children}
         </CalendarContext.Provider>

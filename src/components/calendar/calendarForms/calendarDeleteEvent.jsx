@@ -5,7 +5,7 @@ import '../calendar.css';
 
 export const CalendarDeleteEvent = ({ onEventDeleted, selectedEventUID }) => {
 
-    const { events, handleDeleteEvent } = useContext(CalendarContext);
+    const { getEvents, handleDeleteEvent } = useContext(CalendarContext);
     const [eventUID, setEventUID] = useState("");
 
     useEffect(() => {
@@ -35,7 +35,7 @@ export const CalendarDeleteEvent = ({ onEventDeleted, selectedEventUID }) => {
     return (
         <>
             <section>
-                <p>Are You Sure you want to delete : {eventUID && events.find(event => event.eventUID === eventUID)?.event.title}</p>
+                <p>Are You Sure you want to delete : {eventUID && getEvents().find(event => event.eventUID === eventUID)?.title}</p>
                 <button onClick={handleSubmitDeleteEvent}>Delete</button>
             </section>
         </>

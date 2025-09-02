@@ -1,6 +1,6 @@
 /**
  * Navbar - Displays navigation links and user authentication status.
- *
+ * 
  * @returns {React.ReactNode} The navigation bar component.
 */
 
@@ -10,7 +10,7 @@ import UserContext from '../../context/userContext.jsx';
 
 const Navbar = () => {
 
-    const { user, isLoggedIn, handleLogout} = useContext(UserContext);
+    const { isLoggedIn, handleLogout, getUsername} = useContext(UserContext);
 
     return (
         <nav>
@@ -24,8 +24,8 @@ const Navbar = () => {
                 {isLoggedIn() ? (
                     <>
                         <NavLink to="/main">Main</NavLink>
-                        <span>Current User: {user.username}</span>
-                        <button onClick={handleLogout}>Logout</button>                            
+                        <span>Current User: {getUsername()}</span>
+                        <button onClick={handleLogout}>Logout</button>
                     </>
                 ) : (
                     <>
