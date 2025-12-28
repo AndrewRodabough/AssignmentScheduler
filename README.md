@@ -11,3 +11,4 @@ This project is under active development and has not yet reached a MVP. Many key
 * sharing of events, dates, and deadlines with other users
 * integration with ical and google cal feeds
 * mobile and pc support formatting
+
