@@ -12,3 +12,4 @@ This project is under active development and has not yet reached a MVP. Many key
 * integration with ical and google cal feeds
 * mobile and pc support formatting
 
+
